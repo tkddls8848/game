@@ -1,0 +1,4 @@
+﻿<Solution>
+  <Project Path="DetectivePrototype.csproj" />
+  <Project Path="DetectivePrototype.Tests.EditMode.csproj" />
+</Solution>

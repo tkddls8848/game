@@ -54,6 +54,20 @@ Select-String "error CS" "$env:TEMP\unity_compile.log"
 ```
 `error CS` 매치가 없으면 통과.
 
+**순수 로직만 검증 (Unity 라이선스/설치 없이)**
+
+`Detective.Core`/`Detective.Data`의 UnityEngine 비의존 파일은 번들 Mono로 바로 컴파일된다.
+
+```powershell
+& "...\MonoBleedingEdge\bin\mcs.bat" -target:library -out:$env:TEMP\pure.dll `
+  Assets\Scripts\Core\Interval.cs Assets\Scripts\Core\WallSegment.cs `
+  Assets\Scripts\Core\RoomLayout.cs Assets\Scripts\Core\RoomLayoutValidator.cs `
+  Assets\Scripts\Core\GameEvents.cs Assets\Scripts\Core\IInteractable.cs `
+  Assets\Scripts\Core\ProjectInfo.cs Assets\Scripts\Data\RoomSchema.cs
+```
+
+여기에 UnityEngine 참조가 끼어들어 컴파일이 깨지면 §18-1 원칙이 무너진 것이다. 로직을 다시 분리한다.
+
 **EditMode 테스트**
 ```powershell
 Invoke-Unity @('-batchmode','-nographics','-projectPath',$PROJ,
@@ -67,6 +81,9 @@ Invoke-Unity @('-batchmode','-nographics','-projectPath',$PROJ,
 Invoke-Unity @('-batchmode','-quit','-nographics','-projectPath',$PROJ,
                '-executeMethod','DetectiveEditor.SceneBuilder.RebuildMainScene') "$env:TEMP\unity_scene.log"
 ```
+
+씬 빌더는 rooms.json 무결성 검사에 실패하면 **예외를 던지고 씬을 만들지 않는다** → batchmode 종료 코드가 0이 아니게 된다.
+에디터 GUI에서는 `Tools/Detective/Rebuild Main Scene`, 데이터만 검사하려면 `Tools/Detective/Validate Game Data`.
 
 ---
 
@@ -123,12 +140,22 @@ Assets/Resources/GameData/
 로딩: `Resources.Load<TextAsset>("GameData/...")` + `JsonUtility`.
 `JsonUtility`는 Dictionary/다형성 불가 → **배열 + 문자열 ID 참조로 평평하게** 설계한다.
 
+### 맵 (`rooms.json`)
+
+* 좌표는 월드 유닛, `(x, y)`는 **좌하단 모서리**. 방은 축 정렬 사각형이다
+* 벽 두께 `RoomLayout.WallThickness = 0.4`. **문(`doors`)의 짧은 변은 이보다 두꺼워야** 벽을 관통해 구멍이 뚫린다
+* 벽은 손으로 배치하지 않는다. `RoomLayout.BuildAllWallSegments()`가 방 테두리에서 문을 빼고 같은 직선 위 조각을 병합해 만든다
+* 방 배치: 아래줄 `로비 | 식당 | 창고`, 가운데 가로 `복도`, 윗줄 `피해자 방 | 용의자 방`. 모든 방은 복도를 통해서만 연결된다
+* JSON을 고친 뒤에는 **반드시 씬을 다시 만든다** (아래 `RebuildMainScene`). 씬은 rooms.json의 파생물이다
+
 ---
 
 ## 현재 진행 상황
 
 - [x] **Phase 0 — 환경 정비 완료** (컴파일 `error CS` 0건, EditMode 2/2 passed)
-- [ ] Phase 1 — 맵/플레이어 이동/상호작용
+- [x] **Phase 1 — 맵/플레이어 이동/상호작용 (코드 작성 완료, 사람 Play 확인 대기)**
+      rooms.json, RoomLayout(벽/문 생성), SceneBuilder, PlayerController, PlayerInteraction, HudUI
+      순수 로직 테스트 18개는 Unity 없이 mcs+mono로 통과 확인. **batchmode 컴파일/씬 생성은 아직 미실행**
 - [ ] Phase 2 — 시간 · NPC 스케줄
 - [ ] Phase 3 — 조사 · 단서
 - [ ] Phase 4 — 대화 · 증언 · 목격

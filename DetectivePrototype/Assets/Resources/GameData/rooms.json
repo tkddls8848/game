@@ -1,0 +1,18 @@
+{
+  "rooms": [
+    { "id": "room_lobby",   "displayName": "로비",      "x": 0.0,  "y": 0.0,  "width": 12.0, "height": 10.0, "floorColor": "#3A4A5A" },
+    { "id": "room_dining",  "displayName": "식당",      "x": 12.0, "y": 0.0,  "width": 12.0, "height": 10.0, "floorColor": "#4A4436" },
+    { "id": "room_storage", "displayName": "창고",      "x": 24.0, "y": 0.0,  "width": 12.0, "height": 10.0, "floorColor": "#3B3B3B" },
+    { "id": "room_hall",    "displayName": "복도",      "x": 0.0,  "y": 10.0, "width": 36.0, "height": 4.0,  "floorColor": "#2F3540" },
+    { "id": "room_victim",  "displayName": "피해자 방", "x": 2.0,  "y": 14.0, "width": 12.0, "height": 10.0, "floorColor": "#4A3540" },
+    { "id": "room_suspect", "displayName": "용의자 방", "x": 22.0, "y": 14.0, "width": 12.0, "height": 10.0, "floorColor": "#37474A" }
+  ],
+  "doors": [
+    { "id": "door_lobby_hall",   "roomA": "room_lobby",   "roomB": "room_hall",    "x": 5.0,  "y": 9.7,  "width": 2.0, "height": 0.6 },
+    { "id": "door_dining_hall",  "roomA": "room_dining",  "roomB": "room_hall",    "x": 17.0, "y": 9.7,  "width": 2.0, "height": 0.6 },
+    { "id": "door_storage_hall", "roomA": "room_storage", "roomB": "room_hall",    "x": 29.0, "y": 9.7,  "width": 2.0, "height": 0.6 },
+    { "id": "door_hall_victim",  "roomA": "room_hall",    "roomB": "room_victim",  "x": 7.0,  "y": 13.7, "width": 2.0, "height": 0.6 },
+    { "id": "door_hall_suspect", "roomA": "room_hall",    "roomB": "room_suspect", "x": 27.0, "y": 13.7, "width": 2.0, "height": 0.6 }
+  ],
+  "playerSpawnRoom": "room_lobby"
+}

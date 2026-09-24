@@ -1,3 +1,4 @@
+using Detective.Core;
 using Detective.Data;
 
 namespace Detective.Case
@@ -47,11 +48,21 @@ namespace Detective.Case
 
             result.Set(AccusationField.Culprit, Same(answer.culprit, submission.culprit));
             result.Set(AccusationField.Motive, Same(answer.motive, submission.motive));
-            result.Set(AccusationField.Time, answer.tick >= 0 && answer.tick == submission.tick);
+            result.Set(AccusationField.Time, SameTimeSlot(answer.TimeMs, submission.TimeMs));
             result.Set(AccusationField.Place, Same(answer.room, submission.room));
             result.Set(AccusationField.Method, Same(answer.method, submission.method));
             result.Set(AccusationField.Evidence, Same(answer.evidence, submission.evidence));
             return result;
+        }
+
+        /// <summary>
+        /// 범행 시각은 10분 칸으로 고른다. 정답 ms가 칸 한가운데여도 같은 칸을 고르면 맞다.
+        /// 정답 시각이 없으면(NoTime) 무엇을 골라도 틀리다.
+        /// </summary>
+        private static bool SameTimeSlot(int expectedMs, int actualMs)
+        {
+            int expected = GameTime.TickOf(expectedMs);
+            return expected != GameTime.NoTime && expected == GameTime.TickOf(actualMs);
         }
 
         /// <summary>빈 값끼리는 정답으로 치지 않는다(아무것도 안 고른 제출이 빈 정답과 맞아떨어지지 않게).</summary>

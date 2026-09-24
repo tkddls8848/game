@@ -55,7 +55,7 @@ namespace Detective.Tests
         public void DeadVictimIsNotSeenAfterDeath()
         {
             CaseDatabase database = TestCaseFactory.Database();
-            List<NpcDefinition> inStudyAfter = database.Npcs.OccupantsAt(4, "study");
+            List<NpcDefinition> inStudyAfter = database.Npcs.OccupantsAt(GameTime.TickToMs(4), "study");
             Assert.AreEqual(0, inStudyAfter.Count);
         }
 
@@ -63,7 +63,7 @@ namespace Detective.Tests
         public void DefaultText_UsesTimeRoomAndParticle()
         {
             CaseDatabase database = TestCaseFactory.Database();
-            string text = SightingGenerator.DefaultText(new Sighting("witness", "culprit", 1, "b"), database.Npcs, database.Layout);
+            string text = SightingGenerator.DefaultText(new Sighting("witness", "culprit", GameTime.TickToMs(1), "b"), database.Npcs, database.Layout);
             Assert.AreEqual("18:10쯤 B방에서 클라라를 봤습니다.", text);
         }
     }

@@ -4,7 +4,8 @@ namespace Detective.Data
 {
     /// <summary>
     /// npcs/*.json 하나 = 인물 한 명. 피해자도 같은 스키마를 쓴다(isVictim).
-    /// 스케줄은 틱 인덱스(0~6)마다 방 id 하나 — JsonUtility가 다룰 수 있게 딕셔너리 대신 고정 길이 배열로 둔다.
+    /// 스케줄은 틱 인덱스(0~6, 10분 칸)마다 방 id 하나 — JsonUtility가 다룰 수 있게 딕셔너리 대신 고정 길이 배열로 둔다.
+    /// 틱 인덱스는 데이터 형식일 뿐이다. 시각(ms)으로 묻는 건 NpcSchedule이 GameTime.TickOf로 칸을 찾아 준다.
     /// </summary>
     [Serializable]
     public class NpcDefinition

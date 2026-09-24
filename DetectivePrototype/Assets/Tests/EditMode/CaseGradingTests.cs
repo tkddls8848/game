@@ -100,6 +100,9 @@ namespace Detective.Tests
             form.Cycle(AccusationField.Time, 3);
             while (form.Selected(AccusationField.Place).id != "study") form.Cycle(AccusationField.Place, 1);
 
+            Assert.AreEqual("1800000", form.Selected(AccusationField.Time).id, "선택지 id는 칸이 시작하는 ms");
+            Assert.AreEqual("18:30", form.Selected(AccusationField.Time).label);
+
             CaseAnswer submission = form.ToSubmission();
             Assert.AreEqual(3, submission.tick);
             Assert.IsTrue(CaseGrader.Grade(state.Database.Case.answer, submission).Solved);

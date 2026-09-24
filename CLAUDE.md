@@ -125,7 +125,12 @@ Assets/Tests/EditMode/ DetectivePrototype.Tests.EditMode.asmdef (테스트, → 
    에디터 스크립트를 먼저 쓴다 (`Assets/Editor/DetectiveEditor/SceneBuilder.cs`)
 3. **사건 데이터는 JSON.** ScriptableObject(.asset)는 GUID YAML이라 텍스트로 안전하게 못 쓴다
 4. Phase 하나씩. 각 커밋은 컴파일이 통과하는 상태
-5. 시간은 **정수 틱 0~6** (18:00~19:00, 10분 단위). 문자열 시각 비교 금지
+5. 시각은 **정수 밀리초** (18:00 = `GameTime.StartMs` = 0, 19:00 = `GameTime.EndMs` = 3,600,000). **부동소수·문자열 시각 비교 금지**.
+   틱(10분 칸 0~6)은 **표시용 파생값**이다 — 수사 노트 표·타임라인 눈금·고발 화면 시각 선택지만 칸을 쓴다.
+   * 시각을 받는 API는 ms: `GameTime.ToLabel/TryParse/Clamp/IsValid`, `NpcSchedule.RoomAt(npc, ms)`, `TimelineBoard.PlacementAt/RecordsAt`
+   * 칸을 받는 API는 이름에 `Tick`이 붙는다: `TickOf(ms)`, `TickLabel`, `ClampTick`, `TryParseTick`, `RecordsInTick`
+   * 틱으로 적힌 데이터는 **경계 함수 `GameTime.TickToMs`로만** ms가 된다(스키마의 `RevealMs`·`RelatedMs`·`ClaimMs`·`SightingMs`·`CaseAnswer.TimeMs`).
+     `-1`(시각 없음)은 `GameTime.NoTime`으로 옮겨진다. 데이터 형식 자체의 ms 전환은 후속 Phase(DEVELOPMENT_PLAN_UNHEARD.md)
 
 ---
 
@@ -153,13 +158,15 @@ Assets/Resources/GameData/
 
 ### 인물 (`npcs/*.json`)
 
+* 시각 필드는 아직 **틱(10분 칸) 단위**로 적는다. 코드는 ms로 묻고, ms가 속한 칸(`GameTime.TickOf`)의 값을 읽는다(18:35 → 18:30 칸)
 * `schedule[7]` = 틱별 **실제** 방. 용의자는 빈 칸 불가, 피해자는 사망 이후 `""`
 * `claims[7]` = 본인이 **주장**하는 방. 빈 문자열이면 그 틱은 사실대로 말한다. 거짓말은 여기에만 적는다
 * 목격 대사는 스케줄에서 자동 생성된다(같은 틱 + 같은 방). **거짓말하는 틱의 목격은 털어놓지 않는다**
 
 ### 단서 (`evidence/evidence.json`) · 대사 (`dialogue/*.json`) · 사건 (`cases/case_01.json`)
 
-* 단서의 `revealNpc/revealTick/revealRoom` = 물증이 확정하는 행적. 시각이 없는 int 필드는 **-1을 명시**한다(JsonUtility는 빠진 int를 0 = 18:00으로 채운다)
+* 단서의 `revealNpc/revealTick/revealRoom` = 물증이 확정하는 행적. 시각이 없는 int 필드는 **-1을 명시**한다(JsonUtility는 빠진 int를 0 = 18:00으로 채운다).
+  `*Tick` 필드는 코드에서 직접 읽지 말고 스키마의 `*Ms` 속성(경계 함수)으로 읽는다. 예외는 원본 값을 검사하는 `GameDataValidator`
 * 대사 한 줄의 역할: `revealsClaims`(알리바이, 인물당 정확히 1개), `requiresEvidence`(조건부), `claimTick/Room`(말 바꾸기), `sightingTick/Target`(자동 목격 대사 덮어쓰기)
 * 사건 파일은 정답 6항목(범인·동기·시각·장소·수법·결정적 증거)과 선택지·문구를 담는다
 * 데이터를 고치면 `GameDataValidator`(참조 무결성)와 `CaseSolvabilityChecker`(범행 시각에 범인만 목격·물증 알리바이가 없고, 증언↔목격·물증 모순이 2건 이상)가 씬 빌더와 EditMode 테스트에서 돈다
@@ -216,3 +223,8 @@ Assets/Resources/GameData/
       리눅스 컨테이너에서 확인한 것: Unity 참조 DLL(UnityEngine 2021.3 모듈·uGUI 2020.3·UnityEditor 2021.1)로
       런타임·에디터·테스트 어셈블리 컴파일 통과, 순수 로직 테스트 80개 mono+NUnit 통과, 실제 JSON으로 참조 무결성·추리 가능성 검사 통과.
       **Unity 6 batchmode 컴파일 / EditMode 테스트 / 씬 재생성 / Play 확인은 아직 미실행**
+- [x] **Phase U-0 — 시간 축을 정수 밀리초로 교체 (DEVELOPMENT_PLAN_UNHEARD.md)**
+      `GameTime`이 ms 기반, 틱은 표시용 파생값. 데이터 스키마(틱 필드)는 그대로 두고 `GameTime.TickToMs` 경계 함수로 읽는다.
+      윈도우 헤드리스(.NET Framework `csc.exe` + NuGet Unity 참조 DLL + NUnit 3.13.3 콘솔)로 확인:
+      런타임·에디터·테스트 어셈블리 `error CS` 0건, 순수 로직 테스트 102개 통과(GameDataTests 제외), 실제 JSON으로 참조 무결성·추리 가능성 검사 통과.
+      **Unity 6 batchmode 컴파일 / EditMode 테스트 / Play 확인은 아직 미실행**

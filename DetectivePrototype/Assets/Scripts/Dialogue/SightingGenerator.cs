@@ -5,21 +5,24 @@ using Detective.NPC;
 
 namespace Detective.Dialogue
 {
-    /// <summary>"observer가 tick에 room에서 target을 봤다."</summary>
+    /// <summary>"observer가 Ms에 room에서 target을 봤다."</summary>
     public struct Sighting
     {
         public readonly string ObserverId;
         public readonly string TargetId;
-        public readonly int Tick;
+        public readonly int Ms;
         public readonly string RoomId;
 
-        public Sighting(string observerId, string targetId, int tick, string roomId)
+        public Sighting(string observerId, string targetId, int ms, string roomId)
         {
             ObserverId = observerId;
             TargetId = targetId;
-            Tick = tick;
+            Ms = ms;
             RoomId = roomId;
         }
+
+        /// <summary>Ms가 속한 10분 칸. 표시·대화 키용 파생값.</summary>
+        public int Tick { get { return GameTime.TickOf(Ms); } }
     }
 
     /// <summary>
@@ -34,16 +37,18 @@ namespace Detective.Dialogue
             var result = new List<Sighting>();
             if (observer == null || observer.isVictim) return result;
 
+            // 스케줄 데이터가 10분 칸이라 칸마다 한 번씩 본다.
             for (int tick = GameTime.FirstTick; tick <= GameTime.LastTick; tick++)
             {
-                string room = NpcSchedule.RoomAt(observer, tick);
+                int ms = GameTime.TickToMs(tick);
+                string room = NpcSchedule.RoomAt(observer, ms);
                 if (string.IsNullOrEmpty(room)) continue;
 
-                List<NpcDefinition> occupants = roster.OccupantsAt(tick, room);
+                List<NpcDefinition> occupants = roster.OccupantsAt(ms, room);
                 for (int i = 0; i < occupants.Count; i++)
                 {
                     if (occupants[i].id == observer.id) continue;
-                    result.Add(new Sighting(observer.id, occupants[i].id, tick, room));
+                    result.Add(new Sighting(observer.id, occupants[i].id, ms, room));
                 }
             }
             return result;
@@ -56,7 +61,7 @@ namespace Detective.Dialogue
             List<Sighting> all = Witnessed(roster, observer);
             for (int i = 0; i < all.Count; i++)
             {
-                if (NpcSchedule.IsHonestAt(observer, all[i].Tick)) result.Add(all[i]);
+                if (NpcSchedule.IsHonestAt(observer, all[i].Ms)) result.Add(all[i]);
             }
             return result;
         }
@@ -64,7 +69,7 @@ namespace Detective.Dialogue
         /// <summary>자동 생성 문구. 예: "18:20쯤 복도에서 클라라 보스를 봤습니다."</summary>
         public static string DefaultText(Sighting sighting, NpcRoster roster, RoomLayout layout)
         {
-            return GameTime.ToLabel(sighting.Tick) + "쯤 " + layout.DisplayNameOf(sighting.RoomId) + "에서 "
+            return GameTime.ToLabel(sighting.Ms) + "쯤 " + layout.DisplayNameOf(sighting.RoomId) + "에서 "
                 + KoreanText.EulReul(roster.DisplayNameOf(sighting.TargetId)) + " 봤습니다.";
         }
     }

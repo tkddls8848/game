@@ -19,25 +19,28 @@ namespace Detective.Investigation
         Evidence = 3
     }
 
-    /// <summary>"NpcId가 Tick에 RoomId에 있었다"는 기록 한 건과 그 출처.</summary>
+    /// <summary>"NpcId가 Ms에 RoomId에 있었다"는 기록 한 건과 그 출처.</summary>
     public struct TimelineRecord
     {
         public readonly string NpcId;
-        public readonly int Tick;
+        public readonly int Ms;
         public readonly string RoomId;
         public readonly RecordKind Kind;
 
         /// <summary>Testimony/Sighting이면 말한 사람 id, Evidence면 단서 id.</summary>
         public readonly string SourceId;
 
-        public TimelineRecord(string npcId, int tick, string roomId, RecordKind kind, string sourceId)
+        public TimelineRecord(string npcId, int ms, string roomId, RecordKind kind, string sourceId)
         {
             NpcId = npcId;
-            Tick = tick;
+            Ms = ms;
             RoomId = roomId;
             Kind = kind;
             SourceId = sourceId;
         }
+
+        /// <summary>Ms가 속한 10분 칸. 수사 노트 표·관찰 눈금용 파생값.</summary>
+        public int Tick { get { return GameTime.TickOf(Ms); } }
     }
 
     /// <summary>
@@ -74,19 +77,21 @@ namespace Detective.Investigation
 
                     if (line.RevealsClaims)
                     {
+                        // claims 데이터가 10분 칸이라 칸마다 한 건씩 적는다.
                         for (int t = GameTime.FirstTick; t <= GameTime.LastTick; t++)
                         {
-                            board.Add(npc.id, t, NpcSchedule.ClaimedRoomAt(npc, t), RecordKind.Testimony, npc.id);
+                            int ms = GameTime.TickToMs(t);
+                            board.Add(npc.id, ms, NpcSchedule.ClaimedRoomAt(npc, ms), RecordKind.Testimony, npc.id);
                         }
                     }
-                    if (line.ClaimTick >= 0)
+                    if (line.ClaimMs != GameTime.NoTime)
                     {
-                        board.Add(npc.id, line.ClaimTick, line.ClaimRoom, RecordKind.Testimony, npc.id);
+                        board.Add(npc.id, line.ClaimMs, line.ClaimRoom, RecordKind.Testimony, npc.id);
                     }
                     if (line.IsSighting)
                     {
                         Sighting s = line.Sighting;
-                        board.Add(s.TargetId, s.Tick, s.RoomId, RecordKind.Sighting, s.ObserverId);
+                        board.Add(s.TargetId, s.Ms, s.RoomId, RecordKind.Sighting, s.ObserverId);
                     }
                 }
             }
@@ -96,28 +101,30 @@ namespace Detective.Investigation
             {
                 EvidenceDefinition evidence;
                 if (!database.Evidence.TryGet(collected[i], out evidence) || !evidence.RevealsWhereabouts) continue;
-                board.Add(evidence.revealNpc, evidence.revealTick, evidence.revealRoom, RecordKind.Evidence, evidence.id);
+                board.Add(evidence.revealNpc, evidence.RevealMs, evidence.revealRoom, RecordKind.Evidence, evidence.id);
             }
 
             return board;
         }
 
-        private void Add(string npcId, int tick, string roomId, RecordKind kind, string sourceId)
+        private void Add(string npcId, int ms, string roomId, RecordKind kind, string sourceId)
         {
-            if (string.IsNullOrEmpty(npcId) || string.IsNullOrEmpty(roomId) || !GameTime.IsValidTick(tick)) return;
+            if (string.IsNullOrEmpty(npcId) || string.IsNullOrEmpty(roomId) || !GameTime.IsValid(ms)) return;
 
             for (int i = 0; i < _records.Count; i++)
             {
                 TimelineRecord r = _records[i];
-                if (r.NpcId == npcId && r.Tick == tick && r.RoomId == roomId && r.Kind == kind && r.SourceId == sourceId) return;
+                if (r.NpcId == npcId && r.Ms == ms && r.RoomId == roomId && r.Kind == kind && r.SourceId == sourceId) return;
             }
-            _records.Add(new TimelineRecord(npcId, tick, roomId, kind, sourceId));
+            _records.Add(new TimelineRecord(npcId, ms, roomId, kind, sourceId));
         }
 
-        /// <summary>한 사람의 한 시각에 대한 기록 전부(들어온 순서).</summary>
-        public List<TimelineRecord> RecordsFor(string npcId, int tick)
+        /// <summary>한 사람의 한 10분 칸(틱)에 대한 기록 전부(들어온 순서). 수사 노트 표의 한 칸이다.</summary>
+        public List<TimelineRecord> RecordsInTick(string npcId, int tick)
         {
             var result = new List<TimelineRecord>();
+            if (!GameTime.IsValidTick(tick)) return result;
+
             for (int i = 0; i < _records.Count; i++)
             {
                 if (_records[i].NpcId == npcId && _records[i].Tick == tick) result.Add(_records[i]);
@@ -125,14 +132,20 @@ namespace Detective.Investigation
             return result;
         }
 
+        /// <summary>그 시각(ms)이 속한 10분 칸의 기록 전부. 기록은 아직 10분 칸 단위로만 들어온다.</summary>
+        public List<TimelineRecord> RecordsAt(string npcId, int ms)
+        {
+            return RecordsInTick(npcId, GameTime.TickOf(ms));
+        }
+
         /// <summary>
         /// 관찰 화면에 세울 위치: 가장 믿을 만한 출처(물증 &gt; 목격 &gt; 증언), 같으면 나중에 알게 된 것.
         /// </summary>
-        public NpcPlacement PlacementOf(NpcDefinition npc, int tick)
+        public NpcPlacement PlacementAt(NpcDefinition npc, int ms)
         {
             if (npc == null) return NpcPlacement.Unknown;
 
-            List<TimelineRecord> records = RecordsFor(npc.id, tick);
+            List<TimelineRecord> records = RecordsAt(npc.id, ms);
             if (records.Count == 0) return NpcPlacement.Unknown;
 
             TimelineRecord best = records[0];

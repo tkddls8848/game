@@ -237,7 +237,7 @@ namespace Detective.UI
                     label.lineSpacing = 1f;
 
                     if (r == 0 && c == 0) label.text = UIFactory.Colorize("인물 / 시각", UIFactory.MutedColor);
-                    else if (r == 0) label.text = "<b>" + GameTime.ToLabel(c - 1) + "</b>";
+                    else if (r == 0) label.text = "<b>" + GameTime.TickLabel(c - 1) + "</b>";
                     else if (c == 0) label.text = "<b>" + _timelineRows[r - 1].Title + "</b>";
                     else _timelineCells[r - 1, c - 1] = label;
                 }

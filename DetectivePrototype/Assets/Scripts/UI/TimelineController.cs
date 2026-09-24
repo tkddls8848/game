@@ -19,6 +19,7 @@ namespace Detective.UI
         [Tooltip("전체 맵이 화면에 들어오도록 할 때 가장자리 여백(월드 유닛).")]
         public float overviewMargin = 2f;
 
+        /// <summary>보고 있는 10분 칸(표시용 틱). 위치를 물을 때는 GameTime.TickToMs로 ms가 된다.</summary>
         public int CurrentTick { get; private set; }
         public bool IsOpen { get { return ModalState.Current == GameMode.Timeline; } }
 
@@ -128,12 +129,12 @@ namespace Detective.UI
         private void Step(int delta)
         {
             _autoplay = false;
-            SetTick(GameTime.Clamp(CurrentTick + delta), false);
+            SetTick(GameTime.ClampTick(CurrentTick + delta), false);
         }
 
         private void SetTick(int tick, bool instant)
         {
-            CurrentTick = GameTime.Clamp(tick);
+            CurrentTick = GameTime.ClampTick(tick);
             if (CurrentTick != _lastAnnouncedTick)
             {
                 _lastAnnouncedTick = CurrentTick;
@@ -206,7 +207,7 @@ namespace Detective.UI
                 _tickBackgrounds[t] = UIFactory.AddImage(cell, TickIdle);
                 RectTransform labelRect = UIFactory.CreateStretch("Label", cell, 4f);
                 _tickLabels[t] = UIFactory.AddText(labelRect, 32, TextAnchor.MiddleCenter, UIFactory.Ink);
-                _tickLabels[t].text = GameTime.ToLabel(t);
+                _tickLabels[t].text = GameTime.TickLabel(t);
             }
 
             RectTransform helpRect = UIFactory.CreateRect("TimelineHelp", _root,
@@ -217,7 +218,7 @@ namespace Detective.UI
         private void RefreshLabels()
         {
             bool truth = GameManager.Instance != null && GameManager.Instance.ShowTruthForDebug;
-            _titleLabel.text = "타임라인 관찰  " + UIFactory.Colorize(GameTime.ToLabel(CurrentTick), UIFactory.AccentColor)
+            _titleLabel.text = "타임라인 관찰  " + UIFactory.Colorize(GameTime.TickLabel(CurrentTick), UIFactory.AccentColor)
                 + (_autoplay ? "  ▶ 재생 중" : string.Empty)
                 + (truth
                     ? "\n<size=24><color=#FF7070>[개발용] 실제 스케줄 표시 중 (F9)</color></size>"

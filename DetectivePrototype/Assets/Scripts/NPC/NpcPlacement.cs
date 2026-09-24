@@ -21,18 +21,18 @@ namespace Detective.NPC
         public static readonly NpcPlacement Unknown = new NpcPlacement(null, null);
     }
 
-    /// <summary>타임라인 관찰 화면이 인물 위치를 물어보는 곳.</summary>
+    /// <summary>타임라인 관찰 화면이 인물 위치를 물어보는 곳. 시각은 ms.</summary>
     public interface ITimelinePlacementSource
     {
-        NpcPlacement PlacementOf(NpcDefinition npc, int tick);
+        NpcPlacement PlacementAt(NpcDefinition npc, int ms);
     }
 
     /// <summary>실제 스케줄을 그대로 보여 주는 소스. 개발 중 확인용(정답을 그대로 드러낸다).</summary>
     public sealed class ScheduleTruthSource : ITimelinePlacementSource
     {
-        public NpcPlacement PlacementOf(NpcDefinition npc, int tick)
+        public NpcPlacement PlacementAt(NpcDefinition npc, int ms)
         {
-            string room = NpcSchedule.RoomAt(npc, tick);
+            string room = NpcSchedule.RoomAt(npc, ms);
             return string.IsNullOrEmpty(room) ? NpcPlacement.Unknown : new NpcPlacement(room, "실제 행적");
         }
     }

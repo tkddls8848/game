@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using Detective.Core;
 using Detective.Data;
 using Detective.Investigation;
@@ -29,8 +30,13 @@ namespace Detective.Case
 
             _options[(int)AccusationField.Motive] = new List<ChoiceDefinition>(definition.motives);
 
+            // 범행 시각은 10분 칸 단위로 고른다. 선택지 id는 그 칸이 시작하는 ms.
             var times = new List<ChoiceDefinition>();
-            for (int t = GameTime.FirstTick; t <= GameTime.LastTick; t++) times.Add(Choice(t.ToString(), GameTime.ToLabel(t)));
+            for (int t = GameTime.FirstTick; t <= GameTime.LastTick; t++)
+            {
+                int ms = GameTime.TickToMs(t);
+                times.Add(Choice(ms.ToString(CultureInfo.InvariantCulture), GameTime.ToLabel(ms)));
+            }
             _options[(int)AccusationField.Time] = times;
 
             var rooms = new List<ChoiceDefinition>();
@@ -69,8 +75,10 @@ namespace Detective.Case
 
         public CaseAnswer ToSubmission()
         {
-            int tick;
-            if (!int.TryParse(Selected(AccusationField.Time).id, out tick)) tick = -1;
+            // CaseAnswer는 JSON 호환을 위해 아직 틱으로 적는다(경계).
+            int ms;
+            if (!int.TryParse(Selected(AccusationField.Time).id, NumberStyles.None, CultureInfo.InvariantCulture, out ms)) ms = GameTime.NoTime;
+            int tick = GameTime.TickOf(ms);
 
             return new CaseAnswer
             {

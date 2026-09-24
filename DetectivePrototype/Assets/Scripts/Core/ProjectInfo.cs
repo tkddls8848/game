@@ -8,7 +8,10 @@ namespace Detective.Core
     {
         public const string PrototypeName = "DetectivePrototype";
 
-        /// <summary>사건 타임라인의 총 틱 수 (18:00 ~ 19:00, 10분 단위).</summary>
+        /// <summary>
+        /// 사건 타임라인의 표시용 틱(10분 칸) 수 (18:00 ~ 19:00). 내부 시각은 정수 밀리초다(GameTime).
+        /// 기존 데이터(schedule[7] 등)의 배열 길이이기도 하다.
+        /// </summary>
         public const int TimelineTickCount = 7;
     }
 }

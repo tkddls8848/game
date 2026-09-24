@@ -273,7 +273,7 @@ namespace DetectiveEditor
                 NpcDefinition npc = npcs[i];
                 NpcArt npcArt = art.NpcOf(npc.id);
                 Color tokenColor = ParseColor(npcArt != null ? npcArt.tokenColor : null, ParseColor(npc.color, Color.white));
-                string room = NpcSchedule.LastKnownRoom(npc, GameTime.PresentTick);
+                string room = NpcSchedule.LastKnownRoom(npc, GameTime.PresentMs);
                 float cx, cy;
                 if (!layout.TryGetRoomCenter(room, out cx, out cy)) { cx = 0f; cy = 0f; }
 

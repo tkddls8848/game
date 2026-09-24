@@ -83,15 +83,33 @@ namespace Detective.Tests
         // ── 가청 판정 ────────────────────────────────────────────
 
         [Test]
-        public void Audibility_SameRoomFull_DoorNeighbourMuffled_ElseNone()
+        public void Audibility_SameRoomFull_WallNeighbourMuffled_ElseNone()
         {
             Assert.AreEqual(Audibility.Full, _model.Judge(Dining, Dining));
             Assert.AreEqual(Audibility.Muffled, _model.Judge(Dining, Hall));      // door_dining_hall
             Assert.AreEqual(Audibility.Muffled, _model.Judge(Hall, Dining));
             Assert.AreEqual(Audibility.Muffled, _model.Judge(Lobby, Hall));       // door_lobby_hall
-            Assert.AreEqual(Audibility.None, _model.Judge(Lobby, Dining));        // 벽은 맞닿았지만 문이 없다
-            Assert.AreEqual(Audibility.None, _model.Judge("room_victim", Dining)); // 복도를 한 번 더 거쳐야 한다
+
+            // 문이 없어도 벽 한 장을 맞대고 있으면 들린다(로비 x0~12, 식당 x12~24가 x=12에서 만난다).
+            Assert.AreEqual(Audibility.Muffled, _model.Judge(Lobby, Dining));
+            Assert.AreEqual(Audibility.Muffled, _model.Judge(Dining, Lobby));
+
+            // 떨어져 있으면 여전히 안 들린다. 서재(y14~24)와 식당(y0~10) 사이에는 복도가 통째로 놓여 있다.
+            Assert.AreEqual(Audibility.None, _model.Judge("room_victim", Dining));
+            Assert.AreEqual(Audibility.None, _model.Judge("room_victim", "room_suspect"));
             Assert.AreEqual(Audibility.None, _model.Judge("no_such_room", Dining));
+        }
+
+        [Test]
+        public void Audibility_WallAdjacency_BreaksTheHallOnlyStar()
+        {
+            // 문만 보면 문 5개가 전부 한쪽이 복도라, 복도가 아닌 두 방은 서로 영원히 무음이 된다.
+            // 벽 맞닿음을 넣으면 로비↔식당·식당↔창고가 살아나 복도 편중이 풀린다.
+            Assert.AreEqual(Audibility.Muffled, _model.Judge(Dining, "room_storage"));
+            Assert.AreEqual(Audibility.Muffled, _model.Judge("room_storage", Dining));
+
+            // 로비와 창고는 식당을 사이에 두고 떨어져 있다 — 벽을 맞대지 않는다.
+            Assert.AreEqual(Audibility.None, _model.Judge(Lobby, "room_storage"));
         }
 
         [Test]
@@ -108,15 +126,21 @@ namespace Detective.Tests
 
             PerceivedUtterance mutter = Find(fromDining, "u06");
             Assert.AreEqual(Audibility.Muffled, mutter.Level);
-            Assert.AreEqual(Hall, mutter.Room, "웅얼거림도 어느 문 너머인지는 알려 준다");
+            Assert.AreEqual(Hall, mutter.Room, "웅얼거림도 어느 벽 너머인지는 알려 준다");
             Assert.AreEqual(string.Empty, mutter.Text, "웅얼거림은 내용이 보이면 안 된다");
             Assert.AreEqual(string.Empty, mutter.VoiceId, "웅얼거림은 누구 목소리인지도 보이면 안 된다");
 
-            // 로비는 복도와만 문으로 이어진다 → 복도 웅얼거림만, 식당은 아예 없다
+            // 로비는 복도와 문으로, 식당과 벽으로 이어진다 → 둘 다 웅얼거림으로 들리되 내용은 없다
             List<PerceivedUtterance> fromLobby = _model.Perceive(_timeline, 33000, Lobby);
-            Assert.AreEqual(1, fromLobby.Count);
-            Assert.AreEqual(Audibility.Muffled, fromLobby[0].Level);
-            Assert.AreEqual(string.Empty, fromLobby[0].Text);
+            Assert.AreEqual(2, fromLobby.Count);
+            for (int i = 0; i < fromLobby.Count; i++)
+            {
+                Assert.AreEqual(Audibility.Muffled, fromLobby[i].Level);
+                Assert.AreEqual(string.Empty, fromLobby[i].Text);
+                Assert.AreEqual(string.Empty, fromLobby[i].VoiceId);
+            }
+            Assert.IsNotNull(Find(fromLobby, "u06"), "복도 혼잣말이 문 너머로");
+            Assert.IsNotNull(Find(fromLobby, "u07"), "식당 통화가 벽 너머로");
         }
 
         // ── 핵심 판정 ────────────────────────────────────────────

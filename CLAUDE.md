@@ -223,8 +223,14 @@ Assets/Resources/GameData/
       리눅스 컨테이너에서 확인한 것: Unity 참조 DLL(UnityEngine 2021.3 모듈·uGUI 2020.3·UnityEditor 2021.1)로
       런타임·에디터·테스트 어셈블리 컴파일 통과, 순수 로직 테스트 80개 mono+NUnit 통과, 실제 JSON으로 참조 무결성·추리 가능성 검사 통과.
       **Unity 6 batchmode 컴파일 / EditMode 테스트 / 씬 재생성 / Play 확인은 아직 미실행**
-- [x] **Phase U-0 — 시간 축을 정수 밀리초로 교체 (DEVELOPMENT_PLAN_UNHEARD.md)**
+- [x] **Phase U-0 — 시간 축을 정수 밀리초로 교체 (DEVELOPMENT_PLAN_UNHEARD.md)** — Unity 6 검증 완료
       `GameTime`이 ms 기반, 틱은 표시용 파생값. 데이터 스키마(틱 필드)는 그대로 두고 `GameTime.TickToMs` 경계 함수로 읽는다.
-      윈도우 헤드리스(.NET Framework `csc.exe` + NuGet Unity 참조 DLL + NUnit 3.13.3 콘솔)로 확인:
-      런타임·에디터·테스트 어셈블리 `error CS` 0건, 순수 로직 테스트 102개 통과(GameDataTests 제외), 실제 JSON으로 참조 무결성·추리 가능성 검사 통과.
-      **Unity 6 batchmode 컴파일 / EditMode 테스트 / Play 확인은 아직 미실행**
+      batchmode 컴파일 `error CS`·`warning CS` 0건, EditMode 123/123, 씬 재생성 성공, 빌드·Play 확인까지 끝났다.
+- [x] **엿듣기 수직 슬라이스 — 구조가 성립함을 확인**
+      `Assets/Scripts/Eavesdrop/` (순수 C#) + `cases/slice/script_slice.json` (90초·방2·목소리2).
+      핵심 발화 둘이 32~37초에 겹쳐 한 번에 다 들을 수 없다 → 되돌려 듣는 것 외에 선택지가 없다.
+      `SliceSolvability`가 "필요한 사실이 어딘가에서는 들린다"와 "한 방에 고정되면 전부는 못 듣는다"를 기계 판정한다.
+- [x] **Phase U-1 — 대본 검증기·연속 재생 장치·로더** (EditMode 142/142)
+      `ScriptValidator`(참조 무결성) · `PlaybackTransport`(재생·정지·탐색·되감기·배속) · `EavesdropScriptLoader`(Resources).
+      배속은 백분율 정수 + 나머지 누적이라 드리프트가 없다. 회차 끝에서 자동으로 되돌지 않는다(되감기는 플레이어의 선택).
+      가청 판정은 문이 아니라 **벽 맞닿음** 기준이다 — 문만 보면 이 저택은 복도 중심 별 모양이 되어 복도가 아닌 두 방이 서로 무음이었다.

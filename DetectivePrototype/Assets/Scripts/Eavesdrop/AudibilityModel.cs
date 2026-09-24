@@ -10,7 +10,7 @@ namespace Detective.Eavesdrop
         /// <summary>아무것도 들리지 않는다.</summary>
         None = 0,
 
-        /// <summary>문 너머 웅얼거림. 누군가 말하고 있다는 것만 안다 — 내용·목소리는 모른다.</summary>
+        /// <summary>벽 너머 웅얼거림. 누군가 말하고 있다는 것만 안다 — 내용·목소리는 모른다.</summary>
         Muffled = 1,
 
         /// <summary>같은 방. 대사 전문과 목소리가 보인다.</summary>
@@ -36,11 +36,21 @@ namespace Detective.Eavesdrop
     }
 
     /// <summary>
-    /// 방 단위 가청 판정. 같은 방 = Full, rooms.json의 문으로 바로 이어진 방 = Muffled, 그 밖 = None.
-    /// 방 인접 정보는 RoomLayout의 doors에서만 가져온다(새 데이터 없음).
+    /// 방 단위 가청 판정. 같은 방 = Full, 벽을 맞댄 방 = Muffled, 그 밖 = None.
+    ///
+    /// 인접은 문이 아니라 **벽 맞닿음**으로 본다. 소리는 문으로만 새지 않는다.
+    /// 문만 보면 이 저택은 복도를 중심으로 한 별 모양이 되어(문 5개가 전부 한쪽이 복도),
+    /// 복도에 서면 다섯 방이 전부 들리고 복도가 아닌 두 방은 서로 영원히 무음이 된다.
+    /// 벽 하나를 사이에 둔 로비와 식당이 서로 안 들리는 것은 물리적으로도 어색하고,
+    /// "옆방에서 누가 말하는데 내용을 모르겠다 → 가 보자"는 엿듣기의 동력도 복도에서만 작동하게 된다.
+    ///
+    /// 새 데이터는 필요 없다. 방이 축 정렬 사각형이므로 rooms.json의 좌표만으로 계산된다.
     /// </summary>
     public sealed class AudibilityModel
     {
+        /// <summary>좌표 비교 허용 오차. 방 좌표는 정수 단위로 적히므로 이보다 훨씬 크게 떨어져 있다.</summary>
+        private const float Epsilon = 0.001f;
+
         private readonly RoomLayout _layout;
         private readonly HashSet<string> _adjacentPairs = new HashSet<string>();
 
@@ -49,14 +59,58 @@ namespace Detective.Eavesdrop
             _layout = layout;
             if (layout == null) return;
 
+            // 문으로 이어진 방은 당연히 들린다. 문이 벽 밖에 적혀 있어도(별도 좌표) 놓치지 않는다.
             IList<DoorDefinition> doors = layout.Doors;
             for (int i = 0; i < doors.Count; i++)
             {
                 DoorDefinition door = doors[i];
                 if (string.IsNullOrEmpty(door.roomA) || string.IsNullOrEmpty(door.roomB)) continue;
-                _adjacentPairs.Add(PairKey(door.roomA, door.roomB));
-                _adjacentPairs.Add(PairKey(door.roomB, door.roomA));
+                AddPair(door.roomA, door.roomB);
             }
+
+            // 벽을 맞댄 방도 들린다. 문이 없어도 벽 너머로 새는 소리다.
+            IList<RoomDefinition> rooms = layout.Rooms;
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                for (int j = i + 1; j < rooms.Count; j++)
+                {
+                    if (SharesWall(rooms[i], rooms[j])) AddPair(rooms[i].id, rooms[j].id);
+                }
+            }
+        }
+
+        /// <summary>두 방이 벽 한 장을 맞대고 있는가. 한 변이 겹쳐 닿고 그 변을 따라 실제로 겹치는 구간이 있어야 한다.</summary>
+        private static bool SharesWall(RoomDefinition a, RoomDefinition b)
+        {
+            if (a == null || b == null) return false;
+
+            bool touchesVertically = Touches(a.MaxX, b.MinX) || Touches(b.MaxX, a.MinX);
+            if (touchesVertically && Overlap(a.MinY, a.MaxY, b.MinY, b.MaxY) > Epsilon) return true;
+
+            bool touchesHorizontally = Touches(a.MaxY, b.MinY) || Touches(b.MaxY, a.MinY);
+            if (touchesHorizontally && Overlap(a.MinX, a.MaxX, b.MinX, b.MaxX) > Epsilon) return true;
+
+            return false;
+        }
+
+        /// <summary>모서리만 스치는 경우를 벽으로 세지 않도록 겹친 길이를 돌려준다.</summary>
+        private static float Overlap(float aMin, float aMax, float bMin, float bMax)
+        {
+            float low = aMin > bMin ? aMin : bMin;
+            float high = aMax < bMax ? aMax : bMax;
+            return high - low;
+        }
+
+        private static bool Touches(float p, float q)
+        {
+            float d = p - q;
+            return (d < 0 ? -d : d) <= Epsilon;
+        }
+
+        private void AddPair(string a, string b)
+        {
+            _adjacentPairs.Add(PairKey(a, b));
+            _adjacentPairs.Add(PairKey(b, a));
         }
 
         public RoomLayout Layout { get { return _layout; } }

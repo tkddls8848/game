@@ -178,13 +178,17 @@ Assets/Resources/GameData/
 연출 방향은 **"사건 파일"**: 어두운 저택 평면도 위에 바랜 종이 패널, 검은/붉은 잉크 글씨, 보드게임 말 같은 인물 토큰, 명조체(Noto Serif KR).
 
 * `Assets/Resources/GameData/art.json`이 방 바닥·인물 초상화·단서 이미지·소리의 **Resources 경로**를 정한다
+* **자리는 지금 전부 채워져 있다** — 바닥 질감 6장(ambientCG), 초상화 5장·단서 그림 7장(Wikimedia Commons, 세피아·비네팅으로 톤 맞춤),
+  BGM 3곡(Musopen 쇼팽)·환경음·효과음 3종. 전부 CC0/퍼블릭 도메인이고 출처는 `CREDITS.md`
 * **파일이 없으면 코드가 만든 대체물**을 쓴다: 바닥은 `ProceduralTextures`(wood/marble/carpet/stone/rug), 초상화는 세피아 실루엣 + 이름 첫 글자,
   종소리·종이·조사음은 `ProceduralAudio` 합성음. BGM·환경음은 파일이 없으면 침묵
 * 씬 빌더는 바닥·토큰 질감을 `Assets/Art/Generated/*.png`로 저장해 씬에 끼운다(런타임 생성 Sprite는 씬에 남지 않는다). UI 종이·비네팅은 실행 시 만든다
 * 에셋을 넣으면 `CREDITS.md`에 출처·라이선스를 한 줄 적는다. 포함된 폰트는 OFL 1.1. 어디서 받을지는 `ASSET_SOURCES.md`
 * `ArtManifestValidator`가 art.json의 방·인물·단서 참조를 검사한다(씬 빌더·EditMode 테스트)
-* 직접 넣는 바닥 이미지는 임포트 설정을 **Wrap Mode=Repeat, Mesh Type=Full Rect**로 해야 Tiled로 깔린다
-* `NotoSerifKR-Regular.otf`의 `.meta`는 Unity가 처음 임포트할 때 만든다 → 그 뒤 **커밋해서 GUID를 고정**한다
+* 임포트 설정은 `Assets/Editor/DetectiveEditor/ArtAssetImporter.cs`(AssetPostprocessor)가 맞춘다 — 손으로 맞추지 말 것.
+  바닥은 **Wrap=Repeat · Mesh=Full Rect · PPU=질감 크기(512)** 여야 Tiled로 깔리고 tileSize가 무늬 크기가 된다.
+  `.meta`가 없는 첫 임포트 때만 손대므로 그 뒤 사람이 고친 값은 남는다. 되돌리려면 `Tools/Detective/Reimport Art Assets`
+* 그림·소리·폰트의 `.meta`는 Unity가 처음 임포트할 때 만든다 → 그 뒤 **커밋해서 GUID를 고정**한다
 
 ---
 

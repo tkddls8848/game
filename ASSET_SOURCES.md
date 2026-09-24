@@ -7,6 +7,10 @@
 > 라이선스 문구는 2026-09 기준 검색 결과로 확인한 것이다. 내려받기 전에 각 페이지의 라이선스를 한 번 더 읽을 것.
 > 특히 "무료판"은 개인 용도만 허용하는 경우가 있다.
 
+**art.json의 자리는 지금 전부 채워져 있다.** 무엇이 어디서 왔는지는 `CREDITS.md`를 본다
+(바닥 6장 ambientCG, 초상화 5장·단서 7장 Wikimedia Commons, 배경음 Musopen 쇼팽, 바람 OpenGameArt, 효과음 Kenney — 전부 CC0/퍼블릭 도메인).
+아래 목록은 **갈아 끼울 후보를 찾을 때** 쓴다.
+
 ## 라이선스 읽는 법
 
 | 표시 | 뜻 | 이 게임에서 |
@@ -105,14 +109,19 @@
 
 ## 6. 자리별 정리 (art.json과 1:1)
 
-| art.json 항목 | 넣을 파일 | 1순위 출처 |
-|---|---|---|
-| `npcs[].portrait` | `Assets/Resources/Art/Portraits/npc_a.png` … `npc_victim.png` (정사각형 권장) | The Met Open Access |
-| `evidence[].image` | `Assets/Resources/Art/Evidence/ev_*.png` | The Met Open Access |
-| `rooms[].floorTexture` | `Assets/Resources/Art/Floors/*.jpg` (경로를 art.json에 적는다) | ambientCG |
-| `uiFont` | 포함됨 | Noto Serif KR |
-| `audio.bgmExplore / bgmTimeline / bgmResult` | `Assets/Resources/Audio/BGM/*.mp3` 또는 `.ogg` | Musopen, Kevin MacLeod |
-| `audio.ambientLoop` | `Assets/Resources/Audio/Ambient/winter_night.ogg` | Pixabay |
-| `audio.sfxClockChime / sfxPage / sfxInspect` | `Assets/Resources/Audio/SFX/*.wav` | Pixabay, Kenney |
+| art.json 항목 | 파일 | 지금 쓰는 출처 | 갈아 끼울 후보 |
+|---|---|---|---|
+| `npcs[].portrait` | `Art/Portraits/npc_*.png` (256×256) | Wikimedia Commons — 사전트·소른 초상 (PD) | The Met Open Access |
+| `evidence[].image` | `Art/Evidence/ev_*.png` (256×256) | Wikimedia Commons (PD/CC0) | The Met Open Access |
+| `rooms[].floorTexture` | `Art/Floors/*.jpg` (512×512) | ambientCG Color 맵 (CC0) | Poly Haven |
+| `uiFont` | `Fonts/NotoSerifKR-Regular.otf` | Noto Serif KR (OFL 1.1) | 눈누 |
+| `audio.bgmExplore / bgmTimeline / bgmResult` | `Audio/BGM/*.ogg` | Musopen 쇼팽 (CC0) | Kevin MacLeod (CC BY — 게임 안 표기 필요) |
+| `audio.ambientLoop` | `Audio/Ambient/winter_night.ogg` | OpenGameArt wind (CC0) | Pixabay, freesound |
+| `audio.sfxClockChime / sfxPage / sfxInspect` | `Audio/SFX/*.ogg` | Commons 종소리 (CC0), Kenney RPG Audio (CC0) | Pixabay, jsfxr |
 
-파일이 없는 자리는 코드가 만든 대체물(생성 질감·실루엣·합성음)이 나오므로 하나씩 채워도 된다.
+경로는 전부 `Assets/Resources/` 기준이고 확장자는 art.json에 적지 않는다.
+파일을 빼면 그 자리는 코드가 만든 대체물(생성 질감·실루엣·합성음)로 되돌아가므로 하나씩 갈아 끼워도 게임은 돈다.
+
+새 파일을 넣으면 `Assets/Editor/DetectiveEditor/ArtAssetImporter.cs`가 임포트 설정을 자동으로 맞춘다
+(바닥은 Wrap=Repeat · Mesh=Full Rect · PPU=질감 크기, UI 그림은 Sprite, 배경음은 Streaming).
+기본값으로 이미 임포트된 파일은 `Tools/Detective/Reimport Art Assets`.

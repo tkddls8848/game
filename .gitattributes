@@ -12,3 +12,14 @@
 # 윈도우 배치 파일만 예외다. cmd.exe 는 LF 줄바꿈에서 라벨과 goto 를 잘못 읽는다.
 *.bat text eol=crlf
 *.cmd text eol=crlf
+
+# 연출 에셋은 바이너리다. text=auto 의 내용 추론에 맡기지 않고 못박아 둔다
+# (한 번이라도 텍스트로 잡히면 줄바꿈 변환이 파일을 깨뜨리고, diff 도 무의미하다).
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.ogg  binary
+*.wav  binary
+*.mp3  binary
+*.otf  binary
+*.ttf  binary

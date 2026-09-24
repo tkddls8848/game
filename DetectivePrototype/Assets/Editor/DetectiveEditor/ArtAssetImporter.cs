@@ -31,6 +31,22 @@ namespace DetectiveEditor
         /// <summary>UI 액자에 걸리는 그림(초상화 264px, 단서 260px) 크기. 그보다 크게 들어와도 여기서 줄인다.</summary>
         public const int PictureTextureSize = 256;
 
+        /// <summary>전체 사각형 스프라이트의 꼭짓점 수. 이보다 많으면 외곽이 잘린 메시다.</summary>
+        private const int FullRectVertexCount = 4;
+
+        // Mesh Type(Full Rect) 이야기 — Unity 6000.0.81f1 에서 실측한 것.
+        //
+        // Tiled 로 깔리려면 스프라이트 메시가 전체 사각형이어야 한다고 알려져 있는데, 이 값은 스크립트로 바꿀 수 없다.
+        //   * TextureImporterSettings.spriteMeshType 에 FullRect 를 넣고 SetTextureSettings 를 불러도
+        //     .meta 에는 0(Tight)으로 남는다. 게다가 ReadTextureSettings 는 그 뒤로도 FullRect 를 돌려주므로
+        //     읽기로 확인하면 멀쩡해 보인다.
+        //   * SerializedObject 로 m_SpriteMeshType 에 직접 써도 ApplyModifiedPropertiesWithoutUndo 가
+        //     false 를 돌려주고 값이 그대로다(임포터 프로퍼티 쓰기가 거부된다).
+        //
+        // 다행히 값을 강제할 필요가 없다. Tight 는 불투명한 부분의 외곽을 딴 것이라,
+        // 투명 영역이 없는 그림은 Tight 여도 꼭짓점 4개짜리 사각형이 그대로 나온다(실측 확인).
+        // 그래서 설정을 밀어 넣는 대신 결과를 검사한다 — OnPostprocessSprites 참고.
+
         // ----- 자동 적용(첫 임포트) ---------------------------------------------
 
         private void OnPreprocessTexture()
@@ -55,6 +71,23 @@ namespace DetectiveEditor
             Debug.LogWarning("[ArtAssetImporter] " + assetPath + " 는 " + texture.width + "x" + texture.height
                 + " 다. 바닥 질감은 " + FloorTextureSize + "x" + FloorTextureSize + " 정사각형이어야 art.json의 tileSize가 무늬 크기가 된다"
                 + " (Tools/Detective/Reimport Art Assets 를 돌리면 실제 크기에 맞춰 PPU를 다시 잡는다).");
+        }
+
+        /// <summary>
+        /// 바닥은 Tiled 로 깔리므로 스프라이트 메시가 전체 사각형이어야 한다.
+        /// Mesh Type 은 스크립트로 강제할 수 없으니(위 주석) 만들어진 결과를 검사한다.
+        /// 불투명한 그림은 Tight 여도 꼭짓점 4개짜리 사각형이라 문제가 없고, 투명 영역이 있으면 잘려 나간다.
+        /// </summary>
+        private void OnPostprocessSprites(Texture2D texture, Sprite[] sprites)
+        {
+            if (!InFolder(assetPath, FloorsFolder) || sprites == null) return;
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                if (sprites[i] == null || sprites[i].vertices.Length == FullRectVertexCount) continue;
+                Debug.LogWarning("[ArtAssetImporter] " + assetPath + ": 스프라이트 메시의 꼭짓점이 "
+                    + sprites[i].vertices.Length + "개다(전체 사각형이 아니다). 바닥은 Tiled 로 깔리므로 잘린 채 반복된다."
+                    + " 인스펙터에서 Mesh Type을 Full Rect로 바꿀 것 — 투명한 부분이 있는 그림은 Tight로 외곽이 잘린다.");
+            }
         }
 
         // ----- 다시 맞추기(메뉴 · 자동 복구) ---------------------------------------
@@ -170,9 +203,11 @@ namespace DetectiveEditor
 
             var settings = new TextureImporterSettings();
             importer.ReadTextureSettings(settings);
-            settings.spriteMeshType = SpriteMeshType.FullRect; // Tiled 모드와 액자 채우기에 둘 다 필요
             settings.spriteExtrude = 0;
             importer.SetTextureSettings(settings);
+
+            // spriteMeshType 은 여기서 넣어도 Unity 6 에서 .meta 에 저장되지 않는다.
+            // 대신 만들어진 스프라이트가 전체 사각형인지 OnPostprocessSprites 에서 검사한다.
             return true;
         }
 

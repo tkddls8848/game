@@ -29,6 +29,11 @@ namespace Detective.UI
         private Text _helpLabel;
         private RectTransform _listPanel;
         private RectTransform _detailPanel;
+        private RectTransform _detailViewport;
+        private RectTransform _detailContent;
+        private float _detailScroll;
+        private string _detailKey;
+        private const float ScrollStep = 200f;
         private RectTransform _timelinePanel;
         private Text _timelineLegend;
         private Text[,] _timelineCells;
@@ -95,7 +100,26 @@ namespace Detective.UI
             if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) { _selection[_tab]++; changed = true; }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) { _selection[_tab]--; changed = true; }
 
+            if (Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.E)) { _detailScroll += ScrollStep; changed = true; }
+            if (Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.Q)) { _detailScroll -= ScrollStep; changed = true; }
+
             if (changed) Refresh();
+        }
+
+        /// <summary>상세 문구를 넣고 스크롤 위치를 맞춘다. 다른 항목을 고르면 맨 위로 돌아간다.</summary>
+        private void SetDetail(string key, string text)
+        {
+            if (key != _detailKey) _detailScroll = 0f;
+            _detailKey = key;
+            _detailLabel.text = text;
+
+            float viewHeight = _detailViewport.rect.height;
+            float contentHeight = _detailLabel.preferredHeight;
+            float maxScroll = Mathf.Max(0f, contentHeight - viewHeight);
+            _detailScroll = Mathf.Clamp(_detailScroll, 0f, maxScroll);
+
+            _detailContent.sizeDelta = new Vector2(0f, contentHeight);
+            _detailContent.anchoredPosition = new Vector2(0f, _detailScroll);
         }
 
         private void Refresh()
@@ -125,9 +149,9 @@ namespace Detective.UI
             if (entries.Count == 0)
             {
                 _listLabel.text = UIFactory.Colorize("아직 없음", UIFactory.MutedColor);
-                _detailLabel.text = _tab == TabEvidence
+                SetDetail(string.Empty, _tab == TabEvidence
                     ? UIFactory.Colorize("저택을 돌아다니며 [E]로 물건을 조사하면 단서가 여기에 기록된다.", UIFactory.MutedColor)
-                    : string.Empty;
+                    : string.Empty);
                 _helpLabel.text = "[1~3 / ← →] 탭   [N / Esc] 닫기";
                 return;
             }
@@ -145,8 +169,8 @@ namespace Detective.UI
             _listLabel.text = list.ToString();
 
             string id = entries[selected].Id;
-            _detailLabel.text = _tab == TabPeople ? _presenter.PersonDetail(id) : _presenter.EvidenceDetail(id);
-            _helpLabel.text = "[↑ ↓] 선택   [1~3 / ← →] 탭   [N / Esc] 닫기";
+            SetDetail(_tab + ":" + id, _tab == TabPeople ? _presenter.PersonDetail(id) : _presenter.EvidenceDetail(id));
+            _helpLabel.text = "[↑ ↓] 선택   [1~3 / ← →] 탭   [PgUp / PgDn · Q / E] 내용 스크롤   [N / Esc] 닫기";
         }
 
         private void RefreshTimeline()
@@ -191,7 +215,9 @@ namespace Detective.UI
                     bool header = r == 0 || c == 0;
                     UIFactory.AddImage(cell, header ? new Color(1f, 1f, 1f, 0.08f) : new Color(1f, 1f, 1f, 0.03f));
                     Text label = UIFactory.AddText(UIFactory.CreateStretch("Text", cell, 6f),
-                        header ? 24 : 21, header ? TextAnchor.MiddleCenter : TextAnchor.MiddleLeft, Color.white);
+                        header ? 24 : 18, header ? TextAnchor.MiddleCenter : TextAnchor.MiddleLeft, Color.white);
+                    label.verticalOverflow = VerticalWrapMode.Overflow;
+                    label.lineSpacing = 1f;
 
                     if (r == 0 && c == 0) label.text = UIFactory.Colorize("인물 / 시각", UIFactory.MutedColor);
                     else if (r == 0) label.text = "<b>" + GameTime.ToLabel(c - 1) + "</b>";
@@ -219,7 +245,14 @@ namespace Detective.UI
             _detailPanel = UIFactory.CreateRect("Detail", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(496f, 70f), new Vector2(-32f, -100f));
             UIFactory.AddImage(_detailPanel, new Color(1f, 1f, 1f, 0.04f));
-            _detailLabel = UIFactory.AddText(UIFactory.CreateStretch("Text", _detailPanel, 24f), 24, TextAnchor.UpperLeft, Color.white);
+            // 상세 문구는 길어질 수 있어 마스크 안에서 PgUp/PgDn(또는 Q/E)으로 스크롤한다.
+            _detailViewport = UIFactory.CreateStretch("Viewport", _detailPanel, 24f);
+            _detailViewport.gameObject.AddComponent<RectMask2D>();
+            _detailContent = UIFactory.CreateRect("Text", _detailViewport,
+                new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero);
+            _detailContent.pivot = new Vector2(0.5f, 1f);
+            _detailLabel = UIFactory.AddText(_detailContent, 24, TextAnchor.UpperLeft, Color.white);
+            _detailLabel.verticalOverflow = VerticalWrapMode.Overflow;
 
             _timelinePanel = UIFactory.CreateRect("Timeline", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(32f, 70f), new Vector2(-32f, -100f));

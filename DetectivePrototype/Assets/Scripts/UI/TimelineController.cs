@@ -180,8 +180,9 @@ namespace Detective.UI
 
             RectTransform titlePanel;
             _titleLabel = UIFactory.CreateTextPanel("TimelineTitle", _root,
-                new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(-560f, -120f), new Vector2(560f, -24f),
+                new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(-600f, -160f), new Vector2(600f, -20f),
                 38, TextAnchor.MiddleCenter, out titlePanel);
+            _titleLabel.verticalOverflow = VerticalWrapMode.Overflow;
 
             RectTransform bar = UIFactory.CreateRect("TickBar", _root,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(-770f, 70f), new Vector2(770f, 150f));

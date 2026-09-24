@@ -45,6 +45,14 @@ namespace DetectiveEditor
         [MenuItem("Tools/Detective/Rebuild Main Scene")]
         public static void RebuildMainScene()
         {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                Debug.LogError("[SceneBuilder] Play 모드에서는 씬을 다시 만들 수 없다. Play를 멈추고 다시 실행할 것.");
+                return;
+            }
+            // 메뉴에서 실행할 때 열려 있는 씬의 저장 안 된 변경을 말없이 버리지 않는다(batchmode에서는 그냥 통과).
+            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+
             var errors = new List<string>();
             CaseDatabase database = DataValidator.LoadDatabase(errors);
 
@@ -219,6 +227,11 @@ namespace DetectiveEditor
                 var collider = root.AddComponent<CircleCollider2D>();
                 collider.radius = 0.5f;
                 collider.isTrigger = true; // 플레이어를 막지 않고 상호작용 탐색에만 잡힌다.
+
+                // 트랜스폼으로 움직이는 콜라이더는 Kinematic 바디를 달아야 물리 질의(OverlapCircleAll)에 제때 반영된다.
+                var body = root.AddComponent<Rigidbody2D>();
+                body.bodyType = RigidbodyType2D.Kinematic;
+                body.gravityScale = 0f;
 
                 var controller = root.AddComponent<NPCController>();
                 controller.npcId = npc.id;

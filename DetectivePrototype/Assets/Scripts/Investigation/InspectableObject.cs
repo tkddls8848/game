@@ -52,7 +52,9 @@ namespace Detective.Investigation
 
         private void Update()
         {
-            float pulse = _highlighted ? 1.15f + Mathf.Sin(Time.unscaledTime * 8f) * 0.05f : 1f;
+            // 강조 중일 때만 크기를 건드린다. 매 프레임 스케일을 쓰면 정적 콜라이더가 계속 다시 만들어진다.
+            if (!_highlighted) return;
+            float pulse = 1.15f + Mathf.Sin(Time.unscaledTime * 8f) * 0.05f;
             transform.localScale = _baseScale * pulse;
         }
 
@@ -88,6 +90,7 @@ namespace Detective.Investigation
         public void SetHighlighted(bool highlighted)
         {
             _highlighted = highlighted;
+            if (!highlighted) transform.localScale = _baseScale;
         }
     }
 }

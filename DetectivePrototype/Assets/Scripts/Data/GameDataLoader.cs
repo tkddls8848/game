@@ -46,7 +46,7 @@ namespace Detective.Data
         public static List<NpcDefinition> LoadNpcs()
         {
             var result = new List<NpcDefinition>();
-            TextAsset[] assets = Resources.LoadAll<TextAsset>(NpcsResourceFolder);
+            TextAsset[] assets = SortedByName(Resources.LoadAll<TextAsset>(NpcsResourceFolder));
             for (int i = 0; i < assets.Length; i++)
             {
                 NpcDefinition npc = ParseNpc(assets[i].text, assets[i].name);
@@ -83,7 +83,7 @@ namespace Detective.Data
         public static List<DialogueFile> LoadDialogues()
         {
             var result = new List<DialogueFile>();
-            TextAsset[] assets = Resources.LoadAll<TextAsset>(DialogueResourceFolder);
+            TextAsset[] assets = SortedByName(Resources.LoadAll<TextAsset>(DialogueResourceFolder));
             for (int i = 0; i < assets.Length; i++)
             {
                 DialogueFile file = ParseDialogue(assets[i].text, assets[i].name);
@@ -127,6 +127,13 @@ namespace Detective.Data
         {
             return new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(LoadNpcs()), LoadEvidenceTable(), LoadDialogues(),
                 LoadCase(caseId));
+        }
+
+        /// <summary>Resources.LoadAll은 순서를 보장하지 않는다. 에디터 검증(파일 이름 순)과 같은 순서로 맞춘다.</summary>
+        private static TextAsset[] SortedByName(TextAsset[] assets)
+        {
+            System.Array.Sort(assets, (a, b) => string.CompareOrdinal(a.name, b.name));
+            return assets;
         }
 
         /// <summary>JsonUtility 파싱 + 실패 로그. 실패하면 null.</summary>

@@ -319,7 +319,8 @@ namespace DetectiveEditor
             canvasObject.AddComponent<TimelineController>();
             canvasObject.AddComponent<NotebookUI>();
             canvasObject.AddComponent<DialogueUI>();
-            canvasObject.AddComponent<IntroUI>(); // 마지막에 붙여야 다른 UI 위에 그려진다.
+            canvasObject.AddComponent<AccusationUI>();
+            canvasObject.AddComponent<IntroUI>();
 
             var hud = canvasObject.AddComponent<HudUI>();
             hud.player = playerInteraction;

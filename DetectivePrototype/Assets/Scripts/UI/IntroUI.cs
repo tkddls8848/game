@@ -37,6 +37,8 @@ namespace Detective.UI
                 + UIFactory.Colorize("<size=26>[WASD] 이동   [E] 조사·대화   [T] 타임라인 관찰   [N] 수사 노트   [F] 고발</size>", UIFactory.MutedColor)
                 + "\n\n" + UIFactory.Colorize("[Enter] 수사 시작", UIFactory.AccentColor);
 
+            // 컴포넌트 Awake 순서에 기대지 않고 확실히 맨 위에 그린다.
+            _root.SetAsLastSibling();
             ModalState.Force(GameMode.Intro, Time.frameCount);
         }
 

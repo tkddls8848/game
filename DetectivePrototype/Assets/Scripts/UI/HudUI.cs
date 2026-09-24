@@ -32,6 +32,8 @@ namespace Detective.UI
             _statusLabel = UIFactory.CreateTextPanel("StatusPanel", transform,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(24f, -150f), new Vector2(560f, -24f),
                 26, TextAnchor.MiddleLeft, out _statusPanel);
+            // 다른 창(노트·대화·고발)이 항상 이 패널 위에 그려지도록 맨 아래로 보낸다.
+            _statusPanel.SetAsFirstSibling();
         }
 
         private void OnEnable()

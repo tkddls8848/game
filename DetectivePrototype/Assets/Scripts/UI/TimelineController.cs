@@ -151,12 +151,12 @@ namespace Detective.UI
             if (!GameManager.Instance.Layout.TryGetBounds(out minX, out minY, out maxX, out maxY)) return;
 
             float width = maxX - minX + overviewMargin * 2f;
-            // 아래쪽 시간 막대가 화면을 가리므로 세로 여백을 조금 더 둔다.
-            float height = maxY - minY + overviewMargin * 2f + 4f;
+            // 위쪽 제목 패널과 아래쪽 시간 막대가 화면을 가리므로 세로 여백을 더 둔다.
+            float height = maxY - minY + overviewMargin * 2f + 6f;
             float aspect = _camera.aspect > 0.01f ? _camera.aspect : 16f / 9f;
 
             _camera.orthographicSize = Mathf.Max(height * 0.5f, width * 0.5f / aspect);
-            _camera.transform.position = new Vector3((minX + maxX) * 0.5f, (minY + maxY) * 0.5f - 1.5f, _savedCameraPosition.z);
+            _camera.transform.position = new Vector3((minX + maxX) * 0.5f, (minY + maxY) * 0.5f - 1f, _savedCameraPosition.z);
         }
 
         private void ExitOverviewCamera()

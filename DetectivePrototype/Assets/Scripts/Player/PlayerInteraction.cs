@@ -15,15 +15,34 @@ namespace Detective.Player
         /// <summary>지금 상호작용 대상. 없으면 null. HUD가 이 값을 읽어 안내문을 띄운다.</summary>
         public IInteractable Current { get; private set; }
 
+        private IHighlightable _highlighted;
+
         private void Update()
         {
-            Current = FindClosestInteractable();
+            // 창이 열려 있는 동안에는 대상도 잡지 않는다(안내문·하이라이트가 창 뒤에 남지 않게).
+            Current = ModalState.IsExploring ? FindClosestInteractable() : null;
+            UpdateHighlight();
 
             if (Current == null) return;
             if (!Input.GetKeyDown(interactKey)) return;
             if (!Current.CanInteract) return;
+            if (!ModalState.AcceptsInput(GameMode.Explore, Time.frameCount)) return;
 
             Current.Interact();
+        }
+
+        private void UpdateHighlight()
+        {
+            IHighlightable next = Current as IHighlightable;
+            if (ReferenceEquals(next, _highlighted)) return;
+
+            // 이미 파괴된 컴포넌트는 C# 참조는 남아 있어도 Unity 쪽 == null이 참이다. 그런 대상은 건드리지 않는다.
+            var previousObject = _highlighted as Object;
+            bool destroyed = !ReferenceEquals(previousObject, null) && previousObject == null;
+            if (_highlighted != null && !destroyed) _highlighted.SetHighlighted(false);
+
+            _highlighted = next;
+            if (_highlighted != null) _highlighted.SetHighlighted(true);
         }
 
         private IInteractable FindClosestInteractable()

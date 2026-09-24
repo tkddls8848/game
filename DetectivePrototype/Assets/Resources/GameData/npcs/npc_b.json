@@ -1,0 +1,12 @@
+{
+  "id": "npc_b",
+  "displayName": "마르코 벨리니",
+  "description": "밀가루 묻은 앞치마를 두른 요리사. 말이 빠르고 손짓이 크다.",
+  "relation": "저택의 요리사. 8년째 주방을 맡고 있다.",
+  "isVictim": false,
+  "color": "#E67E22",
+  "schedule": ["room_dining", "room_storage", "room_dining", "room_dining", "room_dining", "room_dining", "room_dining"],
+  "claims": [],
+  "presentOffsetX": -2.0,
+  "presentOffsetY": -1.5
+}

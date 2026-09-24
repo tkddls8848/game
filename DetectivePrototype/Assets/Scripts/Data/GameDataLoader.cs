@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Detective.Core;
+using Detective.NPC;
 using UnityEngine;
 
 namespace Detective.Data
@@ -9,6 +12,7 @@ namespace Detective.Data
     public static class GameDataLoader
     {
         public const string RoomsResourcePath = "GameData/rooms";
+        public const string NpcsResourceFolder = "GameData/npcs";
 
         /// <summary>
         /// rooms.json을 읽어 온다. 파일이 없거나 깨져 있으면 빈 테이블을 돌려주고 에러 로그를 남긴다
@@ -29,24 +33,56 @@ namespace Detective.Data
         /// <summary>텍스트에서 직접 파싱. 에디터 스크립트가 파일을 읽어 넘길 때도 쓴다.</summary>
         public static RoomTable ParseRoomTable(string json)
         {
+            RoomTable table = Parse<RoomTable>(json, "rooms.json");
+            if (table == null) return new RoomTable().Normalized();
+            return table.Normalized();
+        }
+
+        /// <summary>npcs/ 폴더의 모든 JSON. 한 파일 = 한 사람.</summary>
+        public static List<NpcDefinition> LoadNpcs()
+        {
+            var result = new List<NpcDefinition>();
+            TextAsset[] assets = Resources.LoadAll<TextAsset>(NpcsResourceFolder);
+            for (int i = 0; i < assets.Length; i++)
+            {
+                NpcDefinition npc = ParseNpc(assets[i].text, assets[i].name);
+                if (npc != null) result.Add(npc);
+            }
+            if (result.Count == 0) Debug.LogError("[GameDataLoader] Resources/" + NpcsResourceFolder + " 에서 인물을 하나도 읽지 못했다.");
+            return result;
+        }
+
+        public static NpcDefinition ParseNpc(string json, string label)
+        {
+            NpcDefinition npc = Parse<NpcDefinition>(json, label);
+            return npc != null ? npc.Normalized() : null;
+        }
+
+        /// <summary>사건 데이터 전체를 Resources에서 읽어 하나로 묶는다.</summary>
+        public static CaseDatabase LoadDatabase()
+        {
+            RoomTable rooms = LoadRoomTable();
+            return new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(LoadNpcs()));
+        }
+
+        /// <summary>JsonUtility 파싱 + 실패 로그. 실패하면 null.</summary>
+        public static T Parse<T>(string json, string label) where T : class
+        {
             if (string.IsNullOrEmpty(json))
             {
-                Debug.LogError("[GameDataLoader] rooms.json 내용이 비어 있다.");
-                return new RoomTable().Normalized();
+                Debug.LogError("[GameDataLoader] " + label + " 내용이 비어 있다.");
+                return null;
             }
 
-            RoomTable table = null;
             try
             {
-                table = JsonUtility.FromJson<RoomTable>(json);
+                return JsonUtility.FromJson<T>(json);
             }
             catch (System.Exception e)
             {
-                Debug.LogError("[GameDataLoader] rooms.json 파싱 실패: " + e.Message);
+                Debug.LogError("[GameDataLoader] " + label + " 파싱 실패: " + e.Message);
+                return null;
             }
-
-            if (table == null) return new RoomTable().Normalized();
-            return table.Normalized();
         }
     }
 }

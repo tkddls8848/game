@@ -1,3 +1,4 @@
+using Detective.Core;
 using UnityEngine;
 
 namespace Detective.Player
@@ -23,6 +24,13 @@ namespace Detective.Player
 
         private void Update()
         {
+            // 대화창·노트·타임라인이 열려 있으면 제자리에 선다.
+            if (!ModalState.IsExploring)
+            {
+                _input = Vector2.zero;
+                return;
+            }
+
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
 

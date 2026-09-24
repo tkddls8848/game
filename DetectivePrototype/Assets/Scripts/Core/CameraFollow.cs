@@ -19,5 +19,11 @@ namespace Detective.Core
             Vector3 desired = new Vector3(target.position.x, target.position.y, transform.position.z);
             transform.position = Vector3.SmoothDamp(transform.position, desired, ref _velocity, smoothTime);
         }
+
+        /// <summary>추적을 멈췄다가 다시 켤 때 튀지 않도록 관성을 지운다.</summary>
+        public void ResetVelocity()
+        {
+            _velocity = Vector3.zero;
+        }
     }
 }

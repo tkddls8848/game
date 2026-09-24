@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Detective.Core;
 using Detective.Data;
+using Detective.NPC;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace DetectiveEditor
     public static class DataValidator
     {
         public const string RoomsJsonPath = "Assets/Resources/GameData/rooms.json";
+        public const string NpcsFolder = "Assets/Resources/GameData/npcs";
 
         [MenuItem("Tools/Detective/Validate Game Data")]
         public static void ValidateFromMenu()
@@ -32,12 +34,51 @@ namespace DetectiveEditor
         public static List<string> ValidateAll()
         {
             var errors = new List<string>();
-
-            RoomTable rooms = LoadRoomTable(errors);
-            if (rooms != null) errors.AddRange(RoomLayoutValidator.Validate(rooms));
-
-            // Phase 3 이후 evidence/npc/dialogue 검사가 여기에 추가된다.
+            LoadDatabase(errors);
             return errors;
+        }
+
+        /// <summary>
+        /// 디스크의 JSON을 전부 읽어 CaseDatabase로 묶고, 파싱·무결성 문제를 errors에 쌓는다.
+        /// rooms.json을 못 읽으면 null. 검사 규칙은 순수 C#(RoomLayoutValidator, GameDataValidator)에 있다.
+        /// </summary>
+        public static CaseDatabase LoadDatabase(List<string> errors)
+        {
+            RoomTable rooms = LoadRoomTable(errors);
+            if (rooms == null) return null;
+            errors.AddRange(RoomLayoutValidator.Validate(rooms));
+
+            List<NpcDefinition> npcs = LoadNpcs(errors);
+            var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs));
+            errors.AddRange(GameDataValidator.Validate(database));
+            return database;
+        }
+
+        /// <summary>npcs/ 폴더의 JSON을 디스크에서 직접 읽는다(파일 이름 순).</summary>
+        public static List<NpcDefinition> LoadNpcs(List<string> errors)
+        {
+            var result = new List<NpcDefinition>();
+            foreach (string path in ReadJsonFiles(NpcsFolder, errors))
+            {
+                NpcDefinition npc = GameDataLoader.ParseNpc(File.ReadAllText(path), path);
+                if (npc == null) errors.Add(path + " 를 파싱하지 못했다.");
+                else result.Add(npc);
+            }
+            return result;
+        }
+
+        private static List<string> ReadJsonFiles(string folder, List<string> errors)
+        {
+            var files = new List<string>();
+            if (!Directory.Exists(folder))
+            {
+                errors.Add(folder + " 폴더가 없다.");
+                return files;
+            }
+            files.AddRange(Directory.GetFiles(folder, "*.json"));
+            files.Sort(System.StringComparer.Ordinal);
+            if (files.Count == 0) errors.Add(folder + " 에 JSON 파일이 없다.");
+            return files;
         }
 
         /// <summary>

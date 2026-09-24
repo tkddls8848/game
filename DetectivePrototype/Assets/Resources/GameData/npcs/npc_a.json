@@ -1,0 +1,12 @@
+{
+  "id": "npc_a",
+  "displayName": "클라라 보스",
+  "description": "단정한 회색 정장에 진홍색 립스틱. 질문에 답하기 전 늘 잠깐 뜸을 들인다.",
+  "relation": "개인 비서. 10년째 저택의 장부를 맡아 왔다.",
+  "isVictim": false,
+  "color": "#C0392B",
+  "schedule": ["room_dining", "room_storage", "room_hall",   "room_victim", "room_hall",   "room_dining", "room_lobby"],
+  "claims":   ["",            "room_dining",  "room_dining", "room_dining", "room_dining", "",            ""],
+  "presentOffsetX": -2.5,
+  "presentOffsetY": 1.5
+}

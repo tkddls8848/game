@@ -1,0 +1,12 @@
+{
+  "id": "npc_c",
+  "displayName": "줄리안 헤일",
+  "description": "구겨진 셔츠 차림의 젊은 남자. 도박 빚이 있다는 소문이 돈다.",
+  "relation": "피해자의 조카이자 유일한 상속인.",
+  "isVictim": false,
+  "color": "#2E86C1",
+  "schedule": ["room_lobby", "room_victim", "room_hall", "room_suspect", "room_suspect", "room_hall", "room_lobby"],
+  "claims":   ["",           "room_lobby",  "",          "",             "",             "",          ""],
+  "presentOffsetX": 2.5,
+  "presentOffsetY": 1.5
+}

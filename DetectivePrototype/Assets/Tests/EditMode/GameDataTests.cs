@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Detective.Core;
 using Detective.Data;
+using Detective.NPC;
 using NUnit.Framework;
 
 namespace Detective.Tests
@@ -69,6 +70,25 @@ namespace Detective.Tests
 
             Assert.AreEqual(layout.RoomCount, reachable.Count,
                 "시작 방에서 문으로 갈 수 없는 방이 있다.");
+        }
+
+        [Test]
+        public void Npcs_LoadFourSuspectsAndOneVictim()
+        {
+            var roster = new NpcRoster(GameDataLoader.LoadNpcs());
+
+            // §6: 피해자 1명, 용의자 NPC 4명
+            Assert.AreEqual(4, roster.Suspects.Count);
+            Assert.IsNotNull(roster.Victim);
+        }
+
+        [Test]
+        public void Database_PassesCrossReferenceValidation()
+        {
+            CaseDatabase database = GameDataLoader.LoadDatabase();
+
+            List<string> errors = GameDataValidator.Validate(database);
+            Assert.AreEqual(0, errors.Count, string.Join("\n", errors.ToArray()));
         }
     }
 }

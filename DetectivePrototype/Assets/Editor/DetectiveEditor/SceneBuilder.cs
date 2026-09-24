@@ -3,6 +3,7 @@ using System.IO;
 using Detective.Core;
 using Detective.Data;
 using Detective.Investigation;
+using Detective.NPC;
 using Detective.Player;
 using Detective.UI;
 using UnityEditor;
@@ -37,24 +38,24 @@ namespace DetectiveEditor
         private const int SortDoor = -15;
         private const int SortWall = -10;
         private const int SortProp = 0;
+        private const int SortNpc = 5;
         private const int SortPlayer = 10;
 
         [MenuItem("Tools/Detective/Rebuild Main Scene")]
         public static void RebuildMainScene()
         {
             var errors = new List<string>();
-            RoomTable table = DataValidator.LoadRoomTable(errors);
-            if (table != null) errors.AddRange(RoomLayoutValidator.Validate(table));
+            CaseDatabase database = DataValidator.LoadDatabase(errors);
 
-            if (errors.Count > 0)
+            if (errors.Count > 0 || database == null)
             {
                 for (int i = 0; i < errors.Count; i++) Debug.LogError("[SceneBuilder] " + errors[i]);
                 // 예외를 던져야 batchmode가 0이 아닌 종료 코드로 끝나서 실패를 놓치지 않는다.
                 throw new System.InvalidOperationException(
-                    "[SceneBuilder] rooms.json 무결성 오류 " + errors.Count + "건. 씬을 만들지 않았다.");
+                    "[SceneBuilder] 게임 데이터 무결성 오류 " + errors.Count + "건. 씬을 만들지 않았다.");
             }
 
-            RoomLayout layout = RoomLayout.FromTable(table);
+            RoomLayout layout = database.Layout;
             Sprite square = SpriteAssetFactory.GetOrCreateSquareSprite();
             if (square == null)
             {
@@ -70,6 +71,7 @@ namespace DetectiveEditor
             GameObject player = BuildPlayer(layout, square);
             BuildCamera(player.transform);
             BuildProps(layout, square);
+            BuildNpcs(layout, database.Npcs.All, square);
             BuildUI(player.GetComponent<PlayerInteraction>());
 
             Directory.CreateDirectory(ScenesFolder);
@@ -187,6 +189,43 @@ namespace DetectiveEditor
             follow.target = target;
         }
 
+        // ----- 인물 -------------------------------------------------------------
+
+        /// <summary>
+        /// 인물마다 루트(트리거 콜라이더 + NPCController)와 몸통 스프라이트 자식을 만든다.
+        /// 루트는 스케일 1로 두어 이름표(TextMesh)가 몸통 크기에 끌려가지 않게 한다.
+        /// 최종 위치는 실행 시 NpcDirector가 스케줄을 보고 다시 잡는다.
+        /// </summary>
+        private static void BuildNpcs(RoomLayout layout, IList<NpcDefinition> npcs, Sprite square)
+        {
+            var npcsRoot = new GameObject("NPCs");
+            npcsRoot.AddComponent<NpcDirector>();
+
+            for (int i = 0; i < npcs.Count; i++)
+            {
+                NpcDefinition npc = npcs[i];
+                string room = NpcSchedule.LastKnownRoom(npc, GameTime.PresentTick);
+                float cx, cy;
+                if (!layout.TryGetRoomCenter(room, out cx, out cy)) { cx = 0f; cy = 0f; }
+
+                var root = new GameObject("NPC_" + npc.id + " (" + npc.displayName + ")");
+                root.transform.SetParent(npcsRoot.transform, false);
+                root.transform.position = new Vector3(cx + npc.presentOffsetX, cy + npc.presentOffsetY, 0f);
+
+                CreateSpriteObject("Body", root.transform, square, 0f, 0f, 0.9f, 0.9f,
+                    ParseColor(npc.color, Color.white), SortNpc).transform.localPosition = Vector3.zero;
+
+                var collider = root.AddComponent<CircleCollider2D>();
+                collider.radius = 0.5f;
+                collider.isTrigger = true; // 플레이어를 막지 않고 상호작용 탐색에만 잡힌다.
+
+                var controller = root.AddComponent<NPCController>();
+                controller.npcId = npc.id;
+                controller.displayName = npc.displayName;
+                controller.isVictim = npc.isVictim;
+            }
+        }
+
         // ----- 조사 대상 (Phase 1 임시) -----------------------------------------
 
         /// <summary>
@@ -266,6 +305,8 @@ namespace DetectiveEditor
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
                 new Vector2(0f, 60f), new Vector2(1200f, 60f));
             Text promptText = CreateText(promptObject, 34, TextAnchor.MiddleCenter, new Color(1f, 0.94f, 0.7f));
+
+            canvasObject.AddComponent<TimelineController>();
 
             var hud = canvasObject.AddComponent<HudUI>();
             hud.player = playerInteraction;

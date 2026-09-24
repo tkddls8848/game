@@ -1,11 +1,12 @@
 using Detective.Data;
+using Detective.NPC;
 using UnityEngine;
 
 namespace Detective.Core
 {
     /// <summary>
-    /// 씬에 하나 존재하는 부팅 지점. 게임 데이터를 읽어 RoomLayout을 만들어 두고,
-    /// 다른 컴포넌트가 방 정보를 물어볼 수 있게 한다.
+    /// 씬에 하나 존재하는 부팅 지점. 게임 데이터를 읽어 CaseDatabase를 만들어 두고,
+    /// 다른 컴포넌트가 방·인물 정보를 물어볼 수 있게 한다.
     /// 매니저끼리의 직접 참조는 여기까지만 허용하고, 그 외 통신은 GameEvents를 쓴다(§18-5).
     /// </summary>
     [DefaultExecutionOrder(-100)]
@@ -13,8 +14,14 @@ namespace Detective.Core
     {
         public static GameManager Instance { get; private set; }
 
+        /// <summary>사건 데이터 전체. Awake 이후에 유효하다.</summary>
+        public CaseDatabase Database { get; private set; }
+
         /// <summary>rooms.json에서 만들어진 맵 레이아웃. Awake 이후에 유효하다.</summary>
-        public RoomLayout Layout { get; private set; }
+        public RoomLayout Layout { get { return Database != null ? Database.Layout : null; } }
+
+        /// <summary>타임라인 관찰 화면이 인물 위치를 묻는 곳.</summary>
+        public ITimelinePlacementSource TimelineSource { get; private set; }
 
         private void Awake()
         {
@@ -24,6 +31,7 @@ namespace Detective.Core
                 return;
             }
             Instance = this;
+            ModalState.Reset();
 
             RoomTable table = GameDataLoader.LoadRoomTable();
 
@@ -34,8 +42,26 @@ namespace Detective.Core
                 Debug.LogError("[rooms.json] " + errors[i]);
             }
 
-            Layout = RoomLayout.FromTable(table);
-            Debug.Log("[GameManager] 방 " + Layout.RoomCount + "개 로드 완료.");
+            Database = new CaseDatabase(RoomLayout.FromTable(table), new NpcRoster(GameDataLoader.LoadNpcs()));
+            TimelineSource = new ScheduleTruthSource();
+            Debug.Log("[GameManager] 방 " + Layout.RoomCount + "개, 인물 " + Database.Npcs.All.Count + "명 로드 완료.");
+        }
+
+        private void OnEnable()
+        {
+            GameEvents.TalkRequested += OnTalkRequested;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.TalkRequested -= OnTalkRequested;
+        }
+
+        private void OnTalkRequested(string npcId)
+        {
+            NpcDefinition npc;
+            if (!Database.Npcs.TryGet(npcId, out npc)) return;
+            GameEvents.ShowMessage(npc.displayName + " — " + npc.relation);
         }
 
         private void OnDestroy()

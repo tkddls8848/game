@@ -15,6 +15,12 @@ namespace Detective.Core
         /// <summary>단서를 새로 획득했을 때. 인자는 evidence id.</summary>
         public static event Action<string> EvidenceCollected;
 
+        /// <summary>플레이어가 인물에게 말을 걸었을 때. 인자는 npc id.</summary>
+        public static event Action<string> TalkRequested;
+
+        /// <summary>수사 노트에 새 정보가 들어갔을 때(단서·증언·목격).</summary>
+        public static event Action NotebookUpdated;
+
         public static void ShowMessage(string message)
         {
             if (string.IsNullOrEmpty(message)) return;
@@ -29,11 +35,26 @@ namespace Detective.Core
             if (handler != null) handler(evidenceId);
         }
 
+        public static void RequestTalk(string npcId)
+        {
+            if (string.IsNullOrEmpty(npcId)) return;
+            Action<string> handler = TalkRequested;
+            if (handler != null) handler(npcId);
+        }
+
+        public static void RaiseNotebookUpdated()
+        {
+            Action handler = NotebookUpdated;
+            if (handler != null) handler();
+        }
+
         /// <summary>테스트/씬 재시작용. 남아 있는 구독을 전부 끊는다.</summary>
         public static void ClearAllSubscribers()
         {
             MessageShown = null;
             EvidenceCollected = null;
+            TalkRequested = null;
+            NotebookUpdated = null;
         }
     }
 }

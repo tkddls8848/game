@@ -58,6 +58,12 @@ namespace DetectiveEditor
 
             ArtLibrary.Reset(); // 같은 에디터 세션에서 art.json을 고친 뒤 다시 만들어도 새 값을 읽는다.
 
+            // UI는 씬이 아니라 코드가 만든다(UIFactory). 그래서 씬에 참조가 없어 빌드가 UI 셰이더를 빼 버리고,
+            // 플레이어에서 화면이 통째로 마젠타가 된다. 에디터 Play 로는 잡히지 않으니 여기서 못박아 둔다.
+            int shaderFixes = RuntimeShaderSetup.Ensure();
+            if (shaderFixes > 0)
+                Debug.Log("[SceneBuilder] Always Included Shaders를 " + shaderFixes + "건 고쳤다(빌드에서 UI가 마젠타로 나오는 것을 막는다).");
+
             var errors = new List<string>();
             CaseDatabase database = DataValidator.LoadDatabase(errors);
 

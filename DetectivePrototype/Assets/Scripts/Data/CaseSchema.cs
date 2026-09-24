@@ -1,4 +1,5 @@
 using System;
+using Detective.Core;
 
 namespace Detective.Data
 {
@@ -13,6 +14,7 @@ namespace Detective.Data
     /// <summary>
     /// 사건의 정답. 고발 화면의 6개 항목과 1:1로 대응한다.
     /// 범인(npc id) / 동기(motives의 id) / 범행 시각(틱) / 범행 장소(방 id) / 수법(methods의 id) / 결정적 증거(evidence id)
+    /// 범행 시각은 JSON 호환을 위해 아직 틱으로 적는다. 코드는 <see cref="TimeMs"/>로 읽는다.
     /// </summary>
     [Serializable]
     public class CaseAnswer
@@ -23,6 +25,9 @@ namespace Detective.Data
         public string room;
         public string method;
         public string evidence;
+
+        /// <summary>tick을 ms로(경계 함수). 없으면 GameTime.NoTime.</summary>
+        public int TimeMs { get { return GameTime.TickToMs(tick); } }
     }
 
     /// <summary>cases/case_XX.json. 새 사건은 이 파일과 인물·단서·대사 JSON만 추가하면 된다.</summary>

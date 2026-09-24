@@ -16,7 +16,8 @@ namespace Detective.Dialogue
 
         public bool RevealsClaims;
         public string RequiresEvidence;
-        public int ClaimTick = -1;
+        /// <summary>이 줄이 주장하는 시각(ms). 주장이 아니면 GameTime.NoTime.</summary>
+        public int ClaimMs = GameTime.NoTime;
         public string ClaimRoom;
 
         public bool IsSighting;
@@ -53,7 +54,7 @@ namespace Detective.Dialogue
                     Text = line.text,
                     RevealsClaims = line.revealsClaims,
                     RequiresEvidence = line.requiresEvidence,
-                    ClaimTick = line.IsClaim ? line.claimTick : -1,
+                    ClaimMs = line.IsClaim ? line.ClaimMs : GameTime.NoTime,
                     ClaimRoom = line.IsClaim ? line.claimRoom : null
                 };
 
@@ -106,7 +107,7 @@ namespace Detective.Dialogue
             {
                 DialogueLine line = lines[i];
                 if (line == null || !line.IsSightingOverride) continue;
-                if (line.sightingTick == sighting.Tick && line.sightingTarget == sighting.TargetId) return line.text;
+                if (line.SightingMs == sighting.Ms && line.sightingTarget == sighting.TargetId) return line.text;
             }
             return null;
         }

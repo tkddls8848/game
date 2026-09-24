@@ -57,10 +57,10 @@ namespace Detective.Core
                     if (string.IsNullOrEmpty(room))
                     {
                         // 용의자는 매 시각 어딘가에 있어야 한다. 비어 있어도 되는 건 사망 이후의 피해자뿐이다.
-                        if (!npc.isVictim) errors.Add(label + ": " + GameTime.ToLabel(t) + " 스케줄이 비어 있다.");
+                        if (!npc.isVictim) errors.Add(label + ": " + GameTime.TickLabel(t) + " 스케줄이 비어 있다.");
                         continue;
                     }
-                    if (!HasRoom(database, room)) errors.Add(label + ": " + GameTime.ToLabel(t) + " 스케줄의 방 '" + room + "' 이 없다.");
+                    if (!HasRoom(database, room)) errors.Add(label + ": " + GameTime.TickLabel(t) + " 스케줄의 방 '" + room + "' 이 없다.");
                 }
 
                 if (npc.claims.Length != 0 && npc.claims.Length != GameTime.TickCount)
@@ -71,7 +71,7 @@ namespace Detective.Core
                 {
                     string claim = npc.claims[t];
                     if (!string.IsNullOrEmpty(claim) && !HasRoom(database, claim))
-                        errors.Add(label + ": " + GameTime.ToLabel(t) + " 주장의 방 '" + claim + "' 이 없다.");
+                        errors.Add(label + ": " + GameTime.TickLabel(t) + " 주장의 방 '" + claim + "' 이 없다.");
                 }
                 if (npc.isVictim && npc.claims.Length > 0 && HasAnyClaim(npc))
                     errors.Add(label + ": 피해자는 증언하지 않으므로 claims가 비어 있어야 한다.");
@@ -186,7 +186,7 @@ namespace Detective.Core
                         else if (!ContainsSighting(reported, line.sightingTick, line.sightingTarget))
                         {
                             // 스케줄상 일어나지 않는(또는 거짓말 때문에 털어놓지 않는) 목격이라 이 대사는 절대 나오지 않는다.
-                            errors.Add(label + ": " + GameTime.ToLabel(line.sightingTick) + "에 " + line.sightingTarget
+                            errors.Add(label + ": " + GameTime.TickLabel(line.sightingTick) + "에 " + line.sightingTarget
                                 + " 을(를) 본 적이 없어 이 목격 대사는 나오지 않는다(스케줄을 확인할 것).");
                         }
                     }

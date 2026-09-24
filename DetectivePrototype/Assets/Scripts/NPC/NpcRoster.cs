@@ -61,15 +61,15 @@ namespace Detective.NPC
             return TryGet(id, out npc) ? npc.displayName : id;
         }
 
-        /// <summary>그 시각 그 방에 실제로 있던 인물들.</summary>
-        public List<NpcDefinition> OccupantsAt(int tick, string roomId)
+        /// <summary>그 시각(ms) 그 방에 실제로 있던 인물들.</summary>
+        public List<NpcDefinition> OccupantsAt(int ms, string roomId)
         {
             var result = new List<NpcDefinition>();
             if (string.IsNullOrEmpty(roomId)) return result;
 
             for (int i = 0; i < _all.Count; i++)
             {
-                if (NpcSchedule.RoomAt(_all[i], tick) == roomId) result.Add(_all[i]);
+                if (NpcSchedule.RoomAt(_all[i], ms) == roomId) result.Add(_all[i]);
             }
             return result;
         }

@@ -105,7 +105,7 @@ namespace Detective.Investigation
                         sb.Append("\n").Append(Accent("다른 사람의 목격")).Append("\n");
                         header = true;
                     }
-                    sb.Append("· ").Append(GameTime.ToLabel(line.Sighting.Tick)).Append(" ")
+                    sb.Append("· ").Append(GameTime.ToLabel(line.Sighting.Ms)).Append(" ")
                         .Append(Database.Layout.DisplayNameOf(line.Sighting.RoomId))
                         .Append(Muted(" — " + all[n].displayName)).Append("\n");
                 }
@@ -155,13 +155,13 @@ namespace Detective.Investigation
             sb.Append(Muted("발견 위치: " + Database.Layout.DisplayNameOf(evidence.foundRoom))).Append("\n\n");
             sb.Append(evidence.description).Append("\n");
 
-            if (!string.IsNullOrEmpty(evidence.relatedNpc) || GameTime.IsValidTick(evidence.relatedTick))
+            if (!string.IsNullOrEmpty(evidence.relatedNpc) || GameTime.IsValid(evidence.RelatedMs))
             {
                 sb.Append("\n").Append(Accent("메모")).Append("\n");
                 if (!string.IsNullOrEmpty(evidence.relatedNpc))
                     sb.Append("· 관련 인물: ").Append(Database.Npcs.DisplayNameOf(evidence.relatedNpc)).Append("\n");
-                if (GameTime.IsValidTick(evidence.relatedTick))
-                    sb.Append("· 관련 시각: ").Append(GameTime.ToLabel(evidence.relatedTick)).Append("\n");
+                if (GameTime.IsValid(evidence.RelatedMs))
+                    sb.Append("· 관련 시각: ").Append(GameTime.ToLabel(evidence.RelatedMs)).Append("\n");
             }
             return sb.ToString();
         }
@@ -175,12 +175,12 @@ namespace Detective.Investigation
         }
 
         /// <summary>
-        /// 표 한 칸: 그 시각 그 사람에 대한 기록을 한 줄씩. 예: "식당 (본인)", "창고 (마르코)", "식당 (물증)".
+        /// 표 한 칸(10분, 틱): 그 칸 그 사람에 대한 기록을 한 줄씩. 예: "식당 (본인)", "창고 (마르코)", "식당 (물증)".
         /// 서로 어긋나는 기록도 나란히 적는다 — 어느 쪽이 참인지는 플레이어가 판단한다.
         /// </summary>
         public string TimelineCell(TimelineBoard board, string npcId, int tick)
         {
-            List<TimelineRecord> records = board.RecordsFor(npcId, tick);
+            List<TimelineRecord> records = board.RecordsInTick(npcId, tick);
             if (records.Count == 0) return Muted("?");
 
             var sb = new StringBuilder();

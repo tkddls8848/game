@@ -1,4 +1,5 @@
 using System;
+using Detective.Core;
 
 namespace Detective.Data
 {
@@ -24,6 +25,12 @@ namespace Detective.Data
 
         public int sightingTick = -1;
         public string sightingTarget;
+
+        /// <summary>claimTick을 ms로(경계 함수). 없으면 GameTime.NoTime.</summary>
+        public int ClaimMs { get { return GameTime.TickToMs(claimTick); } }
+
+        /// <summary>sightingTick을 ms로(경계 함수). 없으면 GameTime.NoTime.</summary>
+        public int SightingMs { get { return GameTime.TickToMs(sightingTick); } }
 
         public bool IsSightingOverride { get { return sightingTick >= 0 && !string.IsNullOrEmpty(sightingTarget); } }
         public bool IsClaim { get { return claimTick >= 0 && !string.IsNullOrEmpty(claimRoom); } }

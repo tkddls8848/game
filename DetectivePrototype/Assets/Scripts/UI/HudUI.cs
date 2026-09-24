@@ -77,7 +77,7 @@ namespace Detective.UI
             if (_statusPanel.gameObject.activeSelf != visible) _statusPanel.gameObject.SetActive(visible);
             if (!visible) return;
 
-            _statusLabel.text = UIFactory.Colorize("블랙우드 저택 · 현재 " + GameTime.ToLabel(GameTime.PresentTick), UIFactory.AccentColor)
+            _statusLabel.text = UIFactory.Colorize("블랙우드 저택 · 현재 " + GameTime.ToLabel(GameTime.PresentMs), UIFactory.AccentColor)
                 + "\n" + controlsHint;
         }
 

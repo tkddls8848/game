@@ -1,4 +1,5 @@
 using System;
+using Detective.Core;
 
 namespace Detective.Data
 {
@@ -29,6 +30,12 @@ namespace Detective.Data
         public string revealNpc;
         public int revealTick = -1;
         public string revealRoom;
+
+        /// <summary>relatedTick을 ms로(경계 함수). 없으면 GameTime.NoTime.</summary>
+        public int RelatedMs { get { return GameTime.TickToMs(relatedTick); } }
+
+        /// <summary>revealTick을 ms로(경계 함수). 없으면 GameTime.NoTime.</summary>
+        public int RevealMs { get { return GameTime.TickToMs(revealTick); } }
 
         public bool RevealsWhereabouts { get { return !string.IsNullOrEmpty(revealNpc); } }
     }

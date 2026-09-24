@@ -42,11 +42,11 @@ namespace Detective.Case
             for (int i = 0; i < suspects.Count; i++)
             {
                 NpcDefinition npc = suspects[i];
-                bool alibi = HasReliableAlibi(board, npc.id, answer.tick, answer.room);
+                bool alibi = HasReliableAlibi(board, npc.id, answer.TimeMs, answer.room);
                 if (npc.id == answer.culprit && alibi)
-                    problems.Add("범인 " + npc.id + " 에게 " + GameTime.ToLabel(answer.tick) + " 알리바이(목격·물증)가 있다 — 범인으로 좁힐 수 없다.");
+                    problems.Add("범인 " + npc.id + " 에게 " + GameTime.ToLabel(answer.TimeMs) + " 알리바이(목격·물증)가 있다 — 범인으로 좁힐 수 없다.");
                 if (npc.id != answer.culprit && !alibi)
-                    problems.Add(npc.id + " 는 " + GameTime.ToLabel(answer.tick) + "에 믿을 만한 알리바이(목격·물증)가 없다 — 범인 후보에서 지울 수 없다.");
+                    problems.Add(npc.id + " 는 " + GameTime.ToLabel(answer.TimeMs) + "에 믿을 만한 알리바이(목격·물증)가 없다 — 범인 후보에서 지울 수 없다.");
             }
 
             int total = 0;
@@ -82,9 +82,9 @@ namespace Detective.Case
         }
 
         /// <summary>그 시각에 범행 장소가 아닌 다른 방에 있었다는 목격·물증이 있는가.</summary>
-        public static bool HasReliableAlibi(TimelineBoard board, string npcId, int tick, string crimeRoom)
+        public static bool HasReliableAlibi(TimelineBoard board, string npcId, int ms, string crimeRoom)
         {
-            List<TimelineRecord> records = board.RecordsFor(npcId, tick);
+            List<TimelineRecord> records = board.RecordsAt(npcId, ms);
             for (int i = 0; i < records.Count; i++)
             {
                 if (records[i].Kind != RecordKind.Testimony && records[i].RoomId != crimeRoom) return true;
@@ -92,13 +92,13 @@ namespace Detective.Case
             return false;
         }
 
-        /// <summary>본인 증언과 다른 방을 가리키는 목격·물증이 있는 시각의 수.</summary>
+        /// <summary>본인 증언과 다른 방을 가리키는 목격·물증이 있는 10분 칸(틱)의 수.</summary>
         public static int CountContradictions(TimelineBoard board, string npcId)
         {
             int count = 0;
             for (int t = GameTime.FirstTick; t <= GameTime.LastTick; t++)
             {
-                List<TimelineRecord> records = board.RecordsFor(npcId, t);
+                List<TimelineRecord> records = board.RecordsInTick(npcId, t);
                 bool contradicted = false;
                 for (int a = 0; a < records.Count && !contradicted; a++)
                 {
@@ -123,7 +123,7 @@ namespace Detective.Case
             if (!database.Npcs.TryGet(answer.culprit, out culprit)) problems.Add("정답 범인 '" + answer.culprit + "' 이 없는 인물이다.");
             else if (culprit.isVictim) problems.Add("정답 범인이 피해자다.");
 
-            if (!GameTime.IsValidTick(answer.tick)) problems.Add("정답 시각 " + answer.tick + " 이 범위 밖이다.");
+            if (!GameTime.IsValid(answer.TimeMs)) problems.Add("정답 시각(tick) " + answer.tick + " 이 범위 밖이다.");
 
             RoomDefinition room;
             if (!database.Layout.TryGetRoom(answer.room, out room)) problems.Add("정답 장소 '" + answer.room + "' 이 없는 방이다.");
@@ -137,12 +137,12 @@ namespace Detective.Case
 
             if (problems.Count > 0) return;
 
-            if (NpcSchedule.RoomAt(culprit, answer.tick) != answer.room)
-                problems.Add("범인의 스케줄상 " + GameTime.ToLabel(answer.tick) + "에 " + answer.room + " 에 있지 않다.");
+            if (NpcSchedule.RoomAt(culprit, answer.TimeMs) != answer.room)
+                problems.Add("범인의 스케줄상 " + GameTime.ToLabel(answer.TimeMs) + "에 " + answer.room + " 에 있지 않다.");
 
             NpcDefinition victim = database.Npcs.Victim;
-            if (victim != null && NpcSchedule.RoomAt(victim, answer.tick) != answer.room)
-                problems.Add("피해자의 스케줄상 " + GameTime.ToLabel(answer.tick) + "에 " + answer.room + " 에 있지 않다.");
+            if (victim != null && NpcSchedule.RoomAt(victim, answer.TimeMs) != answer.room)
+                problems.Add("피해자의 스케줄상 " + GameTime.ToLabel(answer.TimeMs) + "에 " + answer.room + " 에 있지 않다.");
         }
 
         private static void CheckRecordsAreTruthful(CaseDatabase database, TimelineBoard board, List<string> problems)
@@ -155,9 +155,9 @@ namespace Detective.Case
 
                 NpcDefinition npc;
                 if (!database.Npcs.TryGet(record.NpcId, out npc)) continue;
-                if (NpcSchedule.RoomAt(npc, record.Tick) == record.RoomId) continue;
+                if (NpcSchedule.RoomAt(npc, record.Ms) == record.RoomId) continue;
 
-                problems.Add(record.Kind + "(" + record.SourceId + ") 이 " + record.NpcId + " 의 " + GameTime.ToLabel(record.Tick)
+                problems.Add(record.Kind + "(" + record.SourceId + ") 이 " + record.NpcId + " 의 " + GameTime.ToLabel(record.Ms)
                     + " 위치를 " + record.RoomId + " 로 기록하지만 실제 스케줄과 다르다.");
             }
         }

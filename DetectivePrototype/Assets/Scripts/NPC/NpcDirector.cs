@@ -56,7 +56,7 @@ namespace Detective.NPC
                 if (!TryGet(npc.id, out controller)) continue;
 
                 controller.SetCaption(string.Empty);
-                string room = NpcSchedule.RoomAt(npc, GameTime.PresentTick);
+                string room = NpcSchedule.RoomAt(npc, GameTime.PresentMs);
                 float cx, cy;
                 if (npc.isVictim || !_database.Layout.TryGetRoomCenter(room, out cx, out cy))
                 {
@@ -69,7 +69,7 @@ namespace Detective.NPC
             }
         }
 
-        /// <summary>타임라인의 한 시각을 재현한다. 소스가 모른다고 하는 인물은 숨긴다.</summary>
+        /// <summary>타임라인의 한 칸(틱)을 재현한다. 소스가 모른다고 하는 인물은 숨긴다.</summary>
         public void ShowTick(int tick, ITimelinePlacementSource source, bool instant)
         {
             if (_database == null || source == null) return;
@@ -81,7 +81,7 @@ namespace Detective.NPC
                 NPCController controller;
                 if (!TryGet(npc.id, out controller)) continue;
 
-                NpcPlacement placement = source.PlacementOf(npc, tick);
+                NpcPlacement placement = source.PlacementAt(npc, GameTime.TickToMs(tick));
                 float cx, cy;
                 if (!placement.Known || !_database.Layout.TryGetRoomCenter(placement.RoomId, out cx, out cy))
                 {

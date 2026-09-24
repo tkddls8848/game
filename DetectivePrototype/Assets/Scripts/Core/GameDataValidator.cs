@@ -25,6 +25,7 @@ namespace Detective.Core
             ValidateNpcs(database, errors);
             ValidateEvidence(database, errors);
             ValidateDialogues(database, errors);
+            ValidateCase(database, errors);
             return errors;
         }
 
@@ -199,6 +200,29 @@ namespace Detective.Core
             for (int i = 0; i < suspects.Count; i++)
             {
                 if (!filesByNpc.Contains(suspects[i].id)) errors.Add(suspects[i].id + ": 대사 파일이 없다.");
+            }
+        }
+
+        private static void ValidateCase(CaseDatabase database, List<string> errors)
+        {
+            CaseDefinition definition = database.Case;
+            if (string.IsNullOrEmpty(definition.id)) errors.Add("case: id가 비어 있다(사건 파일을 읽지 못했을 수 있다).");
+            if (string.IsNullOrEmpty(definition.title)) errors.Add("case: title이 비어 있다.");
+            if (string.IsNullOrEmpty(definition.intro)) errors.Add("case: intro가 비어 있다.");
+            if (definition.motives.Length < 2) errors.Add("case: 동기 선택지가 2개 이상이어야 한다.");
+            if (definition.methods.Length < 2) errors.Add("case: 수법 선택지가 2개 이상이어야 한다.");
+            CheckChoiceIds("case.motives", definition.motives, errors);
+            CheckChoiceIds("case.methods", definition.methods, errors);
+        }
+
+        private static void CheckChoiceIds(string label, ChoiceDefinition[] choices, List<string> errors)
+        {
+            var ids = new HashSet<string>();
+            for (int i = 0; i < choices.Length; i++)
+            {
+                if (choices[i] == null || string.IsNullOrEmpty(choices[i].id)) errors.Add(label + "[" + i + "]: id가 비어 있다.");
+                else if (!ids.Add(choices[i].id)) errors.Add(label + ": id '" + choices[i].id + "' 가 중복된다.");
+                else if (string.IsNullOrEmpty(choices[i].label)) errors.Add(label + "." + choices[i].id + ": label이 비어 있다.");
             }
         }
 

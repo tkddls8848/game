@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Detective.Case;
 using Detective.Core;
 using Detective.Data;
 using Detective.NPC;
@@ -18,6 +19,7 @@ namespace DetectiveEditor
         public const string NpcsFolder = "Assets/Resources/GameData/npcs";
         public const string EvidenceJsonPath = "Assets/Resources/GameData/evidence/evidence.json";
         public const string DialogueFolder = "Assets/Resources/GameData/dialogue";
+        public const string CaseJsonPath = "Assets/Resources/GameData/cases/" + GameDataLoader.DefaultCaseId + ".json";
 
         [MenuItem("Tools/Detective/Validate Game Data")]
         public static void ValidateFromMenu()
@@ -53,8 +55,12 @@ namespace DetectiveEditor
             List<NpcDefinition> npcs = LoadNpcs(errors);
             EvidenceTable evidence = LoadEvidenceTable(errors);
             List<DialogueFile> dialogues = LoadDialogues(errors);
-            var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs), evidence, dialogues);
+            CaseDefinition caseDefinition = LoadCase(errors);
+            var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs), evidence, dialogues, caseDefinition);
             errors.AddRange(GameDataValidator.Validate(database));
+
+            // 참조가 멀쩡할 때만 추리 가능성을 따진다(깨진 참조 위에서 돌리면 엉뚱한 오류가 쏟아진다).
+            if (errors.Count == 0) errors.AddRange(CaseSolvabilityChecker.Check(database));
             return database;
         }
 
@@ -69,6 +75,16 @@ namespace DetectiveEditor
                 else result.Add(npc);
             }
             return result;
+        }
+
+        public static CaseDefinition LoadCase(List<string> errors)
+        {
+            if (!File.Exists(CaseJsonPath))
+            {
+                errors.Add(CaseJsonPath + " 파일이 없다.");
+                return new CaseDefinition().Normalized();
+            }
+            return GameDataLoader.ParseCase(File.ReadAllText(CaseJsonPath), CaseJsonPath);
         }
 
         public static List<DialogueFile> LoadDialogues(List<string> errors)

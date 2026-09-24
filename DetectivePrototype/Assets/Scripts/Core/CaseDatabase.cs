@@ -18,8 +18,13 @@ namespace Detective.Core
         public readonly EvidenceCatalog Evidence;
         public readonly DialogueCatalog Dialogues;
 
-        public CaseDatabase(RoomLayout layout, NpcRoster npcs, EvidenceTable evidence, IEnumerable<DialogueFile> dialogues)
+        /// <summary>사건 정의(정답·선택지·문구). 항상 null이 아니다.</summary>
+        public readonly CaseDefinition Case;
+
+        public CaseDatabase(RoomLayout layout, NpcRoster npcs, EvidenceTable evidence, IEnumerable<DialogueFile> dialogues,
+            CaseDefinition caseDefinition)
         {
+            Case = (caseDefinition ?? new CaseDefinition()).Normalized();
             Layout = layout;
             Npcs = npcs ?? new NpcRoster(null);
             Evidence = new EvidenceCatalog(evidence);

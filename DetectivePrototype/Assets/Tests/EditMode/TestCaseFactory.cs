@@ -74,6 +74,20 @@ namespace Detective.Tests
             };
         }
 
+        /// <summary>정답: culprit / 금전 / 18:30 / 서재 / 독살 / 와인잔.</summary>
+        public static CaseDefinition Case()
+        {
+            return new CaseDefinition
+            {
+                id = "test_case",
+                title = "테스트 사건",
+                intro = "테스트용 사건이다.",
+                answer = new CaseAnswer { culprit = "culprit", motive = "money", tick = 3, room = "study", method = "poison", evidence = "ev_glass" },
+                motives = new[] { new ChoiceDefinition { id = "money", label = "돈" }, new ChoiceDefinition { id = "love", label = "사랑" } },
+                methods = new[] { new ChoiceDefinition { id = "poison", label = "독살" }, new ChoiceDefinition { id = "blunt", label = "둔기" } }
+            };
+        }
+
         /// <summary>
         /// culprit은 알리바이 대사와 와인잔 반응, witness는 알리바이 대사와 18:10 목격 덮어쓰기를 가진다.
         /// </summary>
@@ -110,7 +124,12 @@ namespace Detective.Tests
 
         public static CaseDatabase Database(NpcDefinition[] npcs, EvidenceTable evidence, DialogueFile[] dialogues)
         {
-            return new CaseDatabase(RoomLayout.FromTable(Rooms()), new NpcRoster(npcs), evidence, dialogues);
+            return Database(npcs, evidence, dialogues, Case());
+        }
+
+        public static CaseDatabase Database(NpcDefinition[] npcs, EvidenceTable evidence, DialogueFile[] dialogues, CaseDefinition caseDefinition)
+        {
+            return new CaseDatabase(RoomLayout.FromTable(Rooms()), new NpcRoster(npcs), evidence, dialogues, caseDefinition);
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Detective.Data
         public const string NpcsResourceFolder = "GameData/npcs";
         public const string EvidenceResourcePath = "GameData/evidence/evidence";
         public const string DialogueResourceFolder = "GameData/dialogue";
+        public const string CasesResourceFolder = "GameData/cases/";
+        public const string DefaultCaseId = "case_01";
 
         /// <summary>
         /// rooms.json을 읽어 온다. 파일이 없거나 깨져 있으면 빈 테이블을 돌려주고 에러 로그를 남긴다
@@ -96,16 +98,35 @@ namespace Detective.Data
             return file != null ? file.Normalized() : null;
         }
 
+        /// <summary>cases/{caseId}.json. 없으면 빈 사건(검증기가 잡아낸다).</summary>
+        public static CaseDefinition LoadCase(string caseId)
+        {
+            var asset = Resources.Load<TextAsset>(CasesResourceFolder + caseId);
+            if (asset == null)
+            {
+                Debug.LogError("[GameDataLoader] Resources/" + CasesResourceFolder + caseId + ".json 을 찾지 못했다.");
+                return new CaseDefinition().Normalized();
+            }
+            return ParseCase(asset.text, caseId);
+        }
+
+        public static CaseDefinition ParseCase(string json, string label)
+        {
+            CaseDefinition definition = Parse<CaseDefinition>(json, label);
+            return (definition ?? new CaseDefinition()).Normalized();
+        }
+
         /// <summary>사건 데이터 전체를 Resources에서 읽어 하나로 묶는다.</summary>
         public static CaseDatabase LoadDatabase()
         {
-            return BuildDatabase(LoadRoomTable());
+            return BuildDatabase(LoadRoomTable(), DefaultCaseId);
         }
 
         /// <summary>이미 읽은 rooms.json에 나머지 데이터를 Resources에서 읽어 붙인다.</summary>
-        public static CaseDatabase BuildDatabase(RoomTable rooms)
+        public static CaseDatabase BuildDatabase(RoomTable rooms, string caseId)
         {
-            return new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(LoadNpcs()), LoadEvidenceTable(), LoadDialogues());
+            return new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(LoadNpcs()), LoadEvidenceTable(), LoadDialogues(),
+                LoadCase(caseId));
         }
 
         /// <summary>JsonUtility 파싱 + 실패 로그. 실패하면 null.</summary>

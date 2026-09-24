@@ -16,6 +16,9 @@ namespace Detective.Core
     {
         public static GameManager Instance { get; private set; }
 
+        [Tooltip("cases/ 폴더의 사건 파일 이름(확장자 제외).")]
+        public string caseId = GameDataLoader.DefaultCaseId;
+
         /// <summary>사건 데이터 전체. Awake 이후에 유효하다.</summary>
         public CaseDatabase Database { get; private set; }
 
@@ -61,7 +64,7 @@ namespace Detective.Core
                 Debug.LogError("[rooms.json] " + errors[i]);
             }
 
-            Database = GameDataLoader.BuildDatabase(table);
+            Database = GameDataLoader.BuildDatabase(table, caseId);
 
             List<string> dataErrors = GameDataValidator.Validate(Database);
             for (int i = 0; i < dataErrors.Count; i++) Debug.LogError("[GameData] " + dataErrors[i]);

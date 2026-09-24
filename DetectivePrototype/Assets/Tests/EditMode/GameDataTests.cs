@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Detective.Case;
 using Detective.Core;
 using Detective.Data;
 using Detective.NPC;
@@ -87,6 +88,17 @@ namespace Detective.Tests
         {
             EvidenceTable table = GameDataLoader.LoadEvidenceTable();
             Assert.Greater(table.evidence.Length, 0, "evidence.json에서 단서를 하나도 읽지 못했다.");
+        }
+
+        [Test]
+        public void Case01_IsSolvableFromCluesAndTestimony()
+        {
+            // Phase 5 DoD: 단서와 증언만으로 범인을 유일하게 특정할 수 있는가
+            CaseDatabase database = GameDataLoader.LoadDatabase();
+            Assert.AreEqual("case_01", database.Case.id);
+
+            List<string> problems = CaseSolvabilityChecker.Check(database);
+            Assert.AreEqual(0, problems.Count, string.Join("\n", problems.ToArray()));
         }
 
         [Test]

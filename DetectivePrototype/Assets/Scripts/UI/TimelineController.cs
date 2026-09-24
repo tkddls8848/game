@@ -137,7 +137,8 @@ namespace Detective.UI
             if (CurrentTick != _lastAnnouncedTick)
             {
                 _lastAnnouncedTick = CurrentTick;
-                GameEvents.RaiseTimelineTickChanged(CurrentTick); // 괘종시계가 울린다.
+                // 괘종시계가 울린다. 자동 재생은 1.8초 간격이라 3초짜리 종이 겹치므로 손으로 옮길 때만 친다.
+                if (!_autoplay) GameEvents.RaiseTimelineTickChanged(CurrentTick);
             }
             ITimelinePlacementSource source = GameManager.Instance != null ? GameManager.Instance.TimelineSource : null;
             if (_director != null) _director.ShowTick(CurrentTick, source, instant);

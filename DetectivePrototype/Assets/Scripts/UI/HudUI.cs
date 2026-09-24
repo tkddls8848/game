@@ -38,13 +38,12 @@ namespace Detective.UI
                 paper.color = UIFactory.PanelColor;
                 UIFactory.AddFrame(paper.rectTransform, 0f, 2f, new Color(0.16f, 0.13f, 0.10f, 0.85f));
             }
-            UIFactory.AddVignette(transform);
-
             _statusLabel = UIFactory.CreateTextPanel("StatusPanel", transform,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(24f, -190f), new Vector2(600f, -24f),
                 26, TextAnchor.MiddleLeft, out _statusPanel);
-            // 다른 창(노트·대화·고발)이 항상 이 패널 위에 그려지도록 맨 아래로 보낸다.
+            // 그리기 순서: 비네팅(맨 아래) → 상태 패널 → 다른 창(노트·대화·고발).
             _statusPanel.SetAsFirstSibling();
+            UIFactory.AddVignette(transform);
             _statusLabel.verticalOverflow = VerticalWrapMode.Overflow;
         }
 

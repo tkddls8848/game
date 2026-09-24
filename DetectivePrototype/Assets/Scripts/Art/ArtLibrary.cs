@@ -63,10 +63,16 @@ namespace Detective.Art
             return sprite;
         }
 
+        private readonly Dictionary<string, bool> _portraitFileExists = new Dictionary<string, bool>();
+
         public bool HasPortraitFile(string npcId)
         {
+            bool exists;
+            if (_portraitFileExists.TryGetValue(npcId ?? string.Empty, out exists)) return exists;
             NpcArt art = Manifest.NpcOf(npcId);
-            return art != null && LoadSprite(art.portrait) != null;
+            exists = art != null && LoadSprite(art.portrait) != null;
+            _portraitFileExists[npcId ?? string.Empty] = exists;
+            return exists;
         }
 
         /// <summary>단서 이미지. 없으면 null(글만 보여 준다).</summary>

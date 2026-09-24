@@ -183,6 +183,8 @@ Assets/Resources/GameData/
 * 씬 빌더는 바닥·토큰 질감을 `Assets/Art/Generated/*.png`로 저장해 씬에 끼운다(런타임 생성 Sprite는 씬에 남지 않는다). UI 종이·비네팅은 실행 시 만든다
 * 에셋을 넣으면 `CREDITS.md`에 출처·라이선스를 한 줄 적는다. 포함된 폰트는 OFL 1.1
 * `ArtManifestValidator`가 art.json의 방·인물·단서 참조를 검사한다(씬 빌더·EditMode 테스트)
+* 직접 넣는 바닥 이미지는 임포트 설정을 **Wrap Mode=Repeat, Mesh Type=Full Rect**로 해야 Tiled로 깔린다
+* `NotoSerifKR-Regular.otf`의 `.meta`는 Unity가 처음 임포트할 때 만든다 → 그 뒤 **커밋해서 GUID를 고정**한다
 
 ---
 

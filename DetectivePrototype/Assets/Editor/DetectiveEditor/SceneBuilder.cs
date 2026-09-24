@@ -56,6 +56,8 @@ namespace DetectiveEditor
             // 메뉴에서 실행할 때 열려 있는 씬의 저장 안 된 변경을 말없이 버리지 않는다(batchmode에서는 그냥 통과).
             if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
 
+            ArtLibrary.Reset(); // 같은 에디터 세션에서 art.json을 고친 뒤 다시 만들어도 새 값을 읽는다.
+
             var errors = new List<string>();
             CaseDatabase database = DataValidator.LoadDatabase(errors);
 
@@ -169,6 +171,8 @@ namespace DetectiveEditor
             {
                 sprite = Resources.Load<Sprite>(roomArt.floorTexture);
                 if (sprite == null) Debug.LogWarning("[SceneBuilder] " + room.id + ": Resources/" + roomArt.floorTexture + " 이 없어 생성 질감을 쓴다.");
+                else if (sprite.texture.wrapMode != TextureWrapMode.Repeat)
+                    Debug.LogWarning("[SceneBuilder] " + roomArt.floorTexture + ": Tiled로 깔려면 임포트 설정을 Wrap Mode=Repeat, Mesh Type=Full Rect로 바꿔야 한다.");
             }
             if (sprite == null) sprite = SpriteAssetFactory.GetOrCreateFloorSprite(kind);
             if (sprite == null) sprite = square;

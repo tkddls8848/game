@@ -1,0 +1,11 @@
+{
+  "npcId": "npc_d",
+  "lines": [
+    { "id": "greet", "text": "제가 시신을 확인했어요. 외상은 없고, 입술 색으로 보아 독극물일 가능성이 높아요." },
+    { "id": "alibi", "revealsClaims": true, "text": "18시 20분까지 로비에서 책을 읽었어요. 30분쯤 줄리안 군 방에 두통약을 가져다줬고, 40분엔 복도로 나왔죠. 50분엔 다시 로비에 있다가, 19시에 회장님을 모시러 서재에 올라가 시신을 발견했습니다." },
+    { "id": "lobby_alone", "text": "18시 10분쯤엔 로비에 저 혼자였어요. 조용해서 책이 잘 읽혔죠." },
+    { "id": "saw_clara_hall", "sightingTick": 4, "sightingTarget": "npc_a", "text": "18시 40분쯤 복도에서 클라라 씨와 마주쳤어요. 서재 쪽에서 내려오던데, 얼굴이 하얗게 질려 있더군요." },
+    { "id": "on_body", "requiresEvidence": "ev_body", "text": "사후 경직 정도로 보면 18시 30분 전후예요. 증상은 비소 중독과 일치합니다." },
+    { "id": "on_bag", "requiresEvidence": "ev_medical_bag", "text": "제 가방을 보셨군요. 봉인 그대로죠? 제 약은 한 알도 쓰지 않았어요. 게다가 전 비소 같은 걸 가지고 다니지 않습니다." }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "case_01",
+  "title": "블랙우드 저택 사건",
+  "intro": "폭설이 내린 겨울밤, 블랙우드 저택.\n저녁 7시 종이 울렸지만 저택의 주인 에드먼드 헤일은 식당에 내려오지 않았다. 주치의 헬렌 모로가 서재에서 그의 시신을 발견했다.\n\n초대를 받아 막 도착한 당신은 탐정이다. 길이 끊겨 경찰은 내일 아침에야 온다. 저택에 남은 네 사람 중 한 명이 범인이다.\n\n18:00부터 19:00까지, 누가 어디에 있었는지 복원하라. 증언은 거짓일 수 있다. 목격과 물증을 맞춰 보라.",
+  "solvedText": "클라라 보스는 1년 동안 회사 자금을 빼돌려 왔다.\n18시 10분, 창고에서 쥐약을 챙긴 그녀는 20분에 와인 쟁반을 들고 서재로 올라갔다. 18시 30분, 장부를 들이미는 에드먼드에게 독을 탄 잔을 건넸다 — 맛을 보는 척하며 남긴 진홍색 립스틱 자국이 그녀의 발목을 잡았다.\n\n사건 해결.",
+  "failedText": "당신의 추리는 진실에 닿지 못했다.\n이튿날 아침 경찰이 도착했을 때, 진범은 이미 모든 흔적을 지운 뒤였다.",
+  "answer": {
+    "culprit": "npc_a",
+    "motive": "motive_money",
+    "tick": 3,
+    "room": "room_victim",
+    "method": "method_poison",
+    "evidence": "ev_wineglass"
+  },
+  "motives": [
+    { "id": "motive_money",       "label": "금전 문제 (횡령 발각)" },
+    { "id": "motive_inheritance", "label": "유산 상속" },
+    { "id": "motive_grudge",      "label": "오래된 원한" },
+    { "id": "motive_love",        "label": "치정" }
+  ],
+  "methods": [
+    { "id": "method_poison",   "label": "독살" },
+    { "id": "method_blunt",    "label": "둔기로 가격" },
+    { "id": "method_strangle", "label": "교살" },
+    { "id": "method_stab",     "label": "흉기로 찌름" }
+  ]
+}

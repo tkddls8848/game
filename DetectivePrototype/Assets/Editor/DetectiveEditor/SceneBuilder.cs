@@ -3,6 +3,7 @@ using System.IO;
 using Detective.Core;
 using Detective.Data;
 using Detective.Investigation;
+using Detective.NPC;
 using Detective.Player;
 using Detective.UI;
 using UnityEditor;
@@ -31,30 +32,39 @@ namespace DetectiveEditor
         private static readonly Color DoorColor = new Color(0.62f, 0.55f, 0.35f);
         private static readonly Color DefaultFloorColor = new Color(0.24f, 0.26f, 0.30f);
         private static readonly Color PlayerColor = new Color(0.95f, 0.83f, 0.35f);
-        private static readonly Color PropColor = new Color(0.80f, 0.40f, 0.45f);
+        private static readonly Color EvidenceColor = new Color(0.90f, 0.42f, 0.45f);
+        private static readonly Color PropColor = new Color(0.55f, 0.62f, 0.72f);
 
         private const int SortFloor = -20;
         private const int SortDoor = -15;
         private const int SortWall = -10;
         private const int SortProp = 0;
+        private const int SortNpc = 5;
         private const int SortPlayer = 10;
 
         [MenuItem("Tools/Detective/Rebuild Main Scene")]
         public static void RebuildMainScene()
         {
-            var errors = new List<string>();
-            RoomTable table = DataValidator.LoadRoomTable(errors);
-            if (table != null) errors.AddRange(RoomLayoutValidator.Validate(table));
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                Debug.LogError("[SceneBuilder] Play 모드에서는 씬을 다시 만들 수 없다. Play를 멈추고 다시 실행할 것.");
+                return;
+            }
+            // 메뉴에서 실행할 때 열려 있는 씬의 저장 안 된 변경을 말없이 버리지 않는다(batchmode에서는 그냥 통과).
+            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
 
-            if (errors.Count > 0)
+            var errors = new List<string>();
+            CaseDatabase database = DataValidator.LoadDatabase(errors);
+
+            if (errors.Count > 0 || database == null)
             {
                 for (int i = 0; i < errors.Count; i++) Debug.LogError("[SceneBuilder] " + errors[i]);
                 // 예외를 던져야 batchmode가 0이 아닌 종료 코드로 끝나서 실패를 놓치지 않는다.
                 throw new System.InvalidOperationException(
-                    "[SceneBuilder] rooms.json 무결성 오류 " + errors.Count + "건. 씬을 만들지 않았다.");
+                    "[SceneBuilder] 게임 데이터 무결성 오류 " + errors.Count + "건. 씬을 만들지 않았다.");
             }
 
-            RoomLayout layout = RoomLayout.FromTable(table);
+            RoomLayout layout = database.Layout;
             Sprite square = SpriteAssetFactory.GetOrCreateSquareSprite();
             if (square == null)
             {
@@ -69,7 +79,8 @@ namespace DetectiveEditor
             BuildMap(layout, square);
             GameObject player = BuildPlayer(layout, square);
             BuildCamera(player.transform);
-            BuildProps(layout, square);
+            BuildProps(database, square);
+            BuildNpcs(layout, database.Npcs.All, square);
             BuildUI(player.GetComponent<PlayerInteraction>());
 
             Directory.CreateDirectory(ScenesFolder);
@@ -187,37 +198,87 @@ namespace DetectiveEditor
             follow.target = target;
         }
 
-        // ----- 조사 대상 (Phase 1 임시) -----------------------------------------
+        // ----- 인물 -------------------------------------------------------------
 
         /// <summary>
-        /// 상호작용 파이프라인 확인용 임시 오브젝트.
-        /// Phase 3에서 evidence.json을 읽어 생성하는 코드로 대체된다.
+        /// 인물마다 루트(트리거 콜라이더 + NPCController)와 몸통 스프라이트 자식을 만든다.
+        /// 루트는 스케일 1로 두어 이름표(TextMesh)가 몸통 크기에 끌려가지 않게 한다.
+        /// 최종 위치는 실행 시 NpcDirector가 스케줄을 보고 다시 잡는다.
         /// </summary>
-        private static void BuildProps(RoomLayout layout, Sprite square)
+        private static void BuildNpcs(RoomLayout layout, IList<NpcDefinition> npcs, Sprite square)
         {
-            var propsRoot = new GameObject("Props");
+            var npcsRoot = new GameObject("NPCs");
+            npcsRoot.AddComponent<NpcDirector>();
 
-            CreateProp(propsRoot.transform, layout, square, "room_victim", -2f, 1.5f,
-                "와인잔", "탁자에 놓인 와인잔. 바닥에 붉은 침전물이 남아 있다.");
-            CreateProp(propsRoot.transform, layout, square, "room_storage", 2f, -1f,
-                "낡은 상자", "먼지가 쌓여 있다. 최근에 누군가 열어 본 흔적이 있다.");
-            CreateProp(propsRoot.transform, layout, square, "room_dining", 0f, 2f,
-                "식탁", "네 사람분의 식기가 놓여 있다. 한 자리는 손도 대지 않았다.");
+            for (int i = 0; i < npcs.Count; i++)
+            {
+                NpcDefinition npc = npcs[i];
+                string room = NpcSchedule.LastKnownRoom(npc, GameTime.PresentTick);
+                float cx, cy;
+                if (!layout.TryGetRoomCenter(room, out cx, out cy)) { cx = 0f; cy = 0f; }
+
+                var root = new GameObject("NPC_" + npc.id + " (" + npc.displayName + ")");
+                root.transform.SetParent(npcsRoot.transform, false);
+                root.transform.position = new Vector3(cx + npc.presentOffsetX, cy + npc.presentOffsetY, 0f);
+
+                CreateSpriteObject("Body", root.transform, square, 0f, 0f, 0.9f, 0.9f,
+                    ParseColor(npc.color, Color.white), SortNpc).transform.localPosition = Vector3.zero;
+
+                var collider = root.AddComponent<CircleCollider2D>();
+                collider.radius = 0.5f;
+                collider.isTrigger = true; // 플레이어를 막지 않고 상호작용 탐색에만 잡힌다.
+
+                // 트랜스폼으로 움직이는 콜라이더는 Kinematic 바디를 달아야 물리 질의(OverlapCircleAll)에 제때 반영된다.
+                var body = root.AddComponent<Rigidbody2D>();
+                body.bodyType = RigidbodyType2D.Kinematic;
+                body.gravityScale = 0f;
+
+                var controller = root.AddComponent<NPCController>();
+                controller.npcId = npc.id;
+                controller.displayName = npc.displayName;
+                controller.isVictim = npc.isVictim;
+            }
         }
 
-        private static void CreateProp(Transform parent, RoomLayout layout, Sprite square,
-            string roomId, float offsetX, float offsetY, string displayName, string description)
+        // ----- 조사 대상 -------------------------------------------------------
+
+        /// <summary>evidence.json의 단서와 분위기용 소품을 방마다 배치한다.</summary>
+        private static void BuildProps(CaseDatabase database, Sprite square)
+        {
+            var propsRoot = new GameObject("Props");
+            RoomLayout layout = database.Layout;
+
+            IList<EvidenceDefinition> evidence = database.Evidence.All;
+            for (int i = 0; i < evidence.Count; i++)
+            {
+                EvidenceDefinition item = evidence[i];
+                InspectableObject inspectable = CreateProp(propsRoot.transform, layout, square, item.foundRoom,
+                    item.offsetX, item.offsetY, item.name, item.description, EvidenceColor, "Evidence_" + item.id);
+                if (inspectable != null) inspectable.evidenceId = item.id;
+            }
+
+            IList<PropDefinition> props = database.Evidence.Props;
+            for (int i = 0; i < props.Count; i++)
+            {
+                PropDefinition prop = props[i];
+                CreateProp(propsRoot.transform, layout, square, prop.room,
+                    prop.offsetX, prop.offsetY, prop.name, prop.description, PropColor, "Prop_" + prop.name);
+            }
+        }
+
+        private static InspectableObject CreateProp(Transform parent, RoomLayout layout, Sprite square,
+            string roomId, float offsetX, float offsetY, string displayName, string description, Color color, string objectName)
         {
             float cx, cy;
             if (!layout.TryGetRoomCenter(roomId, out cx, out cy))
             {
                 Debug.LogWarning("[SceneBuilder] " + roomId + " 가 없어 '" + displayName + "' 를 배치하지 못했다.");
-                return;
+                return null;
             }
 
             GameObject prop = CreateSpriteObject(
-                "Prop_" + displayName, parent, square,
-                cx + offsetX, cy + offsetY, 0.7f, 0.7f, PropColor, SortProp);
+                objectName, parent, square,
+                cx + offsetX, cy + offsetY, 0.7f, 0.7f, color, SortProp);
 
             var collider = prop.AddComponent<BoxCollider2D>();
             collider.size = Vector2.one;
@@ -227,6 +288,7 @@ namespace DetectiveEditor
             inspectable.displayName = displayName;
             inspectable.description = description;
             inspectable.repeatable = true;
+            return inspectable;
         }
 
         // ----- UI --------------------------------------------------------------
@@ -248,7 +310,7 @@ namespace DetectiveEditor
             // 조사 결과 메시지 패널
             GameObject messagePanel = CreateUIObject("MessagePanel", canvasObject.transform,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
-                new Vector2(0f, 150f), new Vector2(1200f, 140f));
+                new Vector2(0f, 130f), new Vector2(1400f, 210f));
             var messageBackground = messagePanel.AddComponent<Image>();
             messageBackground.color = new Color(0f, 0f, 0f, 0.72f);
             messageBackground.raycastTarget = false;
@@ -259,13 +321,19 @@ namespace DetectiveEditor
             var messageRect = (RectTransform)messageTextObject.transform;
             messageRect.offsetMin = new Vector2(24f, 16f);
             messageRect.offsetMax = new Vector2(-24f, -16f);
-            Text messageText = CreateText(messageTextObject, 30, TextAnchor.MiddleLeft, Color.white);
+            Text messageText = CreateText(messageTextObject, 28, TextAnchor.MiddleLeft, Color.white);
 
             // 상호작용 안내문
             GameObject promptObject = CreateUIObject("PromptLabel", canvasObject.transform,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
-                new Vector2(0f, 60f), new Vector2(1200f, 60f));
+                new Vector2(0f, 50f), new Vector2(1200f, 60f));
             Text promptText = CreateText(promptObject, 34, TextAnchor.MiddleCenter, new Color(1f, 0.94f, 0.7f));
+
+            canvasObject.AddComponent<TimelineController>();
+            canvasObject.AddComponent<NotebookUI>();
+            canvasObject.AddComponent<DialogueUI>();
+            canvasObject.AddComponent<AccusationUI>();
+            canvasObject.AddComponent<IntroUI>();
 
             var hud = canvasObject.AddComponent<HudUI>();
             hud.player = playerInteraction;

@@ -19,7 +19,23 @@ namespace Detective.UI
         [Tooltip("메시지가 화면에 남아 있는 시간(초).")]
         public float messageDuration = 5f;
 
+        [Tooltip("화면 왼쪽 위 조작 안내.")]
+        [TextArea(2, 4)]
+        public string controlsHint = "[WASD] 이동   [E] 조사·대화\n[T] 타임라인   [N] 수사 노트   [F] 고발";
+
         private float _messageTimer;
+        private Text _statusLabel;
+        private RectTransform _statusPanel;
+
+        private void Awake()
+        {
+            _statusLabel = UIFactory.CreateTextPanel("StatusPanel", transform,
+                new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(24f, -190f), new Vector2(600f, -24f),
+                26, TextAnchor.MiddleLeft, out _statusPanel);
+            // 다른 창(노트·대화·고발)이 항상 이 패널 위에 그려지도록 맨 아래로 보낸다.
+            _statusPanel.SetAsFirstSibling();
+            _statusLabel.verticalOverflow = VerticalWrapMode.Overflow;
+        }
 
         private void OnEnable()
         {
@@ -40,7 +56,19 @@ namespace Detective.UI
         private void Update()
         {
             UpdatePrompt();
+            UpdateStatus();
             UpdateMessageTimer();
+        }
+
+        private void UpdateStatus()
+        {
+            // 탐색 중에만 보인다. 다른 창은 자기 안내문을 따로 띄운다.
+            bool visible = ModalState.IsExploring;
+            if (_statusPanel.gameObject.activeSelf != visible) _statusPanel.gameObject.SetActive(visible);
+            if (!visible) return;
+
+            _statusLabel.text = UIFactory.Colorize("블랙우드 저택 · 현재 " + GameTime.ToLabel(GameTime.PresentTick), UIFactory.AccentColor)
+                + "\n" + controlsHint;
         }
 
         private void UpdatePrompt()

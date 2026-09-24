@@ -1,0 +1,12 @@
+{
+  "id": "npc_victim",
+  "displayName": "에드먼드 헤일",
+  "description": "블랙우드 저택의 주인이자 은퇴한 무역상. 깐깐하고 숫자에 밝다.",
+  "relation": "피해자",
+  "isVictim": true,
+  "color": "#B8B8B8",
+  "schedule": ["room_victim", "room_victim", "room_victim", "room_victim", "", "", ""],
+  "claims": [],
+  "presentOffsetX": 0.0,
+  "presentOffsetY": 0.0
+}

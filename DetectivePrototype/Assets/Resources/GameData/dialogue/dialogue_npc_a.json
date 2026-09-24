@@ -1,0 +1,11 @@
+{
+  "npcId": "npc_a",
+  "lines": [
+    { "id": "greet", "text": "탐정님이시군요. 회장님이 이런 일을… 아직도 믿기지가 않아요." },
+    { "id": "alibi", "revealsClaims": true, "text": "18시엔 식당에서 마르코 씨를 도왔고, 그 뒤로도 19시 조금 전까지 쭉 식당에 있었어요. 종이 울려서 로비로 나왔고요." },
+    { "id": "boss", "text": "회장님은 깐깐한 분이셨지만 저한텐 늘 친절하셨어요. 원한 같은 건… 없었을 거예요." },
+    { "id": "on_ledger", "requiresEvidence": "ev_ledger", "text": "장부요? …숫자가 좀 안 맞는 건 저도 알고 있었어요. 회장님과는 내일 따로 이야기하기로 했을 뿐이에요." },
+    { "id": "on_glass", "requiresEvidence": "ev_wineglass", "text": "립스틱이라고요? 이 저택에 립스틱 바르는 여자가 저 하나뿐인 건 아니잖아요. …아무튼 전 서재에 간 적이 없어요." },
+    { "id": "on_poison", "requiresEvidence": "ev_poison_tin", "text": "쥐약이요? 창고엔 들어가 본 적도 없어요. 쥐 문제는 마르코 씨 담당이죠." }
+  ]
+}

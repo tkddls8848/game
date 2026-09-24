@@ -1,0 +1,82 @@
+{
+  "evidence": [
+    {
+      "id": "ev_body",
+      "name": "에드먼드 헤일의 시신",
+      "description": "책상 옆에 쓰러진 에드먼드 헤일. 외상은 없고 입술이 푸르스름하다. 헬렌 박사의 소견으로는 숨진 지 30분 남짓 — 18시 30분 전후다.",
+      "foundRoom": "room_victim", "offsetX": 0.0, "offsetY": 1.5,
+      "relatedNpc": "npc_victim", "relatedTick": 3,
+      "revealNpc": "npc_victim", "revealTick": 3, "revealRoom": "room_victim"
+    },
+    {
+      "id": "ev_wineglass",
+      "name": "립스틱 자국이 남은 와인잔",
+      "description": "책상 위의 와인잔. 바닥에 하얀 가루가 엉겨 있고 쓴 냄새가 난다. 가장자리에 진홍색 립스틱 자국이 선명하다 — 피해자는 립스틱을 바르지 않는다.",
+      "foundRoom": "room_victim", "offsetX": -2.5, "offsetY": 2.5,
+      "relatedNpc": "npc_a", "relatedTick": 3,
+      "revealNpc": "", "revealTick": -1, "revealRoom": ""
+    },
+    {
+      "id": "ev_ledger",
+      "name": "회계 장부",
+      "description": "책상 서랍 속 장부. 클라라가 관리해 온 계좌에서 지난 1년간 거액이 빠져나갔다. 여백에 피해자의 메모: '오늘 18:30, 클라라를 서재로 불러 해명을 듣는다.'",
+      "foundRoom": "room_victim", "offsetX": 3.5, "offsetY": 2.5,
+      "relatedNpc": "npc_a", "relatedTick": 3,
+      "revealNpc": "", "revealTick": -1, "revealRoom": ""
+    },
+    {
+      "id": "ev_torn_will",
+      "name": "찢어진 유언장",
+      "description": "휴지통 속에서 찢긴 새 유언장. '조카 줄리안 헤일을 상속에서 제외한다.' 서명 옆 시각은 오늘 18:10. 종이 틈에 줄리안의 커프스 단추가 끼어 있다.",
+      "foundRoom": "room_victim", "offsetX": -4.0, "offsetY": -3.0,
+      "relatedNpc": "npc_c", "relatedTick": 1,
+      "revealNpc": "npc_c", "revealTick": 1, "revealRoom": "room_victim"
+    },
+    {
+      "id": "ev_poison_tin",
+      "name": "쥐약 통",
+      "description": "선반 위 쥐약(비소) 통. 절반쯤 비어 있다. 먼지 쌓인 선반에 방금 생긴 듯한 손자국이 나 있다.",
+      "foundRoom": "room_storage", "offsetX": 2.0, "offsetY": 1.0,
+      "relatedNpc": "", "relatedTick": -1,
+      "revealNpc": "", "revealTick": -1, "revealRoom": ""
+    },
+    {
+      "id": "ev_phone_log",
+      "name": "전화 기록부",
+      "description": "로비 전화기 옆 기록부. '18:30 식당 내선 — 식료품점 주문 확인. 받은 사람: 마르코.' 교환원의 확인 도장이 찍혀 있다.",
+      "foundRoom": "room_lobby", "offsetX": -3.0, "offsetY": -2.5,
+      "relatedNpc": "npc_b", "relatedTick": 3,
+      "revealNpc": "npc_b", "revealTick": 3, "revealRoom": "room_dining"
+    },
+    {
+      "id": "ev_medical_bag",
+      "name": "헬렌의 왕진 가방",
+      "description": "로비 소파 위에 놓인 헬렌 박사의 가방. 수면제와 진통제 병은 봉인이 그대로다. 비소 같은 독극물은 들어 있지 않다.",
+      "foundRoom": "room_lobby", "offsetX": 3.5, "offsetY": -3.0,
+      "relatedNpc": "npc_d", "relatedTick": -1,
+      "revealNpc": "", "revealTick": -1, "revealRoom": ""
+    }
+  ],
+  "props": [
+    {
+      "name": "괘종시계",
+      "description": "정확하게 맞는 괘종시계. 10분마다 짧게 종을 울린다 — 저택 사람들이 시각을 10분 단위로 또렷이 기억하는 이유다.",
+      "room": "room_hall", "offsetX": 0.0, "offsetY": 1.0
+    },
+    {
+      "name": "식탁",
+      "description": "다섯 사람분의 식기가 놓여 있다. 18시 30분에 내기로 한 수프는 손도 대지 않은 채 식어 버렸다.",
+      "room": "room_dining", "offsetX": 1.5, "offsetY": 2.0
+    },
+    {
+      "name": "낡은 상자",
+      "description": "먼지 쌓인 식료품 상자. 밀가루와 통조림뿐이다.",
+      "room": "room_storage", "offsetX": -3.0, "offsetY": -2.0
+    },
+    {
+      "name": "손님용 침대",
+      "description": "줄리안이 묵는 방. 침대 옆 탁자에 두통약 봉투와 물컵이 있다.",
+      "room": "room_suspect", "offsetX": 3.0, "offsetY": 2.0
+    }
+  ]
+}

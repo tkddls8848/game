@@ -1,0 +1,12 @@
+{
+  "id": "npc_d",
+  "displayName": "헬렌 모로",
+  "description": "화장기 없는 얼굴의 침착한 의사. 낡은 왕진 가방을 늘 곁에 둔다.",
+  "relation": "피해자의 주치의. 이번 주말 저택에 초대받았다.",
+  "isVictim": false,
+  "color": "#27AE60",
+  "schedule": ["room_lobby", "room_lobby", "room_lobby", "room_suspect", "room_hall", "room_lobby", "room_victim"],
+  "claims": [],
+  "presentOffsetX": 2.5,
+  "presentOffsetY": -2.0
+}

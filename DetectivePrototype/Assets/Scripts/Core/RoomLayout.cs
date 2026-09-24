@@ -83,10 +83,95 @@ namespace Detective.Core
             return null;
         }
 
+        /// <summary>모든 방을 감싸는 사각형. 방이 없으면 false.</summary>
+        public bool TryGetBounds(out float minX, out float minY, out float maxX, out float maxY)
+        {
+            minX = minY = maxX = maxY = 0f;
+            if (_rooms.Count == 0) return false;
+
+            minX = _rooms[0].MinX; minY = _rooms[0].MinY;
+            maxX = _rooms[0].MaxX; maxY = _rooms[0].MaxY;
+            for (int i = 1; i < _rooms.Count; i++)
+            {
+                if (_rooms[i].MinX < minX) minX = _rooms[i].MinX;
+                if (_rooms[i].MinY < minY) minY = _rooms[i].MinY;
+                if (_rooms[i].MaxX > maxX) maxX = _rooms[i].MaxX;
+                if (_rooms[i].MaxY > maxY) maxY = _rooms[i].MaxY;
+            }
+            return true;
+        }
+
+        public string DisplayNameOf(string roomId)
+        {
+            RoomDefinition room;
+            return TryGetRoom(roomId, out room) ? room.displayName : roomId;
+        }
+
         /// <summary>플레이어 시작 좌표(시작 방의 중심).</summary>
         public bool TryGetSpawnPosition(out float x, out float y)
         {
             return TryGetRoomCenter(_spawnRoomId, out x, out y);
+        }
+
+        /// <summary>
+        /// from 방에서 to 방까지 지나야 하는 문 목록(너비 우선 탐색 → 최소 문 개수).
+        /// 같은 방이면 빈 목록, 이어지지 않으면 null.
+        /// </summary>
+        public List<DoorDefinition> FindDoorPath(string fromRoomId, string toRoomId)
+        {
+            if (!_roomsById.ContainsKey(fromRoomId ?? string.Empty)) return null;
+            if (!_roomsById.ContainsKey(toRoomId ?? string.Empty)) return null;
+            if (fromRoomId == toRoomId) return new List<DoorDefinition>();
+
+            var cameThrough = new Dictionary<string, DoorDefinition>();
+            var previousRoom = new Dictionary<string, string>();
+            var visited = new HashSet<string> { fromRoomId };
+            var queue = new Queue<string>();
+            queue.Enqueue(fromRoomId);
+
+            while (queue.Count > 0)
+            {
+                string room = queue.Dequeue();
+                if (room == toRoomId) break;
+
+                for (int i = 0; i < _doors.Count; i++)
+                {
+                    DoorDefinition door = _doors[i];
+                    string next = door.roomA == room ? door.roomB : door.roomB == room ? door.roomA : null;
+                    if (next == null || !visited.Add(next)) continue;
+
+                    cameThrough[next] = door;
+                    previousRoom[next] = room;
+                    queue.Enqueue(next);
+                }
+            }
+
+            if (!visited.Contains(toRoomId)) return null;
+
+            var path = new List<DoorDefinition>();
+            for (string room = toRoomId; room != fromRoomId; room = previousRoom[room])
+            {
+                path.Add(cameThrough[room]);
+            }
+            path.Reverse();
+            return path;
+        }
+
+        /// <summary>
+        /// NPC 이동 경로: 지나야 할 문 중심을 차례로 거쳐 목적지 좌표에 도착한다.
+        /// 벽을 뚫고 가로지르지 않도록 문을 경유하는 것 외에 길찾기는 하지 않는다(§8).
+        /// 방을 모르거나 이어지지 않으면 목적지로 곧장 간다.
+        /// </summary>
+        public List<Point2> BuildRoute(string fromRoomId, string toRoomId, float targetX, float targetY)
+        {
+            var route = new List<Point2>();
+            List<DoorDefinition> doors = FindDoorPath(fromRoomId, toRoomId);
+            if (doors != null)
+            {
+                for (int i = 0; i < doors.Count; i++) route.Add(new Point2(doors[i].CenterX, doors[i].CenterY));
+            }
+            route.Add(new Point2(targetX, targetY));
+            return route;
         }
 
         /// <summary>방 하나의 벽 조각. 출입구와 겹치는 부분은 잘려 나간다.</summary>

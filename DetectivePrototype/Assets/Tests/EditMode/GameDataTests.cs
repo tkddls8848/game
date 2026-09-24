@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Detective.Case;
 using Detective.Core;
 using Detective.Data;
+using Detective.NPC;
 using NUnit.Framework;
 
 namespace Detective.Tests
@@ -69,6 +71,43 @@ namespace Detective.Tests
 
             Assert.AreEqual(layout.RoomCount, reachable.Count,
                 "시작 방에서 문으로 갈 수 없는 방이 있다.");
+        }
+
+        [Test]
+        public void Npcs_LoadFourSuspectsAndOneVictim()
+        {
+            var roster = new NpcRoster(GameDataLoader.LoadNpcs());
+
+            // §6: 피해자 1명, 용의자 NPC 4명
+            Assert.AreEqual(4, roster.Suspects.Count);
+            Assert.IsNotNull(roster.Victim);
+        }
+
+        [Test]
+        public void Evidence_LoadsFromResources()
+        {
+            EvidenceTable table = GameDataLoader.LoadEvidenceTable();
+            Assert.Greater(table.evidence.Length, 0, "evidence.json에서 단서를 하나도 읽지 못했다.");
+        }
+
+        [Test]
+        public void Case01_IsSolvableFromCluesAndTestimony()
+        {
+            // Phase 5 DoD: 단서와 증언만으로 범인을 유일하게 특정할 수 있는가
+            CaseDatabase database = GameDataLoader.LoadDatabase();
+            Assert.AreEqual("case_01", database.Case.id);
+
+            List<string> problems = CaseSolvabilityChecker.Check(database);
+            Assert.AreEqual(0, problems.Count, string.Join("\n", problems.ToArray()));
+        }
+
+        [Test]
+        public void Database_PassesCrossReferenceValidation()
+        {
+            CaseDatabase database = GameDataLoader.LoadDatabase();
+
+            List<string> errors = GameDataValidator.Validate(database);
+            Assert.AreEqual(0, errors.Count, string.Join("\n", errors.ToArray()));
         }
     }
 }

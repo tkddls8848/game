@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
+using Detective.Case;
 using Detective.Core;
 using Detective.Data;
+using Detective.NPC;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +16,10 @@ namespace DetectiveEditor
     public static class DataValidator
     {
         public const string RoomsJsonPath = "Assets/Resources/GameData/rooms.json";
+        public const string NpcsFolder = "Assets/Resources/GameData/npcs";
+        public const string EvidenceJsonPath = "Assets/Resources/GameData/evidence/evidence.json";
+        public const string DialogueFolder = "Assets/Resources/GameData/dialogue";
+        public const string CaseJsonPath = "Assets/Resources/GameData/cases/" + GameDataLoader.DefaultCaseId + ".json";
 
         [MenuItem("Tools/Detective/Validate Game Data")]
         public static void ValidateFromMenu()
@@ -32,12 +38,89 @@ namespace DetectiveEditor
         public static List<string> ValidateAll()
         {
             var errors = new List<string>();
-
-            RoomTable rooms = LoadRoomTable(errors);
-            if (rooms != null) errors.AddRange(RoomLayoutValidator.Validate(rooms));
-
-            // Phase 3 이후 evidence/npc/dialogue 검사가 여기에 추가된다.
+            LoadDatabase(errors);
             return errors;
+        }
+
+        /// <summary>
+        /// 디스크의 JSON을 전부 읽어 CaseDatabase로 묶고, 파싱·무결성 문제를 errors에 쌓는다.
+        /// rooms.json을 못 읽으면 null. 검사 규칙은 순수 C#(RoomLayoutValidator, GameDataValidator)에 있다.
+        /// </summary>
+        public static CaseDatabase LoadDatabase(List<string> errors)
+        {
+            RoomTable rooms = LoadRoomTable(errors);
+            if (rooms == null) return null;
+            errors.AddRange(RoomLayoutValidator.Validate(rooms));
+
+            List<NpcDefinition> npcs = LoadNpcs(errors);
+            EvidenceTable evidence = LoadEvidenceTable(errors);
+            List<DialogueFile> dialogues = LoadDialogues(errors);
+            CaseDefinition caseDefinition = LoadCase(errors);
+            var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs), evidence, dialogues, caseDefinition);
+            errors.AddRange(GameDataValidator.Validate(database));
+
+            // 참조가 멀쩡할 때만 추리 가능성을 따진다(깨진 참조 위에서 돌리면 엉뚱한 오류가 쏟아진다).
+            if (errors.Count == 0) errors.AddRange(CaseSolvabilityChecker.Check(database));
+            return database;
+        }
+
+        /// <summary>npcs/ 폴더의 JSON을 디스크에서 직접 읽는다(파일 이름 순).</summary>
+        public static List<NpcDefinition> LoadNpcs(List<string> errors)
+        {
+            var result = new List<NpcDefinition>();
+            foreach (string path in ReadJsonFiles(NpcsFolder, errors))
+            {
+                NpcDefinition npc = GameDataLoader.ParseNpc(File.ReadAllText(path), path);
+                if (npc == null) errors.Add(path + " 를 파싱하지 못했다.");
+                else result.Add(npc);
+            }
+            return result;
+        }
+
+        public static CaseDefinition LoadCase(List<string> errors)
+        {
+            if (!File.Exists(CaseJsonPath))
+            {
+                errors.Add(CaseJsonPath + " 파일이 없다.");
+                return new CaseDefinition().Normalized();
+            }
+            return GameDataLoader.ParseCase(File.ReadAllText(CaseJsonPath), CaseJsonPath);
+        }
+
+        public static List<DialogueFile> LoadDialogues(List<string> errors)
+        {
+            var result = new List<DialogueFile>();
+            foreach (string path in ReadJsonFiles(DialogueFolder, errors))
+            {
+                DialogueFile file = GameDataLoader.ParseDialogue(File.ReadAllText(path), path);
+                if (file == null) errors.Add(path + " 를 파싱하지 못했다.");
+                else result.Add(file);
+            }
+            return result;
+        }
+
+        public static EvidenceTable LoadEvidenceTable(List<string> errors)
+        {
+            if (!File.Exists(EvidenceJsonPath))
+            {
+                errors.Add(EvidenceJsonPath + " 파일이 없다.");
+                return new EvidenceTable().Normalized();
+            }
+            return GameDataLoader.ParseEvidenceTable(File.ReadAllText(EvidenceJsonPath));
+        }
+
+        private static List<string> ReadJsonFiles(string folder, List<string> errors)
+        {
+            var files = new List<string>();
+            if (!Directory.Exists(folder))
+            {
+                errors.Add(folder + " 폴더가 없다.");
+                return files;
+            }
+            files.AddRange(Directory.GetFiles(folder, "*.json"));
+            files.Sort(System.StringComparer.Ordinal);
+            if (files.Count == 0) errors.Add(folder + " 에 JSON 파일이 없다.");
+            return files;
         }
 
         /// <summary>

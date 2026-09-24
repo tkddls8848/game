@@ -1,0 +1,30 @@
+{
+  "caseId": "slice_eavesdrop",
+  "durationMs": 90000,
+  "speakers": [
+    { "voiceId": "v1", "npcId": "npc_a" },
+    { "voiceId": "v2", "npcId": "npc_b" }
+  ],
+  "utterances": [
+    { "id": "u01", "startMs": 2000,  "durationMs": 3500, "voiceId": "v1", "room": "room_dining", "clip": "", "text": "여보세요. 네, 저예요. 지금 식당이라 아무도 없어요." },
+    { "id": "u02", "startMs": 5000,  "durationMs": 4000, "voiceId": "v2", "room": "room_hall",   "clip": "", "text": "이런, 넥타이가 또 비뚤어졌군." },
+    { "id": "u03", "startMs": 11000, "durationMs": 4000, "voiceId": "v1", "room": "room_dining", "clip": "", "text": "서류는 서재 금고에 넣어 뒀어요. 오늘 밤 안에 꺼내야 해요." },
+    { "id": "u04", "startMs": 16000, "durationMs": 4500, "voiceId": "v2", "room": "room_hall",   "clip": "", "text": "마르코, 정신 차려. 오늘 밤은 실수하면 안 돼." },
+    { "id": "u05", "startMs": 21000, "durationMs": 4500, "voiceId": "v1", "room": "room_dining", "clip": "", "text": "열쇠요? 제가 갖고 있으면 의심받죠. 다른 사람한테 맡겼어요." },
+    { "id": "u06", "startMs": 30000, "durationMs": 7000, "voiceId": "v2", "room": "room_hall",   "clip": "", "text": "아내가 골라 준 초록 넥타이인데… 이 색은 영 나한테 안 어울려." },
+    { "id": "u07", "startMs": 32000, "durationMs": 6000, "voiceId": "v1", "room": "room_dining", "clip": "", "text": "이름은 전화로 못 말해요. 초록 넥타이를 맨 남자예요. 열쇠는 그 사람이 갖고 있어요." },
+    { "id": "u08", "startMs": 44000, "durationMs": 4000, "voiceId": "v2", "room": "room_hall",   "clip": "", "text": "손님들은 다들 식당에 모였으려나." },
+    { "id": "u09", "startMs": 47000, "durationMs": 4000, "voiceId": "v1", "room": "room_dining", "clip": "", "text": "그 사람은 아무것도 몰라요. 선물 상자인 줄 알아요." },
+    { "id": "u10", "startMs": 56000, "durationMs": 4500, "voiceId": "v2", "room": "room_hall",   "clip": "", "text": "좋아, 이 정도면 봐 줄 만해." },
+    { "id": "u11", "startMs": 62000, "durationMs": 4500, "voiceId": "v1", "room": "room_dining", "clip": "", "text": "일곱 시 전에 복도에서 받아 가세요." },
+    { "id": "u12", "startMs": 72000, "durationMs": 5000, "voiceId": "v2", "room": "room_hall",   "clip": "", "text": "…어디서 전화하는 소리가 들리는데. 식당인가?" },
+    { "id": "u13", "startMs": 80000, "durationMs": 3000, "voiceId": "v1", "room": "room_dining", "clip": "", "text": "네. 끊을게요." }
+  ],
+  "facts": [
+    { "id": "fact_key_holder_wears_green_tie", "description": "서재 금고 열쇠를 가진 사람은 초록 넥타이를 맨 남자다", "utteranceIds": [ "u07" ] },
+    { "id": "fact_v2_wears_green_tie",         "description": "목소리 v2는 초록 넥타이를 매고 있다",                 "utteranceIds": [ "u06" ] }
+  ],
+  "conclusions": [
+    { "id": "concl_v2_holds_key", "text": "서재 금고 열쇠는 목소리 v2가 갖고 있다", "requiresFacts": [ "fact_key_holder_wears_green_tie", "fact_v2_wears_green_tie" ] }
+  ]
+}

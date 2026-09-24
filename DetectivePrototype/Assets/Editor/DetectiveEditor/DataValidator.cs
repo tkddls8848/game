@@ -16,6 +16,7 @@ namespace DetectiveEditor
     {
         public const string RoomsJsonPath = "Assets/Resources/GameData/rooms.json";
         public const string NpcsFolder = "Assets/Resources/GameData/npcs";
+        public const string EvidenceJsonPath = "Assets/Resources/GameData/evidence/evidence.json";
 
         [MenuItem("Tools/Detective/Validate Game Data")]
         public static void ValidateFromMenu()
@@ -49,7 +50,8 @@ namespace DetectiveEditor
             errors.AddRange(RoomLayoutValidator.Validate(rooms));
 
             List<NpcDefinition> npcs = LoadNpcs(errors);
-            var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs));
+            EvidenceTable evidence = LoadEvidenceTable(errors);
+            var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs), evidence);
             errors.AddRange(GameDataValidator.Validate(database));
             return database;
         }
@@ -65,6 +67,16 @@ namespace DetectiveEditor
                 else result.Add(npc);
             }
             return result;
+        }
+
+        public static EvidenceTable LoadEvidenceTable(List<string> errors)
+        {
+            if (!File.Exists(EvidenceJsonPath))
+            {
+                errors.Add(EvidenceJsonPath + " 파일이 없다.");
+                return new EvidenceTable().Normalized();
+            }
+            return GameDataLoader.ParseEvidenceTable(File.ReadAllText(EvidenceJsonPath));
         }
 
         private static List<string> ReadJsonFiles(string folder, List<string> errors)

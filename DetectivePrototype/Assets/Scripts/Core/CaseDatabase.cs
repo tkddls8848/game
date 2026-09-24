@@ -1,3 +1,5 @@
+using Detective.Data;
+using Detective.Investigation;
 using Detective.NPC;
 
 namespace Detective.Core
@@ -11,11 +13,13 @@ namespace Detective.Core
     {
         public readonly RoomLayout Layout;
         public readonly NpcRoster Npcs;
+        public readonly EvidenceCatalog Evidence;
 
-        public CaseDatabase(RoomLayout layout, NpcRoster npcs)
+        public CaseDatabase(RoomLayout layout, NpcRoster npcs, EvidenceTable evidence)
         {
             Layout = layout;
             Npcs = npcs ?? new NpcRoster(null);
+            Evidence = new EvidenceCatalog(evidence);
         }
     }
 }

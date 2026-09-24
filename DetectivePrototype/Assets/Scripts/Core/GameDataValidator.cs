@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Detective.Data;
+using Detective.Investigation;
 using Detective.NPC;
 
 namespace Detective.Core
@@ -21,6 +22,7 @@ namespace Detective.Core
             }
 
             ValidateNpcs(database, errors);
+            ValidateEvidence(database, errors);
             return errors;
         }
 
@@ -73,6 +75,77 @@ namespace Detective.Core
             }
 
             if (victims != 1) errors.Add("피해자(isVictim)는 정확히 한 명이어야 한다(현재 " + victims + "명).");
+        }
+
+        /// <summary>소품이 벽에 박히지 않도록 방 가장자리에서 이만큼은 떨어져야 한다.</summary>
+        public const float PlacementMargin = 0.8f;
+
+        private static void ValidateEvidence(CaseDatabase database, List<string> errors)
+        {
+            EvidenceCatalog catalog = database.Evidence;
+            if (catalog.All.Count == 0) errors.Add("단서(evidence.json)가 하나도 없다.");
+
+            var ids = new HashSet<string>();
+            for (int i = 0; i < catalog.All.Count; i++)
+            {
+                EvidenceDefinition evidence = catalog.All[i];
+                string label = string.IsNullOrEmpty(evidence.id) ? "evidence[" + i + "]" : evidence.id;
+
+                if (string.IsNullOrEmpty(evidence.id)) errors.Add(label + ": id가 비어 있다.");
+                else if (!ids.Add(evidence.id)) errors.Add(label + ": id가 중복된다.");
+                if (string.IsNullOrEmpty(evidence.name)) errors.Add(label + ": name이 비어 있다.");
+                if (string.IsNullOrEmpty(evidence.description)) errors.Add(label + ": description이 비어 있다.");
+
+                ValidatePlacement(database, label, evidence.foundRoom, evidence.offsetX, evidence.offsetY, errors);
+
+                if (!string.IsNullOrEmpty(evidence.relatedNpc) && !HasNpc(database, evidence.relatedNpc))
+                    errors.Add(label + ": relatedNpc '" + evidence.relatedNpc + "' 가 없는 인물이다.");
+                if (evidence.relatedTick != -1 && !GameTime.IsValidTick(evidence.relatedTick))
+                    errors.Add(label + ": relatedTick " + evidence.relatedTick + " 은 -1 또는 0~" + GameTime.LastTick + "이어야 한다.");
+
+                if (evidence.RevealsWhereabouts)
+                {
+                    if (!HasNpc(database, evidence.revealNpc))
+                        errors.Add(label + ": revealNpc '" + evidence.revealNpc + "' 가 없는 인물이다.");
+                    if (!GameTime.IsValidTick(evidence.revealTick))
+                        errors.Add(label + ": revealTick " + evidence.revealTick + " 이 범위 밖이다.");
+                    if (!HasRoom(database, evidence.revealRoom))
+                        errors.Add(label + ": revealRoom '" + evidence.revealRoom + "' 이 없는 방이다.");
+                }
+                else if (evidence.revealTick != -1 || !string.IsNullOrEmpty(evidence.revealRoom))
+                {
+                    errors.Add(label + ": revealNpc 없이 revealTick/revealRoom만 적혀 있다.");
+                }
+            }
+
+            for (int i = 0; i < catalog.Props.Count; i++)
+            {
+                PropDefinition prop = catalog.Props[i];
+                string label = "props[" + i + "] " + prop.name;
+                if (string.IsNullOrEmpty(prop.name)) errors.Add(label + ": name이 비어 있다.");
+                ValidatePlacement(database, label, prop.room, prop.offsetX, prop.offsetY, errors);
+            }
+        }
+
+        private static void ValidatePlacement(CaseDatabase database, string label, string roomId, float offsetX, float offsetY, List<string> errors)
+        {
+            RoomDefinition room;
+            if (!database.Layout.TryGetRoom(roomId, out room))
+            {
+                errors.Add(label + ": 방 '" + roomId + "' 이 없다.");
+                return;
+            }
+
+            float limitX = room.width * 0.5f - PlacementMargin;
+            float limitY = room.height * 0.5f - PlacementMargin;
+            if (offsetX < -limitX || offsetX > limitX || offsetY < -limitY || offsetY > limitY)
+                errors.Add(label + ": 오프셋 (" + offsetX + ", " + offsetY + ") 이 방 " + roomId + " 밖으로 나간다.");
+        }
+
+        private static bool HasNpc(CaseDatabase database, string npcId)
+        {
+            NpcDefinition npc;
+            return database.Npcs.TryGet(npcId, out npc);
         }
 
         private static bool HasAnyClaim(NpcDefinition npc)

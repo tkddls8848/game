@@ -13,6 +13,7 @@ namespace Detective.Data
     {
         public const string RoomsResourcePath = "GameData/rooms";
         public const string NpcsResourceFolder = "GameData/npcs";
+        public const string EvidenceResourcePath = "GameData/evidence/evidence";
 
         /// <summary>
         /// rooms.json을 읽어 온다. 파일이 없거나 깨져 있으면 빈 테이블을 돌려주고 에러 로그를 남긴다
@@ -58,11 +59,28 @@ namespace Detective.Data
             return npc != null ? npc.Normalized() : null;
         }
 
+        public static EvidenceTable LoadEvidenceTable()
+        {
+            var asset = Resources.Load<TextAsset>(EvidenceResourcePath);
+            if (asset == null)
+            {
+                Debug.LogError("[GameDataLoader] Resources/" + EvidenceResourcePath + ".json 을 찾지 못했다.");
+                return new EvidenceTable().Normalized();
+            }
+            return ParseEvidenceTable(asset.text);
+        }
+
+        public static EvidenceTable ParseEvidenceTable(string json)
+        {
+            EvidenceTable table = Parse<EvidenceTable>(json, "evidence.json");
+            return (table ?? new EvidenceTable()).Normalized();
+        }
+
         /// <summary>사건 데이터 전체를 Resources에서 읽어 하나로 묶는다.</summary>
         public static CaseDatabase LoadDatabase()
         {
             RoomTable rooms = LoadRoomTable();
-            return new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(LoadNpcs()));
+            return new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(LoadNpcs()), LoadEvidenceTable());
         }
 
         /// <summary>JsonUtility 파싱 + 실패 로그. 실패하면 null.</summary>

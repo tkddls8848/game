@@ -32,7 +32,8 @@ namespace DetectiveEditor
         private static readonly Color DoorColor = new Color(0.62f, 0.55f, 0.35f);
         private static readonly Color DefaultFloorColor = new Color(0.24f, 0.26f, 0.30f);
         private static readonly Color PlayerColor = new Color(0.95f, 0.83f, 0.35f);
-        private static readonly Color PropColor = new Color(0.80f, 0.40f, 0.45f);
+        private static readonly Color EvidenceColor = new Color(0.90f, 0.42f, 0.45f);
+        private static readonly Color PropColor = new Color(0.55f, 0.62f, 0.72f);
 
         private const int SortFloor = -20;
         private const int SortDoor = -15;
@@ -70,7 +71,7 @@ namespace DetectiveEditor
             BuildMap(layout, square);
             GameObject player = BuildPlayer(layout, square);
             BuildCamera(player.transform);
-            BuildProps(layout, square);
+            BuildProps(database, square);
             BuildNpcs(layout, database.Npcs.All, square);
             BuildUI(player.GetComponent<PlayerInteraction>());
 
@@ -226,37 +227,45 @@ namespace DetectiveEditor
             }
         }
 
-        // ----- 조사 대상 (Phase 1 임시) -----------------------------------------
+        // ----- 조사 대상 -------------------------------------------------------
 
-        /// <summary>
-        /// 상호작용 파이프라인 확인용 임시 오브젝트.
-        /// Phase 3에서 evidence.json을 읽어 생성하는 코드로 대체된다.
-        /// </summary>
-        private static void BuildProps(RoomLayout layout, Sprite square)
+        /// <summary>evidence.json의 단서와 분위기용 소품을 방마다 배치한다.</summary>
+        private static void BuildProps(CaseDatabase database, Sprite square)
         {
             var propsRoot = new GameObject("Props");
+            RoomLayout layout = database.Layout;
 
-            CreateProp(propsRoot.transform, layout, square, "room_victim", -2f, 1.5f,
-                "와인잔", "탁자에 놓인 와인잔. 바닥에 붉은 침전물이 남아 있다.");
-            CreateProp(propsRoot.transform, layout, square, "room_storage", 2f, -1f,
-                "낡은 상자", "먼지가 쌓여 있다. 최근에 누군가 열어 본 흔적이 있다.");
-            CreateProp(propsRoot.transform, layout, square, "room_dining", 0f, 2f,
-                "식탁", "네 사람분의 식기가 놓여 있다. 한 자리는 손도 대지 않았다.");
+            IList<EvidenceDefinition> evidence = database.Evidence.All;
+            for (int i = 0; i < evidence.Count; i++)
+            {
+                EvidenceDefinition item = evidence[i];
+                InspectableObject inspectable = CreateProp(propsRoot.transform, layout, square, item.foundRoom,
+                    item.offsetX, item.offsetY, item.name, item.description, EvidenceColor, "Evidence_" + item.id);
+                if (inspectable != null) inspectable.evidenceId = item.id;
+            }
+
+            IList<PropDefinition> props = database.Evidence.Props;
+            for (int i = 0; i < props.Count; i++)
+            {
+                PropDefinition prop = props[i];
+                CreateProp(propsRoot.transform, layout, square, prop.room,
+                    prop.offsetX, prop.offsetY, prop.name, prop.description, PropColor, "Prop_" + prop.name);
+            }
         }
 
-        private static void CreateProp(Transform parent, RoomLayout layout, Sprite square,
-            string roomId, float offsetX, float offsetY, string displayName, string description)
+        private static InspectableObject CreateProp(Transform parent, RoomLayout layout, Sprite square,
+            string roomId, float offsetX, float offsetY, string displayName, string description, Color color, string objectName)
         {
             float cx, cy;
             if (!layout.TryGetRoomCenter(roomId, out cx, out cy))
             {
                 Debug.LogWarning("[SceneBuilder] " + roomId + " 가 없어 '" + displayName + "' 를 배치하지 못했다.");
-                return;
+                return null;
             }
 
             GameObject prop = CreateSpriteObject(
-                "Prop_" + displayName, parent, square,
-                cx + offsetX, cy + offsetY, 0.7f, 0.7f, PropColor, SortProp);
+                objectName, parent, square,
+                cx + offsetX, cy + offsetY, 0.7f, 0.7f, color, SortProp);
 
             var collider = prop.AddComponent<BoxCollider2D>();
             collider.size = Vector2.one;
@@ -266,6 +275,7 @@ namespace DetectiveEditor
             inspectable.displayName = displayName;
             inspectable.description = description;
             inspectable.repeatable = true;
+            return inspectable;
         }
 
         // ----- UI --------------------------------------------------------------
@@ -287,7 +297,7 @@ namespace DetectiveEditor
             // 조사 결과 메시지 패널
             GameObject messagePanel = CreateUIObject("MessagePanel", canvasObject.transform,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
-                new Vector2(0f, 150f), new Vector2(1200f, 140f));
+                new Vector2(0f, 130f), new Vector2(1400f, 210f));
             var messageBackground = messagePanel.AddComponent<Image>();
             messageBackground.color = new Color(0f, 0f, 0f, 0.72f);
             messageBackground.raycastTarget = false;
@@ -298,15 +308,16 @@ namespace DetectiveEditor
             var messageRect = (RectTransform)messageTextObject.transform;
             messageRect.offsetMin = new Vector2(24f, 16f);
             messageRect.offsetMax = new Vector2(-24f, -16f);
-            Text messageText = CreateText(messageTextObject, 30, TextAnchor.MiddleLeft, Color.white);
+            Text messageText = CreateText(messageTextObject, 28, TextAnchor.MiddleLeft, Color.white);
 
             // 상호작용 안내문
             GameObject promptObject = CreateUIObject("PromptLabel", canvasObject.transform,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
-                new Vector2(0f, 60f), new Vector2(1200f, 60f));
+                new Vector2(0f, 50f), new Vector2(1200f, 60f));
             Text promptText = CreateText(promptObject, 34, TextAnchor.MiddleCenter, new Color(1f, 0.94f, 0.7f));
 
             canvasObject.AddComponent<TimelineController>();
+            canvasObject.AddComponent<NotebookUI>();
 
             var hud = canvasObject.AddComponent<HudUI>();
             hud.player = playerInteraction;

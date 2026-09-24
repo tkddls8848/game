@@ -83,6 +83,13 @@ namespace Detective.Tests
         }
 
         [Test]
+        public void Evidence_LoadsFromResources()
+        {
+            EvidenceTable table = GameDataLoader.LoadEvidenceTable();
+            Assert.Greater(table.evidence.Length, 0, "evidence.json에서 단서를 하나도 읽지 못했다.");
+        }
+
+        [Test]
         public void Database_PassesCrossReferenceValidation()
         {
             CaseDatabase database = GameDataLoader.LoadDatabase();

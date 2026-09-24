@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Detective.Data;
+using Detective.Investigation;
 using Detective.NPC;
 using UnityEngine;
 
@@ -19,6 +21,9 @@ namespace Detective.Core
 
         /// <summary>rooms.json에서 만들어진 맵 레이아웃. Awake 이후에 유효하다.</summary>
         public RoomLayout Layout { get { return Database != null ? Database.Layout : null; } }
+
+        /// <summary>이번 판의 수사 진행 상태. Awake 이후에 유효하다.</summary>
+        public InvestigationState State { get; private set; }
 
         /// <summary>타임라인 관찰 화면이 인물 위치를 묻는 곳.</summary>
         public ITimelinePlacementSource TimelineSource { get; private set; }
@@ -42,19 +47,41 @@ namespace Detective.Core
                 Debug.LogError("[rooms.json] " + errors[i]);
             }
 
-            Database = new CaseDatabase(RoomLayout.FromTable(table), new NpcRoster(GameDataLoader.LoadNpcs()));
+            Database = new CaseDatabase(RoomLayout.FromTable(table), new NpcRoster(GameDataLoader.LoadNpcs()),
+                GameDataLoader.LoadEvidenceTable());
+
+            List<string> dataErrors = GameDataValidator.Validate(Database);
+            for (int i = 0; i < dataErrors.Count; i++) Debug.LogError("[GameData] " + dataErrors[i]);
+
+            State = new InvestigationState(Database);
             TimelineSource = new ScheduleTruthSource();
-            Debug.Log("[GameManager] 방 " + Layout.RoomCount + "개, 인물 " + Database.Npcs.All.Count + "명 로드 완료.");
+            Debug.Log("[GameManager] 방 " + Layout.RoomCount + "개, 인물 " + Database.Npcs.All.Count + "명, 단서 "
+                + Database.Evidence.All.Count + "개 로드 완료.");
         }
 
         private void OnEnable()
         {
             GameEvents.TalkRequested += OnTalkRequested;
+            GameEvents.EvidenceCollected += OnEvidenceCollected;
         }
 
         private void OnDisable()
         {
             GameEvents.TalkRequested -= OnTalkRequested;
+            GameEvents.EvidenceCollected -= OnEvidenceCollected;
+        }
+
+        private void OnEvidenceCollected(string evidenceId)
+        {
+            if (State == null) return;
+
+            EvidenceDefinition evidence;
+            if (!Database.Evidence.TryGet(evidenceId, out evidence))
+            {
+                Debug.LogWarning("[GameManager] evidence.json에 없는 단서: " + evidenceId);
+                return;
+            }
+            if (State.CollectEvidence(evidenceId)) GameEvents.RaiseNotebookUpdated();
         }
 
         private void OnTalkRequested(string npcId)

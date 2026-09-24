@@ -1,0 +1,39 @@
+{
+  "uiFont": "Fonts/NotoSerifKR-Regular",
+  "rooms": [
+    { "roomId": "room_lobby",   "floor": "marble", "floorTexture": "", "tint": "#8C8378", "tileSize": 4.0 },
+    { "roomId": "room_dining",  "floor": "wood",   "floorTexture": "", "tint": "#7A5A3A", "tileSize": 4.0 },
+    { "roomId": "room_storage", "floor": "stone",  "floorTexture": "", "tint": "#5E5B55", "tileSize": 4.0 },
+    { "roomId": "room_hall",    "floor": "rug",    "floorTexture": "", "tint": "#6E3A34", "tileSize": 4.0 },
+    { "roomId": "room_victim",  "floor": "carpet", "floorTexture": "", "tint": "#4E3B46", "tileSize": 4.0 },
+    { "roomId": "room_suspect", "floor": "wood",   "floorTexture": "", "tint": "#5C6A62", "tileSize": 4.0 }
+  ],
+  "npcs": [
+    { "npcId": "npc_victim", "portrait": "Art/Portraits/npc_victim", "tokenColor": "" },
+    { "npcId": "npc_a",      "portrait": "Art/Portraits/npc_a",      "tokenColor": "" },
+    { "npcId": "npc_b",      "portrait": "Art/Portraits/npc_b",      "tokenColor": "" },
+    { "npcId": "npc_c",      "portrait": "Art/Portraits/npc_c",      "tokenColor": "" },
+    { "npcId": "npc_d",      "portrait": "Art/Portraits/npc_d",      "tokenColor": "" }
+  ],
+  "evidence": [
+    { "evidenceId": "ev_body",        "image": "Art/Evidence/ev_body" },
+    { "evidenceId": "ev_wineglass",   "image": "Art/Evidence/ev_wineglass" },
+    { "evidenceId": "ev_ledger",      "image": "Art/Evidence/ev_ledger" },
+    { "evidenceId": "ev_torn_will",   "image": "Art/Evidence/ev_torn_will" },
+    { "evidenceId": "ev_poison_tin",  "image": "Art/Evidence/ev_poison_tin" },
+    { "evidenceId": "ev_phone_log",   "image": "Art/Evidence/ev_phone_log" },
+    { "evidenceId": "ev_medical_bag", "image": "Art/Evidence/ev_medical_bag" }
+  ],
+  "audio": {
+    "bgmExplore":    "Audio/BGM/explore",
+    "bgmTimeline":   "Audio/BGM/timeline",
+    "bgmResult":     "Audio/BGM/result",
+    "ambientLoop":   "Audio/Ambient/winter_night",
+    "sfxClockChime": "Audio/SFX/clock_chime",
+    "sfxPage":       "Audio/SFX/page",
+    "sfxInspect":    "Audio/SFX/inspect",
+    "bgmVolume": 0.35,
+    "ambientVolume": 0.4,
+    "sfxVolume": 0.7
+  }
+}

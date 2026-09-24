@@ -21,6 +21,12 @@ namespace Detective.Core
         /// <summary>수사 노트에 새 정보가 들어갔을 때(단서·증언·목격).</summary>
         public static event Action NotebookUpdated;
 
+        /// <summary>효과음 요청. 인자는 종류: "inspect" / "page" / "chime". 소리 담당이 없으면 조용히 무시된다.</summary>
+        public static event Action<string> SfxRequested;
+
+        /// <summary>타임라인 관찰 모드에서 보고 있는 시각이 바뀌었을 때. 인자는 틱.</summary>
+        public static event Action<int> TimelineTickChanged;
+
         public static void ShowMessage(string message)
         {
             if (string.IsNullOrEmpty(message)) return;
@@ -48,6 +54,19 @@ namespace Detective.Core
             if (handler != null) handler();
         }
 
+        public static void RequestSfx(string kind)
+        {
+            if (string.IsNullOrEmpty(kind)) return;
+            Action<string> handler = SfxRequested;
+            if (handler != null) handler(kind);
+        }
+
+        public static void RaiseTimelineTickChanged(int tick)
+        {
+            Action<int> handler = TimelineTickChanged;
+            if (handler != null) handler(tick);
+        }
+
         /// <summary>테스트/씬 재시작용. 남아 있는 구독을 전부 끊는다.</summary>
         public static void ClearAllSubscribers()
         {
@@ -55,6 +74,8 @@ namespace Detective.Core
             EvidenceCollected = null;
             TalkRequested = null;
             NotebookUpdated = null;
+            SfxRequested = null;
+            TimelineTickChanged = null;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Detective.Art;
 using Detective.Core;
 using Detective.Data;
 using Detective.Investigation;
@@ -28,12 +29,14 @@ namespace DetectiveEditor
         public const string ScenesFolder = "Assets/Scenes";
         public const string ScenePath = ScenesFolder + "/Main.unity";
 
-        private static readonly Color WallColor = new Color(0.16f, 0.17f, 0.21f);
-        private static readonly Color DoorColor = new Color(0.62f, 0.55f, 0.35f);
-        private static readonly Color DefaultFloorColor = new Color(0.24f, 0.26f, 0.30f);
-        private static readonly Color PlayerColor = new Color(0.95f, 0.83f, 0.35f);
-        private static readonly Color EvidenceColor = new Color(0.90f, 0.42f, 0.45f);
-        private static readonly Color PropColor = new Color(0.55f, 0.62f, 0.72f);
+        // "사건 파일" 연출: 잉크로 그린 벽, 어두운 바닥 질감, 놋쇠 말(플레이어), 종이 표식(단서).
+        private static readonly Color WallColor = new Color(0.09f, 0.075f, 0.06f);
+        private static readonly Color DoorColor = new Color(0.28f, 0.21f, 0.13f);
+        private static readonly Color DefaultFloorColor = new Color(0.45f, 0.40f, 0.34f);
+        private static readonly Color PlayerColor = new Color(0.82f, 0.66f, 0.34f);
+        private static readonly Color EvidenceColor = new Color(0.88f, 0.80f, 0.62f);
+        private static readonly Color PropColor = new Color(0.24f, 0.19f, 0.14f);
+        private static readonly Color CameraBackground = new Color(0.02f, 0.018f, 0.015f);
 
         private const int SortFloor = -20;
         private const int SortDoor = -15;
@@ -75,6 +78,7 @@ namespace DetectiveEditor
 
             var root = new GameObject("GameRoot");
             root.AddComponent<GameManager>();
+            root.AddComponent<AudioDirector>();
 
             BuildMap(layout, square);
             GameObject player = BuildPlayer(layout, square);
@@ -104,17 +108,17 @@ namespace DetectiveEditor
         private static void BuildMap(RoomLayout layout, Sprite square)
         {
             var mapRoot = new GameObject("Map");
+            mapRoot.AddComponent<RoomLabels>(); // 실행 시 바닥에 방 이름을 적는다.
 
             var floorsRoot = new GameObject("Floors");
             floorsRoot.transform.SetParent(mapRoot.transform, false);
 
+            ArtManifest art = ArtLibrary.Instance.Manifest;
             for (int i = 0; i < layout.Rooms.Count; i++)
             {
                 RoomDefinition room = layout.Rooms[i];
-                GameObject floor = CreateSpriteObject(
-                    "Floor_" + room.id, floorsRoot.transform, square,
-                    room.CenterX, room.CenterY, room.width, room.height,
-                    ParseColor(room.floorColor, DefaultFloorColor), SortFloor);
+                RoomArt roomArt = art.RoomOf(room.id);
+                GameObject floor = CreateFloor(room, roomArt, floorsRoot.transform, square);
 
                 // 방 이름을 하이어라키에서 바로 읽을 수 있게 남긴다.
                 floor.name = "Floor_" + room.id + " (" + room.displayName + ")";
@@ -150,6 +154,40 @@ namespace DetectiveEditor
             }
         }
 
+        /// <summary>
+        /// 바닥 한 장. art.json에 이미지가 있으면 그것을, 없으면 종류별 생성 질감을 Tiled 모드로 깐다.
+        /// 질감 색은 tint(없으면 rooms.json의 floorColor)를 곱해 방마다 톤을 달리한다.
+        /// </summary>
+        private static GameObject CreateFloor(RoomDefinition room, RoomArt roomArt, Transform parent, Sprite square)
+        {
+            string kind = roomArt != null && !string.IsNullOrEmpty(roomArt.floor) ? roomArt.floor : "wood";
+            float tileSize = roomArt != null && roomArt.tileSize > 0.01f ? roomArt.tileSize : 4f;
+            Color tint = ParseColor(roomArt != null ? roomArt.tint : null, ParseColor(room.floorColor, DefaultFloorColor));
+
+            Sprite sprite = null;
+            if (roomArt != null && !string.IsNullOrEmpty(roomArt.floorTexture))
+            {
+                sprite = Resources.Load<Sprite>(roomArt.floorTexture);
+                if (sprite == null) Debug.LogWarning("[SceneBuilder] " + room.id + ": Resources/" + roomArt.floorTexture + " 이 없어 생성 질감을 쓴다.");
+            }
+            if (sprite == null) sprite = SpriteAssetFactory.GetOrCreateFloorSprite(kind);
+            if (sprite == null) sprite = square;
+
+            var go = new GameObject("Floor_" + room.id);
+            go.transform.SetParent(parent, false);
+            go.transform.position = new Vector3(room.CenterX, room.CenterY, 0f);
+            go.transform.localScale = new Vector3(tileSize, tileSize, 1f);
+
+            var renderer = go.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.color = tint;
+            renderer.sortingOrder = SortFloor;
+            renderer.drawMode = SpriteDrawMode.Tiled;
+            renderer.tileMode = SpriteTileMode.Continuous;
+            renderer.size = new Vector2(room.width / tileSize, room.height / tileSize);
+            return go;
+        }
+
         // ----- 플레이어 / 카메라 ------------------------------------------------
 
         private static GameObject BuildPlayer(RoomLayout layout, Sprite square)
@@ -162,7 +200,8 @@ namespace DetectiveEditor
                 Debug.LogWarning("[SceneBuilder] 시작 방을 찾지 못해 (0,0)에 배치한다.");
             }
 
-            GameObject player = CreateSpriteObject("Player", null, square, x, y, 0.8f, 0.8f, PlayerColor, SortPlayer);
+            Sprite disc = SpriteAssetFactory.GetOrCreateDiscSprite() ?? square;
+            GameObject player = CreateSpriteObject("Player", null, disc, x, y, 0.8f, 0.8f, PlayerColor, SortPlayer);
 
             var body = player.AddComponent<Rigidbody2D>();
             body.bodyType = RigidbodyType2D.Dynamic;
@@ -177,6 +216,13 @@ namespace DetectiveEditor
             player.AddComponent<PlayerController>();
             player.AddComponent<PlayerInteraction>();
 
+            // 루트 스케일이 0.8이라 글자표 자식은 그만큼 작아진다. 그걸 감안해 크기를 잡는다.
+            var label = player.AddComponent<WorldLabel>();
+            label.text = "탐정";
+            label.localOffset = new Vector3(0f, 1.05f, 0f);
+            label.characterSize = 0.05f;
+            label.color = new Color(0.85f, 0.70f, 0.40f);
+
             return player;
         }
 
@@ -190,7 +236,7 @@ namespace DetectiveEditor
             camera.orthographic = true;
             camera.orthographicSize = 8f;
             camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.backgroundColor = new Color(0.05f, 0.06f, 0.08f);
+            camera.backgroundColor = CameraBackground;
 
             cameraObject.AddComponent<AudioListener>();
 
@@ -209,10 +255,14 @@ namespace DetectiveEditor
         {
             var npcsRoot = new GameObject("NPCs");
             npcsRoot.AddComponent<NpcDirector>();
+            Sprite disc = SpriteAssetFactory.GetOrCreateDiscSprite() ?? square;
+            ArtManifest art = ArtLibrary.Instance.Manifest;
 
             for (int i = 0; i < npcs.Count; i++)
             {
                 NpcDefinition npc = npcs[i];
+                NpcArt npcArt = art.NpcOf(npc.id);
+                Color tokenColor = ParseColor(npcArt != null ? npcArt.tokenColor : null, ParseColor(npc.color, Color.white));
                 string room = NpcSchedule.LastKnownRoom(npc, GameTime.PresentTick);
                 float cx, cy;
                 if (!layout.TryGetRoomCenter(room, out cx, out cy)) { cx = 0f; cy = 0f; }
@@ -221,8 +271,9 @@ namespace DetectiveEditor
                 root.transform.SetParent(npcsRoot.transform, false);
                 root.transform.position = new Vector3(cx + npc.presentOffsetX, cy + npc.presentOffsetY, 0f);
 
-                CreateSpriteObject("Body", root.transform, square, 0f, 0f, 0.9f, 0.9f,
-                    ParseColor(npc.color, Color.white), SortNpc).transform.localPosition = Vector3.zero;
+                // 보드게임 말처럼 보이는 원판. 걷는 애니메이션이 없어도 어색하지 않다.
+                CreateSpriteObject("Body", root.transform, disc, 0f, 0f, 0.9f, 0.9f, tokenColor, SortNpc)
+                    .transform.localPosition = Vector3.zero;
 
                 var collider = root.AddComponent<CircleCollider2D>();
                 collider.radius = 0.5f;
@@ -248,11 +299,13 @@ namespace DetectiveEditor
             var propsRoot = new GameObject("Props");
             RoomLayout layout = database.Layout;
 
+            // 단서는 현장 표식(작은 종이 원판)처럼, 소품은 어두운 가구처럼 보이게 한다.
+            Sprite marker = SpriteAssetFactory.GetOrCreateDiscSprite() ?? square;
             IList<EvidenceDefinition> evidence = database.Evidence.All;
             for (int i = 0; i < evidence.Count; i++)
             {
                 EvidenceDefinition item = evidence[i];
-                InspectableObject inspectable = CreateProp(propsRoot.transform, layout, square, item.foundRoom,
+                InspectableObject inspectable = CreateProp(propsRoot.transform, layout, marker, item.foundRoom,
                     item.offsetX, item.offsetY, item.name, item.description, EvidenceColor, "Evidence_" + item.id);
                 if (inspectable != null) inspectable.evidenceId = item.id;
             }
@@ -311,8 +364,9 @@ namespace DetectiveEditor
             GameObject messagePanel = CreateUIObject("MessagePanel", canvasObject.transform,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
                 new Vector2(0f, 130f), new Vector2(1400f, 210f));
+            // 종이 질감은 실행 시 HudUI가 입힌다(런타임 생성 스프라이트는 씬에 남지 않는다).
             var messageBackground = messagePanel.AddComponent<Image>();
-            messageBackground.color = new Color(0f, 0f, 0f, 0.72f);
+            messageBackground.color = UIFactory.PanelColor;
             messageBackground.raycastTarget = false;
 
             GameObject messageTextObject = CreateUIObject("MessageText", messagePanel.transform,
@@ -321,13 +375,13 @@ namespace DetectiveEditor
             var messageRect = (RectTransform)messageTextObject.transform;
             messageRect.offsetMin = new Vector2(24f, 16f);
             messageRect.offsetMax = new Vector2(-24f, -16f);
-            Text messageText = CreateText(messageTextObject, 28, TextAnchor.MiddleLeft, Color.white);
+            Text messageText = CreateText(messageTextObject, 28, TextAnchor.MiddleLeft, UIFactory.Ink);
 
             // 상호작용 안내문
             GameObject promptObject = CreateUIObject("PromptLabel", canvasObject.transform,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
                 new Vector2(0f, 50f), new Vector2(1200f, 60f));
-            Text promptText = CreateText(promptObject, 34, TextAnchor.MiddleCenter, new Color(1f, 0.94f, 0.7f));
+            Text promptText = CreateText(promptObject, 34, TextAnchor.MiddleCenter, UIFactory.Cream);
 
             canvasObject.AddComponent<TimelineController>();
             canvasObject.AddComponent<NotebookUI>();

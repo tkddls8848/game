@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Detective.Art;
 using Detective.Core;
-using Detective.UI;
+using Detective.Investigation;
 using UnityEngine;
 
 namespace Detective.NPC
@@ -38,9 +39,10 @@ namespace Detective.NPC
             _collider = GetComponent<Collider2D>();
             if (_body != null) _bodyScale = _body.transform.localScale;
 
-            _nameLabel = CreateLabel("NameLabel", new Vector3(0f, 0.85f, 0f), 0.045f, Color.white);
-            _captionLabel = CreateLabel("CaptionLabel", new Vector3(0f, -0.8f, 0f), 0.032f, new Color(1f, 0.86f, 0.55f));
-            _nameLabel.text = displayName;
+            _nameLabel = WorldLabel.Create(transform, "NameLabel", new Vector3(0f, 0.85f, 0f), 0.045f, new Color(0.94f, 0.90f, 0.80f), 60);
+            _captionLabel = WorldLabel.Create(transform, "CaptionLabel", new Vector3(0f, -0.8f, 0f), 0.032f, new Color(0.85f, 0.70f, 0.40f), 60);
+            // 지도 위에는 성을 뺀 짧은 이름만 적어 이름표끼리 겹치지 않게 한다. 전체 이름은 안내문·대화창에 나온다.
+            _nameLabel.text = TimelineBoard.ShortName(displayName);
             _captionLabel.text = string.Empty;
             IsVisible = true;
         }
@@ -96,27 +98,6 @@ namespace Detective.NPC
         public void SetHighlighted(bool highlighted)
         {
             _highlighted = highlighted;
-        }
-
-        private TextMesh CreateLabel(string name, Vector3 localPosition, float characterSize, Color color)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(transform, false);
-            go.transform.localPosition = localPosition;
-
-            var label = go.AddComponent<TextMesh>();
-            Font font = UIFontApplier.GetFont();
-            label.font = font;
-            label.fontSize = 64;
-            label.characterSize = characterSize;
-            label.anchor = TextAnchor.MiddleCenter;
-            label.alignment = TextAlignment.Center;
-            label.color = color;
-
-            var renderer = go.GetComponent<MeshRenderer>();
-            if (font != null) renderer.sharedMaterial = font.material;
-            renderer.sortingOrder = 60;
-            return label;
         }
 
         // ----- 상호작용 --------------------------------------------------------

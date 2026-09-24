@@ -26,8 +26,8 @@ namespace Detective.Investigation
     /// </summary>
     public sealed class NotebookPresenter
     {
-        public const string AccentHex = "#FFD98C";
-        public const string MutedHex = "#9EA8B8";
+        public const string AccentHex = "#8A2E2A"; // 붉은 잉크
+        public const string MutedHex = "#6B5F52";  // 바랜 잉크
 
         private readonly InvestigationState _state;
 

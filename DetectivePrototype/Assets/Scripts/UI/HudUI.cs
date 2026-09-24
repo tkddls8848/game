@@ -1,3 +1,4 @@
+using Detective.Art;
 using Detective.Core;
 using Detective.Player;
 using UnityEngine;
@@ -29,6 +30,16 @@ namespace Detective.UI
 
         private void Awake()
         {
+            // 씬에 저장된 메시지 패널에 종이 질감을 입힌다(런타임 생성 스프라이트는 씬에 직렬화되지 않는다).
+            var paper = messageBackground as Image;
+            if (paper != null)
+            {
+                paper.sprite = ArtLibrary.Instance.ParchmentSprite();
+                paper.color = UIFactory.PanelColor;
+                UIFactory.AddFrame(paper.rectTransform, 0f, 2f, new Color(0.16f, 0.13f, 0.10f, 0.85f));
+            }
+            UIFactory.AddVignette(transform);
+
             _statusLabel = UIFactory.CreateTextPanel("StatusPanel", transform,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(24f, -190f), new Vector2(600f, -24f),
                 26, TextAnchor.MiddleLeft, out _statusPanel);
@@ -101,7 +112,8 @@ namespace Detective.UI
         private void SetMessageVisible(bool visible)
         {
             if (messageLabel != null) messageLabel.enabled = visible;
-            if (messageBackground != null) messageBackground.enabled = visible;
+            // 테두리 선이 패널의 자식이므로 Image만 끄면 선이 남는다. 오브젝트째로 끈다.
+            if (messageBackground != null) messageBackground.gameObject.SetActive(visible);
             if (!visible) _messageTimer = 0f;
         }
     }

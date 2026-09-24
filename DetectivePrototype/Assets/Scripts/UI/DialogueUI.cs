@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Detective.Art;
 using Detective.Core;
 using Detective.Data;
 using Detective.Dialogue;
@@ -15,6 +16,8 @@ namespace Detective.UI
     public class DialogueUI : MonoBehaviour
     {
         private RectTransform _root;
+        private Image _portrait;
+        private Text _portraitInitial;
         private Text _speakerLabel;
         private Text _bodyLabel;
         private Text _footerLabel;
@@ -29,15 +32,22 @@ namespace Detective.UI
         {
             _root = UIFactory.CreateRect("Dialogue", transform,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(-760f, 40f), new Vector2(760f, 360f));
-            UIFactory.AddImage(_root, UIFactory.PanelColor);
+            UIFactory.AddPaper(_root);
+
+            // 왼쪽 초상화 액자. 그림이 없으면 세피아 실루엣 위에 이름 첫 글자를 얹는다.
+            RectTransform frame = UIFactory.CreateRect("Portrait", _root,
+                new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(28f, 28f), new Vector2(292f, -28f));
+            _portrait = UIFactory.AddFramedImage(frame, null);
+            RectTransform initial = UIFactory.CreateStretch("Initial", frame, 0f);
+            _portraitInitial = UIFactory.AddText(initial, 96, TextAnchor.MiddleCenter, new Color(0.85f, 0.78f, 0.62f, 0.75f));
 
             RectTransform speaker = UIFactory.CreateRect("Speaker", _root,
-                new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(36f, -76f), new Vector2(-36f, -16f));
+                new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(320f, -76f), new Vector2(-36f, -16f));
             _speakerLabel = UIFactory.AddText(speaker, 34, TextAnchor.MiddleLeft, UIFactory.AccentColor);
 
             RectTransform body = UIFactory.CreateRect("Body", _root,
-                new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(36f, 64f), new Vector2(-36f, -84f));
-            _bodyLabel = UIFactory.AddText(body, 32, TextAnchor.UpperLeft, Color.white);
+                new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(320f, 64f), new Vector2(-36f, -84f));
+            _bodyLabel = UIFactory.AddText(body, 30, TextAnchor.UpperLeft, UIFactory.Ink);
 
             RectTransform footer = UIFactory.CreateRect("Footer", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(36f, 12f), new Vector2(-36f, 56f));
@@ -79,6 +89,9 @@ namespace Detective.UI
             _npcName = npc.displayName;
             _newLines = 0;
 
+            _portrait.sprite = ArtLibrary.Instance.Portrait(npc);
+            _portraitInitial.text = ArtLibrary.Instance.HasPortraitFile(npcId) ? string.Empty : npc.displayName.Substring(0, 1);
+
             _root.gameObject.SetActive(true);
             ShowCurrent();
         }
@@ -99,7 +112,11 @@ namespace Detective.UI
             {
                 _index++;
                 if (_index >= _lines.Count) Close();
-                else ShowCurrent();
+                else
+                {
+                    GameEvents.RequestSfx("page");
+                    ShowCurrent();
+                }
             }
         }
 

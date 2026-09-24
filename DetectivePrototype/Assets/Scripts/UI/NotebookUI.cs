@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Detective.Art;
 using Detective.Core;
 using Detective.Investigation;
 using UnityEngine;
@@ -31,6 +32,8 @@ namespace Detective.UI
         private RectTransform _detailPanel;
         private RectTransform _detailViewport;
         private RectTransform _detailContent;
+        private RectTransform _evidenceFrame;
+        private Image _evidenceImage;
         private float _detailScroll;
         private string _detailKey;
         private const float ScrollStep = 200f;
@@ -77,6 +80,7 @@ namespace Detective.UI
                 if (Input.GetKeyDown(toggleKey) && ModalState.TryEnter(GameMode.Notebook, frame))
                 {
                     _root.gameObject.SetActive(true);
+                    GameEvents.RequestSfx("page");
                     Refresh();
                 }
                 return;
@@ -100,6 +104,7 @@ namespace Detective.UI
             if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) { _selection[_tab]++; changed = true; }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) { _selection[_tab]--; changed = true; }
 
+            if (changed) GameEvents.RequestSfx("page");
             if (Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.E)) { _detailScroll += ScrollStep; changed = true; }
             if (Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.Q)) { _detailScroll -= ScrollStep; changed = true; }
 
@@ -109,9 +114,20 @@ namespace Detective.UI
         /// <summary>상세 문구를 넣고 스크롤 위치를 맞춘다. 다른 항목을 고르면 맨 위로 돌아간다.</summary>
         private void SetDetail(string key, string text)
         {
+            SetDetail(key, text, null);
+        }
+
+        /// <summary>그림이 있으면 오른쪽 위에 액자로 걸고, 글은 그 왼쪽으로 좁힌다.</summary>
+        private void SetDetail(string key, string text, Sprite picture)
+        {
             if (key != _detailKey) _detailScroll = 0f;
             _detailKey = key;
             _detailLabel.text = text;
+
+            bool hasPicture = picture != null;
+            _evidenceFrame.gameObject.SetActive(hasPicture);
+            if (hasPicture) _evidenceImage.sprite = picture;
+            _detailViewport.offsetMax = new Vector2(hasPicture ? -300f : -24f, -24f);
 
             float viewHeight = _detailViewport.rect.height;
             float contentHeight = _detailLabel.preferredHeight;
@@ -169,7 +185,8 @@ namespace Detective.UI
             _listLabel.text = list.ToString();
 
             string id = entries[selected].Id;
-            SetDetail(_tab + ":" + id, _tab == TabPeople ? _presenter.PersonDetail(id) : _presenter.EvidenceDetail(id));
+            Sprite picture = _tab == TabEvidence ? ArtLibrary.Instance.EvidenceImage(id) : null;
+            SetDetail(_tab + ":" + id, _tab == TabPeople ? _presenter.PersonDetail(id) : _presenter.EvidenceDetail(id), picture);
             _helpLabel.text = "[↑ ↓] 선택   [1~3 / ← →] 탭   [PgUp / PgDn · Q / E] 내용 스크롤   [N / Esc] 닫기";
         }
 
@@ -213,9 +230,9 @@ namespace Detective.UI
                     RectTransform cell = UIFactory.CreateRect("Cell_" + r + "_" + c, grid,
                         new Vector2(xMin, yMin), new Vector2(xMax, yMax), new Vector2(2f, 2f), new Vector2(-2f, -2f));
                     bool header = r == 0 || c == 0;
-                    UIFactory.AddImage(cell, header ? new Color(1f, 1f, 1f, 0.08f) : new Color(1f, 1f, 1f, 0.03f));
+                    UIFactory.AddImage(cell, header ? new Color(0.16f, 0.13f, 0.10f, 0.14f) : UIFactory.InkWash);
                     Text label = UIFactory.AddText(UIFactory.CreateStretch("Text", cell, 6f),
-                        header ? 24 : 18, header ? TextAnchor.MiddleCenter : TextAnchor.MiddleLeft, Color.white);
+                        header ? 24 : 18, header ? TextAnchor.MiddleCenter : TextAnchor.MiddleLeft, UIFactory.Ink);
                     label.verticalOverflow = VerticalWrapMode.Overflow;
                     label.lineSpacing = 1f;
 
@@ -231,28 +248,34 @@ namespace Detective.UI
         {
             _root = UIFactory.CreateRect("Notebook", transform,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-840f, -480f), new Vector2(840f, 480f));
-            UIFactory.AddImage(_root, UIFactory.PanelColor);
+            UIFactory.AddPaper(_root);
 
             RectTransform tabsRect = UIFactory.CreateRect("Tabs", _root,
                 new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(32f, -90f), new Vector2(-32f, -16f));
-            _tabsLabel = UIFactory.AddText(tabsRect, 30, TextAnchor.MiddleLeft, Color.white);
+            _tabsLabel = UIFactory.AddText(tabsRect, 30, TextAnchor.MiddleLeft, UIFactory.Ink);
 
             _listPanel = UIFactory.CreateRect("List", _root,
                 new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(32f, 70f), new Vector2(472f, -100f));
-            UIFactory.AddImage(_listPanel, new Color(1f, 1f, 1f, 0.04f));
-            _listLabel = UIFactory.AddText(UIFactory.CreateStretch("Text", _listPanel, 18f), 28, TextAnchor.UpperLeft, Color.white);
+            UIFactory.AddImage(_listPanel, UIFactory.InkWash);
+            _listLabel = UIFactory.AddText(UIFactory.CreateStretch("Text", _listPanel, 18f), 28, TextAnchor.UpperLeft, UIFactory.Ink);
 
             _detailPanel = UIFactory.CreateRect("Detail", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(496f, 70f), new Vector2(-32f, -100f));
-            UIFactory.AddImage(_detailPanel, new Color(1f, 1f, 1f, 0.04f));
+            UIFactory.AddImage(_detailPanel, UIFactory.InkWash);
             // 상세 문구는 길어질 수 있어 마스크 안에서 PgUp/PgDn(또는 Q/E)으로 스크롤한다.
             _detailViewport = UIFactory.CreateStretch("Viewport", _detailPanel, 24f);
             _detailViewport.gameObject.AddComponent<RectMask2D>();
             _detailContent = UIFactory.CreateRect("Text", _detailViewport,
                 new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero);
             _detailContent.pivot = new Vector2(0.5f, 1f);
-            _detailLabel = UIFactory.AddText(_detailContent, 24, TextAnchor.UpperLeft, Color.white);
+            _detailLabel = UIFactory.AddText(_detailContent, 24, TextAnchor.UpperLeft, UIFactory.Ink);
             _detailLabel.verticalOverflow = VerticalWrapMode.Overflow;
+
+            // 단서 사진 액자(증거 탭에서 그림이 있을 때만 보인다).
+            _evidenceFrame = UIFactory.CreateRect("EvidencePicture", _detailPanel,
+                new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(-284f, -284f), new Vector2(-24f, -24f));
+            _evidenceImage = UIFactory.AddFramedImage(_evidenceFrame, null);
+            _evidenceFrame.gameObject.SetActive(false);
 
             _timelinePanel = UIFactory.CreateRect("Timeline", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(32f, 70f), new Vector2(-32f, -100f));

@@ -78,6 +78,15 @@ namespace Detective.UI
                 if (Input.GetKeyDown(KeyCode.Alpha1 + t)) SetTick(t, false);
             }
 
+#if UNITY_EDITOR
+            // 개발 확인용: 실제 스케줄과 복원된 타임라인을 오간다. 빌드에는 들어가지 않는다.
+            if (Input.GetKeyDown(KeyCode.F9) && GameManager.Instance != null)
+            {
+                GameManager.Instance.ShowTruthForDebug = !GameManager.Instance.ShowTruthForDebug;
+                SetTick(CurrentTick, false);
+            }
+#endif
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _autoplay = !_autoplay;
@@ -108,6 +117,7 @@ namespace Detective.UI
         {
             _autoplay = false;
             _root.gameObject.SetActive(false);
+            if (GameManager.Instance != null) GameManager.Instance.ShowTruthForDebug = false;
             ExitOverviewCamera();
             if (_director != null) _director.ReturnToPresent(true);
             ModalState.Exit(GameMode.Timeline, Time.frameCount);
@@ -197,9 +207,12 @@ namespace Detective.UI
 
         private void RefreshLabels()
         {
+            bool truth = GameManager.Instance != null && GameManager.Instance.ShowTruthForDebug;
             _titleLabel.text = "타임라인 관찰  " + UIFactory.Colorize(GameTime.ToLabel(CurrentTick), UIFactory.AccentColor)
                 + (_autoplay ? "  ▶ 재생 중" : string.Empty)
-                + "\n<size=24>수집한 증언·목격·물증으로 복원한 동선만 보인다</size>";
+                + (truth
+                    ? "\n<size=24><color=#FF7070>[개발용] 실제 스케줄 표시 중 (F9)</color></size>"
+                    : "\n<size=24>수집한 증언·목격·물증으로 복원한 동선만 보인다</size>");
 
             for (int t = 0; t < GameTime.TickCount; t++)
             {

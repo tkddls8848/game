@@ -17,6 +17,7 @@ namespace DetectiveEditor
         public const string RoomsJsonPath = "Assets/Resources/GameData/rooms.json";
         public const string NpcsFolder = "Assets/Resources/GameData/npcs";
         public const string EvidenceJsonPath = "Assets/Resources/GameData/evidence/evidence.json";
+        public const string DialogueFolder = "Assets/Resources/GameData/dialogue";
 
         [MenuItem("Tools/Detective/Validate Game Data")]
         public static void ValidateFromMenu()
@@ -51,7 +52,8 @@ namespace DetectiveEditor
 
             List<NpcDefinition> npcs = LoadNpcs(errors);
             EvidenceTable evidence = LoadEvidenceTable(errors);
-            var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs), evidence);
+            List<DialogueFile> dialogues = LoadDialogues(errors);
+            var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs), evidence, dialogues);
             errors.AddRange(GameDataValidator.Validate(database));
             return database;
         }
@@ -65,6 +67,18 @@ namespace DetectiveEditor
                 NpcDefinition npc = GameDataLoader.ParseNpc(File.ReadAllText(path), path);
                 if (npc == null) errors.Add(path + " 를 파싱하지 못했다.");
                 else result.Add(npc);
+            }
+            return result;
+        }
+
+        public static List<DialogueFile> LoadDialogues(List<string> errors)
+        {
+            var result = new List<DialogueFile>();
+            foreach (string path in ReadJsonFiles(DialogueFolder, errors))
+            {
+                DialogueFile file = GameDataLoader.ParseDialogue(File.ReadAllText(path), path);
+                if (file == null) errors.Add(path + " 를 파싱하지 못했다.");
+                else result.Add(file);
             }
             return result;
         }

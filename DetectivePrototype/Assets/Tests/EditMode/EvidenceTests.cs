@@ -75,7 +75,7 @@ namespace Detective.Tests
             table.evidence[1].revealNpc = "ghost";
             table.evidence[1].relatedTick = 9;
 
-            var database = new CaseDatabase(RoomLayout.FromTable(TestCaseFactory.Rooms()), new NpcRoster(TestCaseFactory.Npcs()), table);
+            var database = TestCaseFactory.Database(TestCaseFactory.Npcs(), table, TestCaseFactory.Dialogues());
             List<string> errors = GameDataValidator.Validate(database);
 
             Assert.IsTrue(errors.Exists(e => e.Contains("nowhere")), string.Join("\n", errors.ToArray()));
@@ -89,7 +89,7 @@ namespace Detective.Tests
             EvidenceTable table = TestCaseFactory.Evidence();
             table.evidence[0].offsetX = 4.9f; // 방 폭 10 → 허용 한계 5 - 0.8 = 4.2
 
-            var database = new CaseDatabase(RoomLayout.FromTable(TestCaseFactory.Rooms()), new NpcRoster(TestCaseFactory.Npcs()), table);
+            var database = TestCaseFactory.Database(TestCaseFactory.Npcs(), table, TestCaseFactory.Dialogues());
             Assert.IsTrue(GameDataValidator.Validate(database).Exists(e => e.Contains("밖으로")));
         }
 
@@ -99,7 +99,7 @@ namespace Detective.Tests
             NpcDefinition[] npcs = TestCaseFactory.Npcs();
             npcs[1].schedule = new[] { "a", "b", "", "study" };
 
-            var database = new CaseDatabase(RoomLayout.FromTable(TestCaseFactory.Rooms()), new NpcRoster(npcs), TestCaseFactory.Evidence());
+            var database = TestCaseFactory.Database(npcs, TestCaseFactory.Evidence(), TestCaseFactory.Dialogues());
             List<string> errors = GameDataValidator.Validate(database);
             Assert.IsTrue(errors.Exists(e => e.Contains("schedule 길이")), string.Join("\n", errors.ToArray()));
             Assert.IsTrue(errors.Exists(e => e.Contains("비어 있다")));

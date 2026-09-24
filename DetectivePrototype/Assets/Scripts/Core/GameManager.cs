@@ -25,8 +25,22 @@ namespace Detective.Core
         /// <summary>이번 판의 수사 진행 상태. Awake 이후에 유효하다.</summary>
         public InvestigationState State { get; private set; }
 
-        /// <summary>타임라인 관찰 화면이 인물 위치를 묻는 곳.</summary>
-        public ITimelinePlacementSource TimelineSource { get; private set; }
+        /// <summary>
+        /// 타임라인 관찰 화면이 인물 위치를 묻는 곳. 지금까지 모은 기록으로 매번 새로 복원한다(기록 수십 건이라 싸다).
+        /// </summary>
+        public ITimelinePlacementSource TimelineSource
+        {
+            get
+            {
+                if (ShowTruthForDebug) return _truth;
+                return State != null ? TimelineBoard.Build(State) : null;
+            }
+        }
+
+        /// <summary>개발 확인용: 실제 스케줄을 그대로 보여 준다(에디터에서 타임라인 관찰 중 F9).</summary>
+        public bool ShowTruthForDebug { get; set; }
+
+        private readonly ScheduleTruthSource _truth = new ScheduleTruthSource();
 
         private void Awake()
         {
@@ -47,27 +61,23 @@ namespace Detective.Core
                 Debug.LogError("[rooms.json] " + errors[i]);
             }
 
-            Database = new CaseDatabase(RoomLayout.FromTable(table), new NpcRoster(GameDataLoader.LoadNpcs()),
-                GameDataLoader.LoadEvidenceTable());
+            Database = GameDataLoader.BuildDatabase(table);
 
             List<string> dataErrors = GameDataValidator.Validate(Database);
             for (int i = 0; i < dataErrors.Count; i++) Debug.LogError("[GameData] " + dataErrors[i]);
 
             State = new InvestigationState(Database);
-            TimelineSource = new ScheduleTruthSource();
             Debug.Log("[GameManager] 방 " + Layout.RoomCount + "개, 인물 " + Database.Npcs.All.Count + "명, 단서 "
                 + Database.Evidence.All.Count + "개 로드 완료.");
         }
 
         private void OnEnable()
         {
-            GameEvents.TalkRequested += OnTalkRequested;
             GameEvents.EvidenceCollected += OnEvidenceCollected;
         }
 
         private void OnDisable()
         {
-            GameEvents.TalkRequested -= OnTalkRequested;
             GameEvents.EvidenceCollected -= OnEvidenceCollected;
         }
 
@@ -82,13 +92,6 @@ namespace Detective.Core
                 return;
             }
             if (State.CollectEvidence(evidenceId)) GameEvents.RaiseNotebookUpdated();
-        }
-
-        private void OnTalkRequested(string npcId)
-        {
-            NpcDefinition npc;
-            if (!Database.Npcs.TryGet(npcId, out npc)) return;
-            GameEvents.ShowMessage(npc.displayName + " — " + npc.relation);
         }
 
         private void OnDestroy()

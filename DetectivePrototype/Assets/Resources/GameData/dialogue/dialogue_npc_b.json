@@ -1,0 +1,11 @@
+{
+  "npcId": "npc_b",
+  "lines": [
+    { "id": "greet", "text": "아이고, 탐정님. 수프가 다 식어 버렸어요. 이런 날에 무슨 수프 얘기냐고요? 손이 떨려서 그래요." },
+    { "id": "alibi", "revealsClaims": true, "text": "저녁 내내 식당에 있었습니다. 18시 10분쯤 재료를 가지러 창고에 잠깐 다녀온 것 말고는요. 19시까지 한 발짝도 안 나갔어요." },
+    { "id": "alone", "text": "18시 20분부터 40분까지 식당엔 저 혼자였어요. 소스를 졸이느라 문 앞에 붙어 있었으니, 누가 들어왔으면 모를 수가 없죠." },
+    { "id": "saw_clara_storage", "sightingTick": 1, "sightingTarget": "npc_a", "text": "18시 10분쯤 창고에서 클라라 씨를 봤어요. 선반에서 뭘 찾더니 저를 보고는 서둘러 나가더군요." },
+    { "id": "on_poison", "requiresEvidence": "ev_poison_tin", "text": "쥐약은 창고 맨 위 선반에 둡니다. 지난주엔 가득 차 있었는데… 절반이나 비었다고요?" },
+    { "id": "on_phone", "requiresEvidence": "ev_phone_log", "text": "맞아요, 18시 30분에 식료품점 전화를 받았죠. 식당 내선으로요. 교환원이 확인해 줄 겁니다." }
+  ]
+}

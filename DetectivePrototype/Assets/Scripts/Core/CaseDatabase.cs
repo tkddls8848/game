@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Detective.Data;
+using Detective.Dialogue;
 using Detective.Investigation;
 using Detective.NPC;
 
@@ -14,12 +16,14 @@ namespace Detective.Core
         public readonly RoomLayout Layout;
         public readonly NpcRoster Npcs;
         public readonly EvidenceCatalog Evidence;
+        public readonly DialogueCatalog Dialogues;
 
-        public CaseDatabase(RoomLayout layout, NpcRoster npcs, EvidenceTable evidence)
+        public CaseDatabase(RoomLayout layout, NpcRoster npcs, EvidenceTable evidence, IEnumerable<DialogueFile> dialogues)
         {
             Layout = layout;
             Npcs = npcs ?? new NpcRoster(null);
             Evidence = new EvidenceCatalog(evidence);
+            Dialogues = new DialogueCatalog(dialogues);
         }
     }
 }

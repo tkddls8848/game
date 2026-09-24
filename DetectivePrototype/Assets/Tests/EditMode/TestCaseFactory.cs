@@ -74,9 +74,43 @@ namespace Detective.Tests
             };
         }
 
+        /// <summary>
+        /// culprit은 알리바이 대사와 와인잔 반응, witness는 알리바이 대사와 18:10 목격 덮어쓰기를 가진다.
+        /// </summary>
+        public static DialogueFile[] Dialogues()
+        {
+            return new[]
+            {
+                new DialogueFile
+                {
+                    npcId = "culprit",
+                    lines = new[]
+                    {
+                        new DialogueLine { id = "alibi", revealsClaims = true, text = "계속 A방에 있었어요." },
+                        new DialogueLine { id = "on_glass", requiresEvidence = "ev_glass", text = "그 잔은 모르는 일이에요." },
+                        new DialogueLine { id = "confess", requiresEvidence = "ev_log", claimTick = 3, claimRoom = "study", text = "…서재에 갔었어요." }
+                    }
+                },
+                new DialogueFile
+                {
+                    npcId = "witness",
+                    lines = new[]
+                    {
+                        new DialogueLine { id = "alibi", revealsClaims = true, text = "18:10에만 B방에 다녀왔습니다." },
+                        new DialogueLine { id = "saw", sightingTick = 1, sightingTarget = "culprit", text = "18:10에 B방에서 클라라가 서두르더군요." }
+                    }
+                }
+            };
+        }
+
         public static CaseDatabase Database()
         {
-            return new CaseDatabase(RoomLayout.FromTable(Rooms()), new NpcRoster(Npcs()), Evidence());
+            return Database(Npcs(), Evidence(), Dialogues());
+        }
+
+        public static CaseDatabase Database(NpcDefinition[] npcs, EvidenceTable evidence, DialogueFile[] dialogues)
+        {
+            return new CaseDatabase(RoomLayout.FromTable(Rooms()), new NpcRoster(npcs), evidence, dialogues);
         }
     }
 }

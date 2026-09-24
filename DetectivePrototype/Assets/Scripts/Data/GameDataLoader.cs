@@ -14,6 +14,7 @@ namespace Detective.Data
         public const string RoomsResourcePath = "GameData/rooms";
         public const string NpcsResourceFolder = "GameData/npcs";
         public const string EvidenceResourcePath = "GameData/evidence/evidence";
+        public const string DialogueResourceFolder = "GameData/dialogue";
 
         /// <summary>
         /// rooms.json을 읽어 온다. 파일이 없거나 깨져 있으면 빈 테이블을 돌려주고 에러 로그를 남긴다
@@ -76,11 +77,35 @@ namespace Detective.Data
             return (table ?? new EvidenceTable()).Normalized();
         }
 
+        /// <summary>dialogue/ 폴더의 모든 JSON. 한 파일 = 한 사람의 대사.</summary>
+        public static List<DialogueFile> LoadDialogues()
+        {
+            var result = new List<DialogueFile>();
+            TextAsset[] assets = Resources.LoadAll<TextAsset>(DialogueResourceFolder);
+            for (int i = 0; i < assets.Length; i++)
+            {
+                DialogueFile file = ParseDialogue(assets[i].text, assets[i].name);
+                if (file != null) result.Add(file);
+            }
+            return result;
+        }
+
+        public static DialogueFile ParseDialogue(string json, string label)
+        {
+            DialogueFile file = Parse<DialogueFile>(json, label);
+            return file != null ? file.Normalized() : null;
+        }
+
         /// <summary>사건 데이터 전체를 Resources에서 읽어 하나로 묶는다.</summary>
         public static CaseDatabase LoadDatabase()
         {
-            RoomTable rooms = LoadRoomTable();
-            return new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(LoadNpcs()), LoadEvidenceTable());
+            return BuildDatabase(LoadRoomTable());
+        }
+
+        /// <summary>이미 읽은 rooms.json에 나머지 데이터를 Resources에서 읽어 붙인다.</summary>
+        public static CaseDatabase BuildDatabase(RoomTable rooms)
+        {
+            return new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(LoadNpcs()), LoadEvidenceTable(), LoadDialogues());
         }
 
         /// <summary>JsonUtility 파싱 + 실패 로그. 실패하면 null.</summary>

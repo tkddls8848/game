@@ -1,0 +1,10 @@
+{
+  "npcId": "npc_c",
+  "lines": [
+    { "id": "greet", "text": "삼촌이 죽었다니… 솔직히 우린 사이가 좋진 않았어요. 그렇다고 제가 그랬다는 건 아닙니다." },
+    { "id": "alibi", "revealsClaims": true, "text": "18시 10분까지 로비에서 신문을 봤습니다. 20분쯤 복도를 지나 제 방으로 올라가 40분까지 있었고, 50분쯤 복도로 나왔다가 로비로 내려왔어요." },
+    { "id": "saw_clara_hall", "sightingTick": 2, "sightingTarget": "npc_a", "text": "18시 20분쯤 복도에서 클라라를 봤어요. 서재 쪽으로 걸어가던데… 손에 와인 쟁반을 들고 있었습니다." },
+    { "id": "on_will", "requiresEvidence": "ev_torn_will", "claimTick": 1, "claimRoom": "room_victim", "text": "…그래요, 18시 10분에 삼촌 서재에 갔었습니다. 유언장 문제로 크게 다퉜죠. 하지만 제가 나올 때 삼촌은 멀쩡히 살아서 고함을 치고 있었어요!" },
+    { "id": "on_ledger", "requiresEvidence": "ev_ledger", "text": "장부? 삼촌은 돈 문제라면 저보다 클라라를 더 의심했어요. 요즘 둘이 자주 언성을 높였거든요." }
+  ]
+}

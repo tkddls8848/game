@@ -30,7 +30,9 @@ namespace Detective.UI
         private RectTransform _listPanel;
         private RectTransform _detailPanel;
         private RectTransform _timelinePanel;
-        private Text _timelineLabel;
+        private Text _timelineLegend;
+        private Text[,] _timelineCells;
+        private List<NotebookEntry> _timelineRows;
 
         private NotebookPresenter _presenter;
 
@@ -114,8 +116,8 @@ namespace Detective.UI
 
             if (timeline)
             {
-                _timelineLabel.text = TimelineText();
-                _helpLabel.text = "[1~3 / ← →] 탭   [N / Esc] 닫기";
+                RefreshTimeline();
+                _helpLabel.text = "[1~3 / ← →] 탭   [N / Esc] 닫기   ·   [T] 타임라인 관찰 모드에서 동선을 움직여 볼 수 있다";
                 return;
             }
 
@@ -147,9 +149,56 @@ namespace Detective.UI
             _helpLabel.text = "[↑ ↓] 선택   [1~3 / ← →] 탭   [N / Esc] 닫기";
         }
 
-        private string TimelineText()
+        private void RefreshTimeline()
         {
-            return UIFactory.Colorize("아직 복원된 행적이 없다.", UIFactory.MutedColor);
+            if (_timelineCells == null) BuildTimelineGrid();
+
+            TimelineBoard board = TimelineBoard.Build(GameManager.Instance.State);
+            for (int r = 0; r < _timelineRows.Count; r++)
+            {
+                for (int t = GameTime.FirstTick; t <= GameTime.LastTick; t++)
+                {
+                    _timelineCells[r, t].text = _presenter.TimelineCell(board, _timelineRows[r].Id, t);
+                }
+            }
+        }
+
+        /// <summary>표 모양은 인물 수를 알아야 정해지므로 처음 열 때 만든다.</summary>
+        private void BuildTimelineGrid()
+        {
+            _timelineRows = _presenter.TimelineRows();
+            _timelineCells = new Text[_timelineRows.Count, GameTime.TickCount];
+
+            RectTransform grid = UIFactory.CreateRect("Grid", _timelinePanel,
+                Vector2.zero, Vector2.one, new Vector2(12f, 52f), new Vector2(-12f, -12f));
+
+            int columns = GameTime.TickCount + 1;
+            int rows = _timelineRows.Count + 1;
+            const float nameColumnShare = 0.14f;
+            float tickShare = (1f - nameColumnShare) / GameTime.TickCount;
+
+            for (int r = 0; r < rows; r++)
+            {
+                float yMax = 1f - (float)r / rows;
+                float yMin = 1f - (float)(r + 1) / rows;
+                for (int c = 0; c < columns; c++)
+                {
+                    float xMin = c == 0 ? 0f : nameColumnShare + (c - 1) * tickShare;
+                    float xMax = c == 0 ? nameColumnShare : nameColumnShare + c * tickShare;
+
+                    RectTransform cell = UIFactory.CreateRect("Cell_" + r + "_" + c, grid,
+                        new Vector2(xMin, yMin), new Vector2(xMax, yMax), new Vector2(2f, 2f), new Vector2(-2f, -2f));
+                    bool header = r == 0 || c == 0;
+                    UIFactory.AddImage(cell, header ? new Color(1f, 1f, 1f, 0.08f) : new Color(1f, 1f, 1f, 0.03f));
+                    Text label = UIFactory.AddText(UIFactory.CreateStretch("Text", cell, 6f),
+                        header ? 24 : 21, header ? TextAnchor.MiddleCenter : TextAnchor.MiddleLeft, Color.white);
+
+                    if (r == 0 && c == 0) label.text = UIFactory.Colorize("인물 / 시각", UIFactory.MutedColor);
+                    else if (r == 0) label.text = "<b>" + GameTime.ToLabel(c - 1) + "</b>";
+                    else if (c == 0) label.text = "<b>" + _timelineRows[r - 1].Title + "</b>";
+                    else _timelineCells[r - 1, c - 1] = label;
+                }
+            }
         }
 
         private void BuildUI()
@@ -170,12 +219,14 @@ namespace Detective.UI
             _detailPanel = UIFactory.CreateRect("Detail", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(496f, 70f), new Vector2(-32f, -100f));
             UIFactory.AddImage(_detailPanel, new Color(1f, 1f, 1f, 0.04f));
-            _detailLabel = UIFactory.AddText(UIFactory.CreateStretch("Text", _detailPanel, 24f), 28, TextAnchor.UpperLeft, Color.white);
+            _detailLabel = UIFactory.AddText(UIFactory.CreateStretch("Text", _detailPanel, 24f), 24, TextAnchor.UpperLeft, Color.white);
 
             _timelinePanel = UIFactory.CreateRect("Timeline", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(32f, 70f), new Vector2(-32f, -100f));
-            UIFactory.AddImage(_timelinePanel, new Color(1f, 1f, 1f, 0.04f));
-            _timelineLabel = UIFactory.AddText(UIFactory.CreateStretch("Text", _timelinePanel, 18f), 24, TextAnchor.UpperLeft, Color.white);
+            RectTransform legend = UIFactory.CreateRect("Legend", _timelinePanel,
+                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(12f, 4f), new Vector2(-12f, 46f));
+            _timelineLegend = UIFactory.AddText(legend, 22, TextAnchor.MiddleLeft, UIFactory.MutedColor);
+            _timelineLegend.text = NotebookPresenter.TimelineLegend;
 
             RectTransform helpRect = UIFactory.CreateRect("Help", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(32f, 14f), new Vector2(-32f, 60f));

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using Detective.Core;
 using Detective.Data;
+using Detective.Dialogue;
 using Detective.NPC;
 
 namespace Detective.Investigation
@@ -61,8 +62,54 @@ namespace Detective.Investigation
             sb.Append(Muted(npc.relation)).Append("\n\n");
             sb.Append(npc.description).Append("\n");
 
+            AppendStatements(sb, npc);
+            AppendSightingsOf(sb, npc.id);
             AppendRelatedEvidence(sb, npc.id);
             return sb.ToString();
+        }
+
+        /// <summary>이 사람에게 직접 들은 말(목격 포함). 들은 것만.</summary>
+        private void AppendStatements(StringBuilder sb, NpcDefinition npc)
+        {
+            if (npc.isVictim) return;
+            if (!_state.HasTalkedTo(npc.id))
+            {
+                sb.Append("\n").Append(Muted("아직 이야기를 나누지 않았다.")).Append("\n");
+                return;
+            }
+
+            sb.Append("\n").Append(Accent("들은 이야기")).Append("\n");
+            List<ConversationLine> lines = ConversationBuilder.AllLines(Database, npc.id);
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (!_state.HasHeard(lines[i].Key)) continue;
+                sb.Append("· ").Append(lines[i].Text).Append("\n");
+            }
+        }
+
+        /// <summary>다른 사람들이 이 사람을 봤다고 한 것.</summary>
+        private void AppendSightingsOf(StringBuilder sb, string npcId)
+        {
+            bool header = false;
+            IList<NpcDefinition> all = Database.Npcs.All;
+            for (int n = 0; n < all.Count; n++)
+            {
+                List<ConversationLine> lines = ConversationBuilder.AllLines(Database, all[n].id);
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    ConversationLine line = lines[i];
+                    if (!line.IsSighting || line.Sighting.TargetId != npcId || !_state.HasHeard(line.Key)) continue;
+
+                    if (!header)
+                    {
+                        sb.Append("\n").Append(Accent("다른 사람의 목격")).Append("\n");
+                        header = true;
+                    }
+                    sb.Append("· ").Append(GameTime.ToLabel(line.Sighting.Tick)).Append(" ")
+                        .Append(Database.Layout.DisplayNameOf(line.Sighting.RoomId))
+                        .Append(Muted(" — " + all[n].displayName)).Append("\n");
+                }
+            }
         }
 
         private void AppendRelatedEvidence(StringBuilder sb, string npcId)
@@ -118,6 +165,35 @@ namespace Detective.Investigation
             }
             return sb.ToString();
         }
+
+        // ----- 타임라인 ----------------------------------------------------------
+
+        /// <summary>타임라인 표의 행: 피해자 → 용의자.</summary>
+        public List<NotebookEntry> TimelineRows()
+        {
+            return PeopleEntries();
+        }
+
+        /// <summary>
+        /// 표 한 칸: 그 시각 그 사람에 대한 기록을 한 줄씩. 예: "식당 (본인)", "창고 (마르코)", "식당 (물증)".
+        /// 서로 어긋나는 기록도 나란히 적는다 — 어느 쪽이 참인지는 플레이어가 판단한다.
+        /// </summary>
+        public string TimelineCell(TimelineBoard board, string npcId, int tick)
+        {
+            List<TimelineRecord> records = board.RecordsFor(npcId, tick);
+            if (records.Count == 0) return Muted("?");
+
+            var sb = new StringBuilder();
+            for (int i = 0; i < records.Count; i++)
+            {
+                if (i > 0) sb.Append("\n");
+                sb.Append(Database.Layout.DisplayNameOf(records[i].RoomId))
+                    .Append(" ").Append(Muted("(" + board.SourceLabel(records[i], false) + ")"));
+            }
+            return sb.ToString();
+        }
+
+        public const string TimelineLegend = "(본인) 본인 증언   (이름) 그 사람이 목격   (물증) 단서로 확인   ? 모름";
 
         // ----- 공통 ------------------------------------------------------------
 

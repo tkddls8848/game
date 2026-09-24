@@ -318,6 +318,7 @@ namespace DetectiveEditor
 
             canvasObject.AddComponent<TimelineController>();
             canvasObject.AddComponent<NotebookUI>();
+            canvasObject.AddComponent<DialogueUI>();
 
             var hud = canvasObject.AddComponent<HudUI>();
             hud.player = playerInteraction;

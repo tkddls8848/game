@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Detective.Data;
+using Detective.Dialogue;
 using Detective.Investigation;
 using Detective.NPC;
 
@@ -23,6 +24,7 @@ namespace Detective.Core
 
             ValidateNpcs(database, errors);
             ValidateEvidence(database, errors);
+            ValidateDialogues(database, errors);
             return errors;
         }
 
@@ -125,6 +127,94 @@ namespace Detective.Core
                 if (string.IsNullOrEmpty(prop.name)) errors.Add(label + ": name이 비어 있다.");
                 ValidatePlacement(database, label, prop.room, prop.offsetX, prop.offsetY, errors);
             }
+        }
+
+        private static void ValidateDialogues(CaseDatabase database, List<string> errors)
+        {
+            var filesByNpc = new HashSet<string>();
+            IList<DialogueFile> files = database.Dialogues.Files;
+            for (int f = 0; f < files.Count; f++)
+            {
+                DialogueFile file = files[f];
+                string fileLabel = "dialogue(" + file.npcId + ")";
+
+                NpcDefinition npc;
+                if (!database.Npcs.TryGet(file.npcId, out npc))
+                {
+                    errors.Add(fileLabel + ": npcId '" + file.npcId + "' 가 없는 인물이다.");
+                    continue;
+                }
+                if (npc.isVictim) errors.Add(fileLabel + ": 피해자는 대사를 가질 수 없다.");
+                if (!filesByNpc.Add(file.npcId)) errors.Add(fileLabel + ": 같은 인물의 대사 파일이 둘 이상이다.");
+
+                List<Sighting> reported = SightingGenerator.Reported(database.Npcs, npc);
+                var lineIds = new HashSet<string>();
+                int claimRevealers = 0;
+
+                for (int i = 0; i < file.lines.Length; i++)
+                {
+                    DialogueLine line = file.lines[i];
+                    string label = fileLabel + "." + (string.IsNullOrEmpty(line.id) ? "lines[" + i + "]" : line.id);
+
+                    if (string.IsNullOrEmpty(line.id)) errors.Add(label + ": id가 비어 있다.");
+                    else if (!lineIds.Add(line.id)) errors.Add(label + ": id가 중복된다.");
+                    if (string.IsNullOrEmpty(line.text)) errors.Add(label + ": text가 비어 있다.");
+
+                    if (!string.IsNullOrEmpty(line.requiresEvidence) && !HasEvidence(database, line.requiresEvidence))
+                        errors.Add(label + ": requiresEvidence '" + line.requiresEvidence + "' 가 없는 단서다.");
+
+                    if (line.revealsClaims)
+                    {
+                        claimRevealers++;
+                        if (!string.IsNullOrEmpty(line.requiresEvidence))
+                            errors.Add(label + ": 알리바이(revealsClaims) 대사는 조건 없이 들을 수 있어야 한다.");
+                    }
+
+                    if (!string.IsNullOrEmpty(line.claimRoom))
+                    {
+                        if (!GameTime.IsValidTick(line.claimTick)) errors.Add(label + ": claimTick " + line.claimTick + " 이 범위 밖이다.");
+                        if (!HasRoom(database, line.claimRoom)) errors.Add(label + ": claimRoom '" + line.claimRoom + "' 이 없는 방이다.");
+                    }
+
+                    if (!string.IsNullOrEmpty(line.sightingTarget))
+                    {
+                        if (!line.IsSightingOverride)
+                        {
+                            errors.Add(label + ": sightingTarget은 있는데 sightingTick이 없다.");
+                        }
+                        else if (!ContainsSighting(reported, line.sightingTick, line.sightingTarget))
+                        {
+                            // 스케줄상 일어나지 않는(또는 거짓말 때문에 털어놓지 않는) 목격이라 이 대사는 절대 나오지 않는다.
+                            errors.Add(label + ": " + GameTime.ToLabel(line.sightingTick) + "에 " + line.sightingTarget
+                                + " 을(를) 본 적이 없어 이 목격 대사는 나오지 않는다(스케줄을 확인할 것).");
+                        }
+                    }
+                }
+
+                if (claimRevealers != 1)
+                    errors.Add(fileLabel + ": 알리바이(revealsClaims) 대사가 정확히 하나여야 한다(현재 " + claimRevealers + "개).");
+            }
+
+            List<NpcDefinition> suspects = database.Npcs.Suspects;
+            for (int i = 0; i < suspects.Count; i++)
+            {
+                if (!filesByNpc.Contains(suspects[i].id)) errors.Add(suspects[i].id + ": 대사 파일이 없다.");
+            }
+        }
+
+        private static bool HasEvidence(CaseDatabase database, string evidenceId)
+        {
+            EvidenceDefinition evidence;
+            return database.Evidence.TryGet(evidenceId, out evidence);
+        }
+
+        private static bool ContainsSighting(List<Sighting> sightings, int tick, string targetId)
+        {
+            for (int i = 0; i < sightings.Count; i++)
+            {
+                if (sightings[i].Tick == tick && sightings[i].TargetId == targetId) return true;
+            }
+            return false;
         }
 
         private static void ValidatePlacement(CaseDatabase database, string label, string roomId, float offsetX, float offsetY, List<string> errors)

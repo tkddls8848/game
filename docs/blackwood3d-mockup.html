@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>블랙우드 저택 3D 스터디</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+</head>
+<body>
+<style>
+  :root {
+    color-scheme: light;
+    --ink:        #1d1813;
+    --ink-soft:   #4a4036;
+    --ink-faint:  #7b6f60;
+    --paper:      #e9e1cf;
+    --paper-2:    #ded4bd;
+    --paper-3:    #cfc3a7;
+    --seal:       #8c2f28;
+    --brass:      #a07c33;
+    --rule:       #bfb193;
+    --stage:      #17140f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ink:       #e6ddc9;
+      --ink-soft:  #b6a98f;
+      --ink-faint: #82765f;
+      --paper:     #16130f;
+      --paper-2:   #1f1b15;
+      --paper-3:   #2b251c;
+      --seal:      #c4564a;
+      --brass:     #d4ac5c;
+      --rule:      #3a3125;
+      --stage:     #0d0b08;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ink:       #e6ddc9;
+    --ink-soft:  #b6a98f;
+    --ink-faint: #82765f;
+    --paper:     #16130f;
+    --paper-2:   #1f1b15;
+    --paper-3:   #2b251c;
+    --seal:      #c4564a;
+    --brass:     #d4ac5c;
+    --rule:      #3a3125;
+    --stage:     #0d0b08;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Serif KR", "Nanum Myeongjo", Georgia, serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 72px; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(30px, 5.2vw, 46px); font-weight: 700; line-height: 1.2;
+    margin: 0 0 14px; text-wrap: balance; letter-spacing: -.01em;
+  }
+  .lede { font-size: clamp(15px, 1.7vw, 17px); color: var(--ink-soft); max-width: 62ch; margin: 0 0 8px; }
+  .lede b { color: var(--ink); font-weight: 600; }
+
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 22px 0 30px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: var(--ink-faint);
+  }
+  .facts span { white-space: nowrap; }
+  .facts b { color: var(--seal); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  /* ---- 뷰포트 ---- */
+  .stage-shell { border: 1px solid var(--rule); background: var(--stage); border-radius: 3px; overflow: hidden; }
+  .tabs { display: flex; border-bottom: 1px solid var(--rule); background: var(--paper-2); }
+  .tab {
+    flex: 1 1 0; appearance: none; border: 0; background: transparent; cursor: pointer;
+    padding: 13px 10px 12px; text-align: left; border-right: 1px solid var(--rule);
+    font-family: inherit; color: var(--ink-soft); transition: background .15s, color .15s;
+    min-width: 0;
+  }
+  .tab:last-child { border-right: 0; }
+  .tab:hover { background: var(--paper-3); }
+  .tab[aria-selected="true"] { background: var(--paper); color: var(--ink); box-shadow: inset 0 -2px 0 var(--seal); }
+  .tab .k {
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px;
+    letter-spacing: .14em; color: var(--seal); display: block;
+  }
+  .tab .n { font-size: 14px; font-weight: 600; display: block; line-height: 1.35; }
+  .tab .s { font-size: 11.5px; color: var(--ink-faint); display: block; line-height: 1.4; }
+  .tab:focus-visible { outline: 2px solid var(--seal); outline-offset: -2px; }
+
+  #stage { position: relative; aspect-ratio: 16 / 9; max-width: 100%; }
+  @media (max-width: 560px) { #stage { aspect-ratio: 4 / 3; } }
+  #stage canvas { display: block; width: 100%; height: 100%; }
+  .stage-note {
+    position: absolute; left: 12px; bottom: 10px; z-index: 2;
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: .06em;
+    color: rgba(233,225,207,.5); pointer-events: none;
+  }
+  .stage-fail {
+    position: absolute; inset: 0; display: none; place-items: center; text-align: center;
+    color: #cfc3a7; padding: 24px; font-size: 14px;
+  }
+
+  .caption {
+    display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: baseline;
+    padding: 12px 14px; border-top: 1px solid var(--rule); background: var(--paper-2);
+    font-size: 13.5px; color: var(--ink-soft);
+  }
+  .caption .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint);
+  }
+
+  h2 {
+    font-size: 20px; font-weight: 700; margin: 52px 0 6px; letter-spacing: -.005em;
+  }
+  h2 + .sub { margin: 0 0 20px; color: var(--ink-faint); font-size: 14px; }
+
+  /* ---- 비교표 ---- */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px; }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13.5px; background: var(--paper-2); }
+  th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  thead th { background: var(--paper-3); font-size: 12px; font-weight: 700; }
+  thead th .k { font-family: "IBM Plex Mono", ui-monospace, monospace; color: var(--seal); letter-spacing: .12em; }
+  tbody th { font-weight: 600; color: var(--ink-soft); width: 140px; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  td.num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .pick { color: var(--seal); font-weight: 600; }
+
+  /* ---- 코드 이관 막대 ---- */
+  .bars { display: grid; gap: 10px; margin-top: 4px; }
+  .bar { display: grid; grid-template-columns: 132px 1fr 92px; gap: 12px; align-items: center; font-size: 13px; }
+  @media (max-width: 560px) { .bar { grid-template-columns: 1fr; gap: 3px; } }
+  .bar .name { color: var(--ink-soft); }
+  .bar .track { height: 12px; background: var(--paper-3); border-radius: 2px; overflow: hidden; }
+  .bar .fill { height: 100%; }
+  .bar .val {
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px;
+    color: var(--ink-faint); text-align: right; font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 560px) { .bar .val { text-align: left; } }
+
+  .callout {
+    border-left: 3px solid var(--seal); background: var(--paper-2);
+    padding: 16px 18px; margin: 28px 0 0; font-size: 14.5px; color: var(--ink-soft);
+  }
+  .callout b { color: var(--ink); font-weight: 600; }
+  footer {
+    margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px; color: var(--ink-faint);
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">DetectivePrototype · 3D 전환 검토</p>
+  <h1>블랙우드 저택 3D 스터디</h1>
+  <p class="lede">
+    지금 2D 프로토타입의 <b>rooms.json 좌표를 그대로 읽어</b> 세 가지 3D 방향을 세운 것입니다.
+    방 6개, 문 5개, 36 × 24 m — 벽은 게임과 같은 방식으로 방 테두리에서 문을 빼고 같은 직선 위 조각을 병합해 만들었고,
+    인물 5명은 <b>18:00 시점의 실제 스케줄 위치</b>에 서 있습니다.
+  </p>
+  <div class="facts">
+    <span>바닥 <b>36 × 24 m</b></span>
+    <span>방 <b>6</b></span>
+    <span>문 <b>5</b></span>
+    <span>벽 두께 <b>0.4 m</b></span>
+    <span>인물 <b>5</b> + 플레이어</span>
+  </div>
+
+  <div class="stage-shell">
+    <div class="tabs" role="tablist" aria-label="3D 방향">
+      <button class="tab" role="tab" id="tab-a" aria-controls="stage" aria-selected="true" data-style="a">
+        <span class="k">A</span><span class="n">인형의 집 디오라마</span><span class="s">지붕을 걷어낸 평면도 · 보드게임 말</span>
+      </button>
+      <button class="tab" role="tab" id="tab-b" aria-controls="stage" aria-selected="false" data-style="b">
+        <span class="k">B</span><span class="n">저폴리 스타일라이즈드</span><span class="s">벽을 세운 실내 · 각진 인물</span>
+      </button>
+      <button class="tab" role="tab" id="tab-c" aria-controls="stage" aria-selected="false" data-style="c">
+        <span class="k">C</span><span class="n">사실적 저택</span><span class="s">어두운 실내 · 램프 조명</span>
+      </button>
+    </div>
+    <div id="stage">
+      <div class="stage-note">드래그로 회전 · 휠로 확대</div>
+      <div class="stage-fail" id="fail">이 브라우저에서 WebGL을 쓸 수 없습니다. 아래 비교표는 그대로 보실 수 있습니다.</div>
+    </div>
+    <div class="caption">
+      <span class="lbl">지금 보는 것</span>
+      <span id="cap">지붕과 천장을 걷어내고 벽을 허리 높이로 잘라, 여섯 방을 한 화면에 담습니다. 인물은 색으로 구분되는 말입니다.</span>
+    </div>
+  </div>
+
+  <h2>세 방향 비교</h2>
+  <p class="sub">1인 작업 기준. 에셋 비용은 마켓플레이스 팩을 사는 경우입니다.</p>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th><span class="k">A</span> 인형의 집</th>
+          <th><span class="k">B</span> 저폴리</th>
+          <th><span class="k">C</span> 사실적</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>건축 모듈</th><td class="num">15~20개</td><td class="num">20~25개</td><td class="num">25~35개</td></tr>
+        <tr><th>가구 · 소품</th><td class="num">30~45개</td><td class="num">50~70개</td><td class="num">80~120개</td></tr>
+        <tr><th>인물</th>
+          <td>말 5개<br><span class="num">리그 없음</span></td>
+          <td>각진 인물 5명<br><span class="num">걷기 · 대기</span></td>
+          <td>시대 의상 5명<br><span class="num">리그 + 표정</span></td></tr>
+        <tr><th>조명</th><td>단순 · 실시간</td><td>가벼운 베이크</td><td>베이크 GI + 램프 다수</td></tr>
+        <tr><th>기간</th><td class="num pick">3~5주</td><td class="num">4~7주</td><td class="num">3~6개월</td></tr>
+        <tr><th>에셋 비용</th><td class="num">$0~150</td><td class="num">$100~300</td><td class="num">$300~1,500</td></tr>
+        <tr><th>핵심 루프</th>
+          <td class="pick">그대로 유지</td>
+          <td>벽 페이드 필요</td>
+          <td>재설계 필요</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>코드는 어느 쪽이든 대부분 그대로입니다</h2>
+  <p class="sub">런타임 5,543줄 기준. 추리 엔진은 UnityEngine을 참조하지 않아 차원과 무관합니다.</p>
+  <div class="bars" id="bars"></div>
+
+  <div class="callout">
+    <b>방향을 고르기 전에 짚을 것 하나.</b> 이 게임의 핵심은 T키 타임라인에서
+    <b>여섯 방의 인물을 한 화면에 놓고</b> 증언과 목격의 모순을 찾는 것입니다.
+    1인칭이나 어깨 너머 시점으로 가면 그 기능이 무너집니다.
+    3D 전환은 시점을 바꾸는 일이 아니라 <b>평면도를 입체로 만드는 일</b>이어야 합니다 —
+    A안이 유일하게 이 제약을 공짜로 만족합니다.
+  </div>
+
+  <footer>rooms.json · npcs/*.json 실제 데이터 · 목업이며 최종 룩이 아닙니다</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var ROOMS = [
+    { id:"room_lobby",   name:"로비",    x:0,  y:0,  w:12, h:10, floor:"#3A4A5A" },
+    { id:"room_dining",  name:"식당",    x:12, y:0,  w:12, h:10, floor:"#4A4436" },
+    { id:"room_storage", name:"창고",    x:24, y:0,  w:12, h:10, floor:"#3B3B3B" },
+    { id:"room_hall",    name:"복도",    x:0,  y:10, w:36, h:4,  floor:"#2F3540" },
+    { id:"room_victim",  name:"서재",    x:2,  y:14, w:12, h:10, floor:"#4A3540" },
+    { id:"room_suspect", name:"손님 방", x:22, y:14, w:12, h:10, floor:"#37474A" }
+  ];
+  var DOORS = [
+    { x:5,  y:9.7,  w:2, h:0.6 }, { x:17, y:9.7,  w:2, h:0.6 }, { x:29, y:9.7, w:2, h:0.6 },
+    { x:7,  y:13.7, w:2, h:0.6 }, { x:27, y:13.7, w:2, h:0.6 }
+  ];
+  var WALL_T = 0.4;
+
+  // 18:00(틱 0) 실제 스케줄 위치 + npcs/*.json 의 presentOffset
+  var PEOPLE = [
+    { room:"room_victim", ox:0,    oy:0,    color:0xB8B8B8, tall:1.00 },
+    { room:"room_dining", ox:-2.5, oy:1.5,  color:0xC0392B, tall:0.95 },
+    { room:"room_dining", ox:-2.0, oy:-1.5, color:0xE67E22, tall:1.02 },
+    { room:"room_lobby",  ox:2.5,  oy:1.5,  color:0x2E86C1, tall:1.04 },
+    { room:"room_lobby",  ox:2.5,  oy:-2.0, color:0x27AE60, tall:0.97 },
+    { room:"room_lobby",  ox:-3.2, oy:-3.0, color:0xD1A85A, tall:1.00 } // 플레이어
+  ];
+
+  // 방마다 놓는 가구. 값은 방 원점 기준 [x, y, 너비, 깊이, 높이]
+  var PROPS = {
+    room_lobby:   [[1,1,2.2,1.0,0.95],[1,7.6,3.2,0.8,0.5],[9.6,8.2,1.0,1.0,2.4],[8.4,1.2,2.4,1.0,0.8]],
+    room_dining:  [[3,3.6,6.0,2.2,0.78],[2.6,2.5,0.5,0.5,1.0],[2.6,6.3,0.5,0.5,1.0],[8.2,2.5,0.5,0.5,1.0],
+                   [8.2,6.3,0.5,0.5,1.0],[0.7,8.0,3.0,0.9,1.1]],
+    room_storage: [[0.7,0.7,1.3,1.3,1.4],[0.7,2.4,1.3,1.3,1.0],[9.6,0.7,1.6,3.6,2.0],[4.5,7.8,2.6,1.0,1.6],
+                   [2.6,0.9,1.0,1.0,0.7]],
+    room_hall:    [[3,1.4,10,1.2,0.04],[16,1.4,10,1.2,0.04],[13.6,0.5,0.8,0.8,0.9]],
+    room_victim:  [[4.2,6.6,3.0,1.4,0.76],[5.4,5.6,0.6,0.6,1.0],[0.6,1.0,0.9,6.0,2.2],[10.4,7.4,1.4,1.2,1.2],
+                   [8.6,2.0,2.2,2.2,0.35]],
+    room_suspect: [[1.0,5.4,2.2,3.4,0.62],[1.0,1.2,1.2,1.2,2.1],[3.6,8.4,1.0,0.8,0.6],[8.6,2.2,1.8,1.0,0.8]]
+  };
+
+  var STYLES = {
+    a: {
+      cap: "지붕과 천장을 걷어내고 벽을 허리 높이로 잘라, 여섯 방을 한 화면에 담습니다. 인물은 색으로 구분되는 말입니다.",
+      wallH: 1.5, wallTop: 0xbfae8c, wallSide: 0x8d7d61, floorMix: 0.62, floorTo: 0xd8ccae,
+      prop: 0x9b8a69, fog: 0, bg: 0x17140f, amb: 0.85, key: 0.75, warm: 0,
+      base: true, figure: "pawn", cam: [0, 58, 46], flat: false, rough: 0.92
+    },
+    b: {
+      cap: "벽을 사람 키로 세우고 색을 단순하게. 각진 인물과 가구로 통일감을 만듭니다. 위에서 볼 때는 앞벽을 흐리게 처리해야 합니다.",
+      wallH: 3.1, wallTop: 0xa8a290, wallSide: 0x7f7a6a, floorMix: 0.42, floorTo: 0x9fb08f,
+      prop: 0x8a8f6e, fog: 0, bg: 0x12161a, amb: 0.62, key: 0.95, warm: 0,
+      base: false, figure: "block", cam: [0, 44, 40], flat: true, rough: 1.0
+    },
+    c: {
+      cap: "천장 없이 벽만 온전히 세우고 램프로만 밝힙니다. 분위기는 여기서 나오지만, 여섯 방을 한눈에 보기는 어려워집니다.",
+      wallH: 3.4, wallTop: 0x4a4034, wallSide: 0x332c23, floorMix: 0.18, floorTo: 0x241d16,
+      prop: 0x4a3c2c, fog: 0.018, bg: 0x0a0906, amb: 0.16, key: 0.22, warm: 1,
+      base: false, figure: "person", cam: [0, 27, 34], flat: false, rough: 0.78
+    }
+  };
+
+  // ---------- 기하 ----------
+  function merge(list) {
+    if (!list.length) return [];
+    list.sort(function (p, q) { return p[0] - q[0]; });
+    var out = [list[0].slice()];
+    for (var i = 1; i < list.length; i++) {
+      var last = out[out.length - 1], cur = list[i];
+      if (cur[0] <= last[1] + 1e-6) last[1] = Math.max(last[1], cur[1]);
+      else out.push(cur.slice());
+    }
+    return out;
+  }
+  function subtract(spans, gaps) {
+    var out = spans.map(function (s) { return s.slice(); });
+    gaps.forEach(function (g) {
+      var next = [];
+      out.forEach(function (s) {
+        if (g[1] <= s[0] || g[0] >= s[1]) { next.push(s); return; }
+        if (g[0] > s[0]) next.push([s[0], g[0]]);
+        if (g[1] < s[1]) next.push([g[1], s[1]]);
+      });
+      out = next;
+    });
+    return out.filter(function (s) { return s[1] - s[0] > 0.05; });
+  }
+  function wallRuns() {
+    var lines = {};
+    function push(axis, fixed, a, b) {
+      var k = axis + "|" + fixed.toFixed(2);
+      (lines[k] = lines[k] || { axis: axis, fixed: fixed, spans: [] }).spans.push([a, b]);
+    }
+    ROOMS.forEach(function (r) {
+      push("h", r.y, r.x, r.x + r.w);
+      push("h", r.y + r.h, r.x, r.x + r.w);
+      push("v", r.x, r.y, r.y + r.h);
+      push("v", r.x + r.w, r.y, r.y + r.h);
+    });
+    var runs = [];
+    Object.keys(lines).forEach(function (k) {
+      var L = lines[k], spans = merge(L.spans), gaps = [];
+      DOORS.forEach(function (d) {
+        if (L.axis === "h" && d.y <= L.fixed + 1e-6 && L.fixed <= d.y + d.h + 1e-6) gaps.push([d.x, d.x + d.w]);
+        if (L.axis === "v" && d.x <= L.fixed + 1e-6 && L.fixed <= d.x + d.w + 1e-6) gaps.push([d.y, d.y + d.h]);
+      });
+      subtract(spans, merge(gaps)).forEach(function (s) {
+        runs.push({ axis: L.axis, fixed: L.fixed, a: s[0], b: s[1] });
+      });
+    });
+    return runs;
+  }
+
+  // ---------- 씬 ----------
+  var CX = 18, CZ = 12; // 맵 중심
+  function mix(hexA, hexB, t) {
+    var a = new THREE.Color(hexA), b = new THREE.Color(hexB);
+    return a.lerp(b, t);
+  }
+
+  function build(styleKey) {
+    var S = STYLES[styleKey];
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(S.bg);
+    if (S.fog) scene.fog = new THREE.FogExp2(S.bg, S.fog);
+
+    var mkMat = function (color, rough) {
+      return new THREE.MeshStandardMaterial({
+        color: color, roughness: rough === undefined ? S.rough : rough,
+        metalness: 0.02, flatShading: !!S.flat
+      });
+    };
+
+    // 받침판 (A안: 보드게임 판)
+    if (S.base) {
+      var base = new THREE.Mesh(new THREE.BoxGeometry(44, 1.2, 32), mkMat(0x2a2319, 1.0));
+      base.position.set(0, -0.62, 0);
+      base.receiveShadow = true;
+      scene.add(base);
+      var lip = new THREE.Mesh(new THREE.BoxGeometry(45.6, 0.5, 33.6), mkMat(0x6b5836, 0.95));
+      lip.position.set(0, -1.05, 0);
+      scene.add(lip);
+    }
+
+    // 바닥
+    ROOMS.forEach(function (r) {
+      var col = mix(r.floor, S.floorTo, S.floorMix);
+      var f = new THREE.Mesh(new THREE.BoxGeometry(r.w, 0.12, r.h), mkMat(col, 0.98));
+      f.position.set(r.x + r.w / 2 - CX, -0.06, r.y + r.h / 2 - CZ);
+      f.receiveShadow = true;
+      scene.add(f);
+    });
+
+    // 벽
+    var topMat = mkMat(S.wallTop, 0.95), sideMat = mkMat(S.wallSide, 0.95);
+    wallRuns().forEach(function (run) {
+      var len = run.b - run.a;
+      var g = run.axis === "h"
+        ? new THREE.BoxGeometry(len, S.wallH, WALL_T)
+        : new THREE.BoxGeometry(WALL_T, S.wallH, len);
+      var mats = [sideMat, sideMat, topMat, sideMat, sideMat, sideMat];
+      var m = new THREE.Mesh(g, mats);
+      if (run.axis === "h") m.position.set((run.a + run.b) / 2 - CX, S.wallH / 2, run.fixed - CZ);
+      else m.position.set(run.fixed - CX, S.wallH / 2, (run.a + run.b) / 2 - CZ);
+      m.castShadow = true; m.receiveShadow = true;
+      scene.add(m);
+    });
+
+    // 가구
+    var propMat = mkMat(S.prop || 0x6f6047, 0.95);
+    ROOMS.forEach(function (r) {
+      (PROPS[r.id] || []).forEach(function (p) {
+        var m = new THREE.Mesh(new THREE.BoxGeometry(p[2], p[4], p[3]), propMat);
+        m.position.set(r.x + p[0] + p[2] / 2 - CX, p[4] / 2, r.y + p[1] + p[3] / 2 - CZ);
+        m.castShadow = true; m.receiveShadow = true;
+        scene.add(m);
+      });
+    });
+
+    // 인물
+    PEOPLE.forEach(function (p) {
+      var r = ROOMS.filter(function (q) { return q.id === p.room; })[0];
+      var px = r.x + r.w / 2 + p.ox - CX, pz = r.y + r.h / 2 + p.oy - CZ;
+      var g = new THREE.Group();
+      var col = mkMat(p.color, 0.6);
+      if (S.figure === "pawn") {
+        var foot = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.5, 0.18, 20), col);
+        foot.position.y = 0.09;
+        var body = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.38, 0.72, 20), col);
+        body.position.y = 0.56;
+        var head = new THREE.Mesh(new THREE.SphereGeometry(0.25, 18, 14), col);
+        head.position.y = 1.06;
+        g.add(foot, body, head);
+      } else if (S.figure === "block") {
+        var torso = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.95, 0.36), col);
+        torso.position.y = 1.16;
+        var legs = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.72, 0.3), mkMat(0x2f2a24, 1));
+        legs.position.y = 0.36;
+        var hd = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.38, 0.36), mkMat(0xc9ad8c, 1));
+        hd.position.y = 1.84;
+        g.add(legs, torso, hd);
+      } else {
+        var coat = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.34, 1.16, 16), mkMat(0x241f1a, 0.9));
+        coat.position.y = 1.16;
+        var lg = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.17, 0.82, 12), mkMat(0x1b1713, 0.95));
+        lg.position.y = 0.41;
+        var sc = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.06, 8, 18), col);
+        sc.rotation.x = Math.PI / 2; sc.position.y = 1.7;
+        var h2 = new THREE.Mesh(new THREE.SphereGeometry(0.21, 18, 14), mkMat(0xb9977a, 0.85));
+        h2.position.y = 1.92;
+        g.add(lg, coat, sc, h2);
+      }
+      g.scale.setScalar(p.tall * (S.figure === "pawn" ? 1.25 : 1));
+      g.position.set(px, 0, pz);
+      g.traverse(function (o) { if (o.isMesh) { o.castShadow = true; } });
+      scene.add(g);
+    });
+
+    // 조명
+    scene.add(new THREE.AmbientLight(0xbfd0e0, S.amb));
+    var key = new THREE.DirectionalLight(0xfff0d6, S.key);
+    key.position.set(16, 30, 14);
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    var d = 30;
+    key.shadow.camera.left = -d; key.shadow.camera.right = d;
+    key.shadow.camera.top = d; key.shadow.camera.bottom = -d;
+    key.shadow.camera.far = 80;
+    scene.add(key);
+    if (S.warm) {
+      // 램프: 방마다 하나
+      ROOMS.forEach(function (r) {
+        var lamp = new THREE.PointLight(0xffb867, 9, 13, 2);
+        lamp.position.set(r.x + r.w / 2 - CX, 2.5, r.y + r.h / 2 - CZ);
+        scene.add(lamp);
+      });
+      var rim = new THREE.DirectionalLight(0x6f8fbf, 0.18);
+      rim.position.set(-20, 12, -18);
+      scene.add(rim);
+    } else {
+      var fill = new THREE.DirectionalLight(0x9fb6cc, 0.28);
+      fill.position.set(-18, 14, -12);
+      scene.add(fill);
+    }
+    return scene;
+  }
+
+  // ---------- 렌더 ----------
+  var host = document.getElementById("stage");
+  var renderer, camera, scenes = {}, current = "a";
+  var yaw = -0.42, pitch = 0.92, dist = 52, dragging = false, lastX = 0, lastY = 0;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var idle = !reduce;
+
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  } catch (e) { renderer = null; }
+
+  if (!renderer) {
+    document.getElementById("fail").style.display = "grid";
+  } else {
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    host.appendChild(renderer.domElement);
+    camera = new THREE.PerspectiveCamera(38, 16 / 9, 0.5, 400);
+
+    scenes.a = build("a");
+    setStyle("a", true);
+    resize();
+    window.addEventListener("resize", resize);
+    animate();
+
+    host.addEventListener("pointerdown", function (e) {
+      dragging = true; idle = false; lastX = e.clientX; lastY = e.clientY;
+      host.setPointerCapture(e.pointerId);
+    });
+    host.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      yaw -= (e.clientX - lastX) * 0.006;
+      pitch = Math.max(0.16, Math.min(1.45, pitch - (e.clientY - lastY) * 0.005));
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    host.addEventListener("pointerup", function (e) { dragging = false; host.releasePointerCapture(e.pointerId); });
+    host.addEventListener("wheel", function (e) {
+      e.preventDefault(); idle = false;
+      dist = Math.max(16, Math.min(90, dist + e.deltaY * 0.045));
+    }, { passive: false });
+  }
+
+  function resize() {
+    if (!renderer) return;
+    var w = host.clientWidth, h = host.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+    if (idle) yaw += 0.0011;
+    var cp = Math.cos(pitch), sp = Math.sin(pitch);
+    camera.position.set(Math.sin(yaw) * dist * cp, dist * sp, Math.cos(yaw) * dist * cp);
+    camera.lookAt(0, 1.5, 0);
+    renderer.render(scenes[current], camera);
+  }
+
+  function setStyle(k, quiet) {
+    current = k;
+    if (!scenes[k]) scenes[k] = build(k);
+    var S = STYLES[k];
+    dist = S.cam[1] + 4; pitch = k === "c" ? 0.52 : k === "b" ? 0.8 : 0.95;
+    document.getElementById("cap").textContent = S.cap;
+    Array.prototype.forEach.call(document.querySelectorAll(".tab"), function (t) {
+      t.setAttribute("aria-selected", String(t.dataset.style === k));
+    });
+    if (!quiet) idle = false;
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"), function (t) {
+    t.addEventListener("click", function () { setStyle(t.dataset.style); });
+  });
+
+  // ---------- 코드 이관 막대 ----------
+  var CODE = [
+    { name: "순수 추리 로직", lines: 2819, note: "그대로", c: "#3f7d5a" },
+    { name: "UI · 오디오 · 로더", lines: 1700, note: "거의 그대로", c: "#5b7f9c" },
+    { name: "물리 치환", lines: 250, note: "기계적", c: "#a8843c" },
+    { name: "NPC · 질감 · 라벨", lines: 773, note: "재작업", c: "#8c2f28" },
+    { name: "SceneBuilder", lines: 471, note: "재작성", c: "#6d2620" }
+  ];
+  var maxL = 2819;
+  document.getElementById("bars").innerHTML = CODE.map(function (r) {
+    return '<div class="bar"><div class="name">' + r.name + '</div>' +
+      '<div class="track"><div class="fill" style="width:' + (r.lines / maxL * 100).toFixed(1) +
+      '%;background:' + r.c + '"></div></div>' +
+      '<div class="val">' + r.lines.toLocaleString() + '줄 · ' + r.note + '</div></div>';
+  }).join("");
+})();
+</script>
+</body>
+</html>

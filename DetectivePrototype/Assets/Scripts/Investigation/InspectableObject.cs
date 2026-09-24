@@ -77,6 +77,7 @@ namespace Detective.Investigation
             string message = "<b>" + displayName + "</b>\n" + description;
             if (first && isEvidence) message += "\n<color=#FFD98C>▶ 수사 노트에 단서를 기록했다.</color>";
             GameEvents.ShowMessage(message);
+            GameEvents.RequestSfx("inspect");
 
             // 조사를 마친 단서는 살짝 어둡게 해서 다시 찾아다니지 않게 한다.
             if (isEvidence && _renderer != null) _renderer.color = _baseColor * new Color(0.55f, 0.55f, 0.55f, 1f);

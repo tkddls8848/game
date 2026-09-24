@@ -173,6 +173,21 @@ Assets/Resources/GameData/
 
 ---
 
+## 연출 에셋 (`art.json`)
+
+연출 방향은 **"사건 파일"**: 어두운 저택 평면도 위에 바랜 종이 패널, 검은/붉은 잉크 글씨, 보드게임 말 같은 인물 토큰, 명조체(Noto Serif KR).
+
+* `Assets/Resources/GameData/art.json`이 방 바닥·인물 초상화·단서 이미지·소리의 **Resources 경로**를 정한다
+* **파일이 없으면 코드가 만든 대체물**을 쓴다: 바닥은 `ProceduralTextures`(wood/marble/carpet/stone/rug), 초상화는 세피아 실루엣 + 이름 첫 글자,
+  종소리·종이·조사음은 `ProceduralAudio` 합성음. BGM·환경음은 파일이 없으면 침묵
+* 씬 빌더는 바닥·토큰 질감을 `Assets/Art/Generated/*.png`로 저장해 씬에 끼운다(런타임 생성 Sprite는 씬에 남지 않는다). UI 종이·비네팅은 실행 시 만든다
+* 에셋을 넣으면 `CREDITS.md`에 출처·라이선스를 한 줄 적는다. 포함된 폰트는 OFL 1.1. 어디서 받을지는 `ASSET_SOURCES.md`
+* `ArtManifestValidator`가 art.json의 방·인물·단서 참조를 검사한다(씬 빌더·EditMode 테스트)
+* 직접 넣는 바닥 이미지는 임포트 설정을 **Wrap Mode=Repeat, Mesh Type=Full Rect**로 해야 Tiled로 깔린다
+* `NotoSerifKR-Regular.otf`의 `.meta`는 Unity가 처음 임포트할 때 만든다 → 그 뒤 **커밋해서 GUID를 고정**한다
+
+---
+
 ## 조작
 
 | 키 | 동작 |

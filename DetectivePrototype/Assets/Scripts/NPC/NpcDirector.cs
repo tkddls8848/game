@@ -15,7 +15,7 @@ namespace Detective.NPC
         public float timelineSpeedMultiplier = 3f;
 
         [Tooltip("같은 방에 여러 명이 있을 때 서로 떨어뜨리는 간격.")]
-        public float slotSpacing = 2.2f;
+        public float slotSpacing = 3f;
 
         private readonly List<NPCController> _controllers = new List<NPCController>();
         private readonly Dictionary<string, NPCController> _byId = new Dictionary<string, NPCController>();

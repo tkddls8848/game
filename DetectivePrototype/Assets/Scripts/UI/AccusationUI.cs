@@ -30,15 +30,15 @@ namespace Detective.UI
         {
             _formRoot = UIFactory.CreateRect("Accusation", transform,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-700f, -400f), new Vector2(700f, 400f));
-            UIFactory.AddImage(_formRoot, UIFactory.PanelColor);
-            _formLabel = UIFactory.AddText(UIFactory.CreateStretch("Text", _formRoot, 40f), 32, TextAnchor.UpperLeft, Color.white);
+            UIFactory.AddPaper(_formRoot);
+            _formLabel = UIFactory.AddText(UIFactory.CreateStretch("Text", _formRoot, 40f), 32, TextAnchor.UpperLeft, UIFactory.Ink);
             _formLabel.verticalOverflow = VerticalWrapMode.Overflow;
 
             _resultRoot = UIFactory.CreateStretch("Result", transform, 0f);
-            UIFactory.AddImage(_resultRoot, new Color(0.02f, 0.02f, 0.04f, 0.97f));
+            UIFactory.AddImage(_resultRoot, UIFactory.Night);
             RectTransform body = UIFactory.CreateRect("Body", _resultRoot,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-720f, -420f), new Vector2(720f, 420f));
-            _resultLabel = UIFactory.AddText(body, 32, TextAnchor.MiddleCenter, Color.white);
+            _resultLabel = UIFactory.AddText(body, 32, TextAnchor.MiddleCenter, UIFactory.Cream);
             _resultLabel.verticalOverflow = VerticalWrapMode.Overflow;
 
             _formRoot.gameObject.SetActive(false);
@@ -137,10 +137,11 @@ namespace Detective.UI
             ModalState.Force(GameMode.Result, frame);
 
             string title = result.Solved
-                ? UIFactory.Colorize("<size=84><b>CASE SOLVED</b></size>", UIFactory.AccentColor)
-                : UIFactory.Colorize("<size=84><b>CASE FAILED</b></size>", new Color(1f, 0.45f, 0.45f));
-            _resultLabel.text = title + "\n\n" + (result.Solved ? definition.solvedText : definition.failedText)
-                + "\n\n" + UIFactory.Colorize("[R] 처음부터 다시", UIFactory.MutedColor);
+                ? UIFactory.Colorize("<size=84><b>CASE SOLVED</b></size>", new Color(0.85f, 0.70f, 0.40f))
+                : UIFactory.Colorize("<size=84><b>CASE FAILED</b></size>", new Color(0.75f, 0.28f, 0.25f));
+            _resultLabel.text = title + "\n" + UIFactory.Colorize("<size=26>사건 기록 제1호 · 종결</size>", UIFactory.CreamMuted)
+                + "\n\n" + (result.Solved ? definition.solvedText : definition.failedText)
+                + "\n\n" + UIFactory.Colorize("[R] 처음부터 다시", UIFactory.CreamMuted);
         }
 
         private void Close(int frame)

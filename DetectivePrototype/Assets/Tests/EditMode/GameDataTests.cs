@@ -102,6 +102,18 @@ namespace Detective.Tests
         }
 
         [Test]
+        public void ArtJson_ReferencesOnlyExistingRoomsNpcsAndEvidence()
+        {
+            CaseDatabase database = GameDataLoader.LoadDatabase();
+            var asset = UnityEngine.Resources.Load<UnityEngine.TextAsset>("GameData/art");
+            Assert.IsNotNull(asset, "art.json을 찾지 못했다.");
+
+            ArtManifest manifest = GameDataLoader.Parse<ArtManifest>(asset.text, "art.json");
+            List<string> errors = ArtManifestValidator.Validate(manifest, database);
+            Assert.AreEqual(0, errors.Count, string.Join("\n", errors.ToArray()));
+        }
+
+        [Test]
         public void Database_PassesCrossReferenceValidation()
         {
             CaseDatabase database = GameDataLoader.LoadDatabase();

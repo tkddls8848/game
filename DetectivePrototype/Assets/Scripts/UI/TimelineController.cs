@@ -37,8 +37,9 @@ namespace Detective.UI
         private Text[] _tickLabels;
         private Image[] _tickBackgrounds;
 
-        private static readonly Color TickIdle = new Color(0.12f, 0.14f, 0.18f, 0.95f);
-        private static readonly Color TickActive = new Color(0.85f, 0.66f, 0.30f, 0.95f);
+        private static readonly Color TickIdle = new Color(0.93f, 0.87f, 0.74f, 0.96f);
+        private static readonly Color TickActive = new Color(0.54f, 0.18f, 0.16f, 0.98f);
+        private int _lastAnnouncedTick = -1;
 
         private void Awake()
         {
@@ -108,6 +109,7 @@ namespace Detective.UI
         private void Open()
         {
             _autoplay = false;
+            _lastAnnouncedTick = -1;
             _root.gameObject.SetActive(true);
             EnterOverviewCamera();
             SetTick(CurrentTick, true);
@@ -132,6 +134,12 @@ namespace Detective.UI
         private void SetTick(int tick, bool instant)
         {
             CurrentTick = GameTime.Clamp(tick);
+            if (CurrentTick != _lastAnnouncedTick)
+            {
+                _lastAnnouncedTick = CurrentTick;
+                // 괘종시계가 울린다. 자동 재생은 1.8초 간격이라 3초짜리 종이 겹치므로 손으로 옮길 때만 친다.
+                if (!_autoplay) GameEvents.RaiseTimelineTickChanged(CurrentTick);
+            }
             ITimelinePlacementSource source = GameManager.Instance != null ? GameManager.Instance.TimelineSource : null;
             if (_director != null) _director.ShowTick(CurrentTick, source, instant);
             RefreshLabels();
@@ -197,13 +205,13 @@ namespace Detective.UI
                     new Vector2(t * cellWidth + 4f, 0f), new Vector2((t + 1) * cellWidth - 4f, 0f));
                 _tickBackgrounds[t] = UIFactory.AddImage(cell, TickIdle);
                 RectTransform labelRect = UIFactory.CreateStretch("Label", cell, 4f);
-                _tickLabels[t] = UIFactory.AddText(labelRect, 32, TextAnchor.MiddleCenter, Color.white);
+                _tickLabels[t] = UIFactory.AddText(labelRect, 32, TextAnchor.MiddleCenter, UIFactory.Ink);
                 _tickLabels[t].text = GameTime.ToLabel(t);
             }
 
             RectTransform helpRect = UIFactory.CreateRect("TimelineHelp", _root,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(-770f, 16f), new Vector2(770f, 64f));
-            _helpLabel = UIFactory.AddText(helpRect, 26, TextAnchor.MiddleCenter, UIFactory.MutedColor);
+            _helpLabel = UIFactory.AddText(helpRect, 26, TextAnchor.MiddleCenter, UIFactory.CreamMuted);
         }
 
         private void RefreshLabels()
@@ -219,7 +227,7 @@ namespace Detective.UI
             {
                 bool active = t == CurrentTick;
                 _tickBackgrounds[t].color = active ? TickActive : TickIdle;
-                _tickLabels[t].color = active ? Color.black : Color.white;
+                _tickLabels[t].color = active ? UIFactory.Cream : UIFactory.Ink;
             }
 
             _helpLabel.text = "[← →] 시각 이동   [1~7] 바로 가기   [Space] 자동 재생   [T / Esc] 닫기";

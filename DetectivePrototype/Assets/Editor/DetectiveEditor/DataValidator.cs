@@ -20,6 +20,7 @@ namespace DetectiveEditor
         public const string EvidenceJsonPath = "Assets/Resources/GameData/evidence/evidence.json";
         public const string DialogueFolder = "Assets/Resources/GameData/dialogue";
         public const string CaseJsonPath = "Assets/Resources/GameData/cases/" + GameDataLoader.DefaultCaseId + ".json";
+        public const string ArtJsonPath = "Assets/Resources/GameData/art.json";
 
         [MenuItem("Tools/Detective/Validate Game Data")]
         public static void ValidateFromMenu()
@@ -58,6 +59,7 @@ namespace DetectiveEditor
             CaseDefinition caseDefinition = LoadCase(errors);
             var database = new CaseDatabase(RoomLayout.FromTable(rooms), new NpcRoster(npcs), evidence, dialogues, caseDefinition);
             errors.AddRange(GameDataValidator.Validate(database));
+            errors.AddRange(ArtManifestValidator.Validate(LoadArtManifest(errors), database));
 
             // 참조가 멀쩡할 때만 추리 가능성을 따진다(깨진 참조 위에서 돌리면 엉뚱한 오류가 쏟아진다).
             if (errors.Count == 0) errors.AddRange(CaseSolvabilityChecker.Check(database));
@@ -75,6 +77,17 @@ namespace DetectiveEditor
                 else result.Add(npc);
             }
             return result;
+        }
+
+        public static ArtManifest LoadArtManifest(List<string> errors)
+        {
+            if (!File.Exists(ArtJsonPath))
+            {
+                errors.Add(ArtJsonPath + " 파일이 없다.");
+                return new ArtManifest().Normalized();
+            }
+            ArtManifest manifest = GameDataLoader.Parse<ArtManifest>(File.ReadAllText(ArtJsonPath), ArtJsonPath);
+            return (manifest ?? new ArtManifest()).Normalized();
         }
 
         public static CaseDefinition LoadCase(List<string> errors)

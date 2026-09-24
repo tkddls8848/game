@@ -1,12 +1,12 @@
+using Detective.Art;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Detective.UI
 {
     /// <summary>
-    /// 한글이 네모(두부)로 보이는 것을 막는다.
-    /// 씬에 저장할 수 있는 내장 폰트(LegacyRuntime.ttf)에는 한글 글리프가 없으므로,
-    /// 실행 시점에 OS 폰트로 교체한다. OS 폰트 참조는 직렬화할 수 없어서 코드로 처리한다.
+    /// UI 폰트 결정. 순서: art.json의 폰트(저장소에 포함된 Noto Serif KR) → OS 한글 폰트 → 내장 폰트.
+    /// 씬에 저장할 수 있는 내장 폰트(LegacyRuntime.ttf)에는 한글 글리프가 없으므로 실행 시점에 바꿔 끼운다.
     /// 실행 중에 코드로 만드는 UI(UIFactory)와 NPC 이름표도 같은 폰트를 쓰도록 결과를 정적으로 캐시한다.
     /// </summary>
     [DefaultExecutionOrder(-50)]
@@ -37,7 +37,8 @@ namespace Detective.UI
             if (_resolved && _cached != null) return _cached;
             _resolved = true;
 
-            _cached = ResolveOsFont();
+            _cached = ArtLibrary.Instance.LoadUiFont();
+            if (_cached == null) _cached = ResolveOsFont();
             if (_cached == null)
             {
                 Debug.LogWarning("[UIFontApplier] 한글 폰트를 찾지 못했다. 기본 폰트로 표시된다.");

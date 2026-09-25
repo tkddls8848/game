@@ -1,0 +1,49 @@
+{
+  "tracks": [
+    {
+      "npcId": "npc_a",
+      "segments": [
+        { "startMs": 0,      "endMs": 300000, "room": "room_dining" },
+        { "startMs": 333000, "endMs": 372000, "room": "room_hall" },
+        { "startMs": 382000, "endMs": 600000, "room": "room_dining" }
+      ]
+    },
+    {
+      "npcId": "npc_b",
+      "segments": [
+        { "startMs": 0,      "endMs": 182000, "room": "room_dining" },
+        { "startMs": 206000, "endMs": 330000, "room": "room_storage" },
+        { "startMs": 345200, "endMs": 460000, "room": "room_storage" },
+        { "startMs": 470000, "endMs": 600000, "room": "room_dining" }
+      ]
+    },
+    {
+      "npcId": "npc_c",
+      "segments": [
+        { "startMs": 0,      "endMs": 266000, "room": "room_lobby" },
+        { "startMs": 272000, "endMs": 306000, "room": "room_hall" },
+        { "startMs": 343600, "endMs": 455000, "room": "room_storage" },
+        { "startMs": 472000, "endMs": 560000, "room": "room_suspect" },
+        { "startMs": 564000, "endMs": 600000, "room": "room_hall" }
+      ]
+    },
+    {
+      "npcId": "npc_d",
+      "segments": [
+        { "startMs": 0,      "endMs": 114000, "room": "room_lobby" },
+        { "startMs": 141000, "endMs": 338700, "room": "room_victim" },
+        { "startMs": 339700, "endMs": 343000, "room": "room_storage" },
+        { "startMs": 371000, "endMs": 600000, "room": "room_suspect" }
+      ]
+    },
+    {
+      "npcId": "npc_victim",
+      "segments": [
+        { "startMs": 0,      "endMs": 231000, "room": "room_victim" },
+        { "startMs": 236000, "endMs": 271000, "room": "room_hall" },
+        { "startMs": 310000, "endMs": 447000, "room": "room_dining" },
+        { "startMs": 453000, "endMs": 600000, "room": "room_victim" }
+      ]
+    }
+  ]
+}

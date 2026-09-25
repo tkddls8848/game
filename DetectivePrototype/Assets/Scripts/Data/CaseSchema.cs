@@ -26,8 +26,23 @@ namespace Detective.Data
         public string method;
         public string evidence;
 
-        /// <summary>tick을 ms로(경계 함수). 없으면 GameTime.NoTime.</summary>
-        public int TimeMs { get { return GameTime.TickToMs(tick); } }
+        /// <summary>
+        /// 회차 안의 정확한 시각(ms). 적혀 있으면 <see cref="tick"/>보다 우선한다.
+        ///
+        /// 엿듣기 사건은 한 회차가 10분(600,000ms)인데 틱 한 칸도 600,000ms다 —
+        /// 즉 회차 전체가 칸 하나여서 tick으로는 "회차 시작 4분 1.5초"를 적을 수 없다.
+        /// 기존 저택 사건(case_01)은 18:00~19:00을 7칸으로 쓰므로 tick 경로를 그대로 둔다.
+        ///
+        /// **데이터에 -1을 반드시 명시한다.** JsonUtility는 빠진 int를 0으로 채우는데
+        /// 0은 유효한 시각(회차 시작)이라, 적지 않으면 tick으로 적은 사건의 정답을 조용히 덮어쓴다.
+        /// </summary>
+        public int timeMs = GameTime.NoTime;
+
+        /// <summary>정답 시각(ms). timeMs가 적혀 있으면 그것을, 아니면 tick을 경계 함수로 옮긴 값을.</summary>
+        public int TimeMs
+        {
+            get { return GameTime.IsValid(timeMs) ? timeMs : GameTime.TickToMs(tick); }
+        }
     }
 
     /// <summary>cases/case_XX.json. 새 사건은 이 파일과 인물·단서·대사 JSON만 추가하면 된다.</summary>

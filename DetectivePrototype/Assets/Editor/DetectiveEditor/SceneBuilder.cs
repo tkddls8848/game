@@ -3,6 +3,7 @@ using System.IO;
 using Detective.Art;
 using Detective.Core;
 using Detective.Data;
+using Detective.Eavesdrop;
 using Detective.Investigation;
 using Detective.NPC;
 using Detective.Player;
@@ -87,6 +88,7 @@ namespace DetectiveEditor
             var root = new GameObject("GameRoot");
             root.AddComponent<GameManager>();
             root.AddComponent<AudioDirector>();
+            root.AddComponent<EavesdropController>(); // 엿듣기 회차. 대본이 없으면 조용히 비어 있는다.
 
             BuildMap(layout, square);
             GameObject player = BuildPlayer(layout, square);
@@ -225,6 +227,9 @@ namespace DetectiveEditor
 
             player.AddComponent<PlayerController>();
             player.AddComponent<PlayerInteraction>();
+
+            // 청취점. 방이 바뀔 때마다 알려서 방 환경음과 엿듣기 가청 판정이 따라오게 한다.
+            player.AddComponent<PlayerRoomTracker>();
 
             // 루트 스케일이 0.8이라 글자표 자식은 그만큼 작아진다. 그걸 감안해 크기를 잡는다.
             var label = player.AddComponent<WorldLabel>();
@@ -395,6 +400,7 @@ namespace DetectiveEditor
 
             canvasObject.AddComponent<TimelineController>();
             canvasObject.AddComponent<NotebookUI>();
+            canvasObject.AddComponent<EavesdropUI>(); // 발화 버블. 컨트롤러는 실행 시 스스로 찾는다.
             canvasObject.AddComponent<DialogueUI>();
             canvasObject.AddComponent<AccusationUI>();
             canvasObject.AddComponent<IntroUI>();

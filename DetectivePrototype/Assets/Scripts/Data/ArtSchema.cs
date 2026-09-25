@@ -22,6 +22,18 @@ namespace Detective.Data
 
         /// <summary>질감 한 장이 덮는 월드 유닛. 클수록 무늬가 커 보인다.</summary>
         public float tileSize = 4f;
+
+        /// <summary>
+        /// 이 방에서 흐르는 환경음(Resources 경로). 비어 있으면 audio.ambientLoop(저택 전체 소리)를 쓴다.
+        /// 엿듣기에서는 플레이어가 귀를 옮기므로, 방마다 소리가 달라야 눈을 감고도 어디인지 안다.
+        /// </summary>
+        public string ambient;
+
+        /// <summary>
+        /// 이 방 환경음에 곱하는 세기 0~1. 최종 음량은 audio.ambientVolume × 이 값이다.
+        /// 벽난로와 괘종시계를 같은 세기로 깔면 한쪽이 방을 잡아먹는다.
+        /// </summary>
+        public float ambientVolume = 1f;
     }
 
     [Serializable]

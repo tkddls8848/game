@@ -8,6 +8,7 @@ namespace Detective.UI
     /// <summary>
     /// 타임라인 관찰 모드(T). 18:00~19:00을 앞뒤로 오가며 그 시각 인물들이 어디 있었는지 저택 전체를 내려다본다.
     /// 무엇을 보여 줄지는 GameManager.TimelineSource가 정한다 — 플레이어가 모은 기록만 보인다.
+    /// Tab을 누르면 같은 모드 안에서 청취(소나) 화면(SonarView)으로 넘어간다 — 엿듣기 슬라이스를 귀를 옮겨 가며 듣는다.
     /// </summary>
     public class TimelineController : MonoBehaviour
     {
@@ -37,6 +38,7 @@ namespace Detective.UI
         private Text _helpLabel;
         private Text[] _tickLabels;
         private Image[] _tickBackgrounds;
+        private SonarView _sonar;
 
         private static readonly Color TickIdle = new Color(0.93f, 0.87f, 0.74f, 0.96f);
         private static readonly Color TickActive = new Color(0.54f, 0.18f, 0.16f, 0.98f);
@@ -46,6 +48,9 @@ namespace Detective.UI
         {
             BuildUI();
             _root.gameObject.SetActive(false);
+            // 청취 화면은 씬을 다시 만들지 않아도 붙도록 실행 시 단다.
+            _sonar = GetComponent<SonarView>();
+            if (_sonar == null) _sonar = gameObject.AddComponent<SonarView>();
         }
 
         private void Start()
@@ -70,6 +75,17 @@ namespace Detective.UI
             if (Input.GetKeyDown(toggleKey) || Input.GetKeyDown(KeyCode.Escape))
             {
                 Close();
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                ToggleSonar();
+                return;
+            }
+            if (_sonar != null && _sonar.IsActive)
+            {
+                _sonar.HandleInput();
                 return;
             }
 
@@ -119,11 +135,31 @@ namespace Detective.UI
         private void Close()
         {
             _autoplay = false;
+            if (_sonar != null) _sonar.Exit();
             _root.gameObject.SetActive(false);
             if (GameManager.Instance != null) GameManager.Instance.ShowTruthForDebug = false;
             ExitOverviewCamera();
             if (_director != null) _director.ReturnToPresent(true);
             ModalState.Exit(GameMode.Timeline, Time.frameCount);
+        }
+
+        /// <summary>타임라인 ↔ 청취(소나). 청취 중에는 인물 토큰을 전부 숨긴다 — 보이는 것은 소리뿐이어야 한다.</summary>
+        private void ToggleSonar()
+        {
+            if (_sonar == null) return;
+            _autoplay = false;
+            if (_sonar.IsActive)
+            {
+                _sonar.Exit();
+                _root.gameObject.SetActive(true);
+                SetTick(CurrentTick, true);
+            }
+            else
+            {
+                _root.gameObject.SetActive(false);
+                if (_director != null) _director.HideAll();
+                _sonar.Enter();
+            }
         }
 
         private void Step(int delta)
@@ -231,7 +267,7 @@ namespace Detective.UI
                 _tickLabels[t].color = active ? UIFactory.Cream : UIFactory.Ink;
             }
 
-            _helpLabel.text = "[← →] 시각 이동   [1~7] 바로 가기   [Space] 자동 재생   [T / Esc] 닫기";
+            _helpLabel.text = "[← →] 시각 이동   [1~7] 바로 가기   [Space] 자동 재생   [Tab] 청취(소나)   [T / Esc] 닫기";
         }
     }
 }

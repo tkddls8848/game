@@ -26,6 +26,9 @@ namespace Detective.UI
         private Text _status;
         private RectTransform _statusPanel;
 
+        /// <summary>다른 화면(청취·소나)이 같은 회차를 자기 식으로 그리는 동안 이 버블은 숨긴다.</summary>
+        public bool Hidden { get; set; }
+
         private static readonly Color MuffledInk = new Color(0.42f, 0.37f, 0.32f);
         private static readonly Color MuffledPaper = new Color(0.62f, 0.58f, 0.50f, 0.72f);
 
@@ -57,6 +60,13 @@ namespace Detective.UI
 
         private void LateUpdate()
         {
+            _statusPanel.gameObject.SetActive(!Hidden);
+            if (Hidden)
+            {
+                HideFrom(0);
+                return;
+            }
+
             ListeningSession session = controller != null ? controller.Session : null;
             if (session == null)
             {

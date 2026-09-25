@@ -172,6 +172,19 @@ EditMode 142개 통과(U-1 신규 18개).
 
 **완료 조건**: 같은 시각에 위치만 바꾸면 보이는 발화가 달라진다
 
+**한 것**
+
+| 파일 | |
+|---|---|
+| `Player/PlayerRoomTracker.cs` | 탐정이 선 방을 지켜보다 바뀌면 `GameEvents.PlayerRoomChanged`로 알린다 — 이것이 청취점 |
+| `Eavesdrop/ListeningSession.cs` | 회차·청취점·들은 기록(순수 C#). 건너뛴 구간은 듣지 않은 것으로 남는다 |
+| `Eavesdrop/EavesdropController.cs` | 대본을 올리고 탐색 중에만 재생을 진행시킨다 |
+| `UI/EavesdropUI.cs` | 발화 버블(종이). 웅얼거림은 방향만 준다 |
+| `UI/SonarView.cs` · `Eavesdrop/SonarText.cs` | 관찰 모드(T) 안 **Tab** = 청취(소나) 화면. 저택은 어둠에 가라앉고 소리만 파문으로 보인다(`docs/art-concepts` 10번 시안). 귀를 따로 옮겨(WASD) 같은 회차를 다시 듣는다. 파문은 재생 위치에 묶여 정지하면 같이 멈춘다. 웅얼거림은 `SonarText.Garble`로 글자를 전부 블록으로 가려 리듬만 남긴다 |
+
+청취 화면은 탐색 중 돌아가는 `ListeningSession`을 그대로 쓴다 — 두 화면이 서로 다른 기록을 갖지 않게 하기 위해서다.
+닫을 때 청취점을 탐정의 방으로 되돌린다.
+
 ### Phase U-3 — 인물 이동과 익명화
 
 * 연속 이동 트랙으로 토큰이 움직인다

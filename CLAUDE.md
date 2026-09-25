@@ -206,6 +206,7 @@ Assets/Resources/GameData/
 | WASD / 화살표 | 이동 |
 | E | 조사 · 대화 (대화 중에는 다음 줄) |
 | T | 타임라인 관찰 모드 (←→ 시각, 1~7 바로 가기, Space 자동 재생). 에디터에서만 F9 = 실제 스케줄 보기 |
+| Tab (관찰 모드 안) | 청취(소나) 화면 ↔ 타임라인. 청취: WASD 귀 옮기기, Space 재생·정지, ←→ 5초, R 처음부터, [ ] 배속 |
 | N | 수사 노트 (1~3 / ←→ 탭, ↑↓ 선택, PgUp/PgDn·Q/E 내용 스크롤) |
 | F | 고발 (↑↓ 항목, ←→ 선택, Enter 확정) → 결과 화면에서 R = 재시작 |
 
@@ -234,3 +235,10 @@ Assets/Resources/GameData/
       `ScriptValidator`(참조 무결성) · `PlaybackTransport`(재생·정지·탐색·되감기·배속) · `EavesdropScriptLoader`(Resources).
       배속은 백분율 정수 + 나머지 누적이라 드리프트가 없다. 회차 끝에서 자동으로 되돌지 않는다(되감기는 플레이어의 선택).
       가청 판정은 문이 아니라 **벽 맞닿음** 기준이다 — 문만 보면 이 저택은 복도 중심 별 모양이 되어 복도가 아닌 두 방이 서로 무음이었다.
+- [x] **Phase U-2 — 청취점과 가청 판정 + 청취(소나) 화면**
+      탐색 중: `PlayerRoomTracker`(청취점 = 탐정이 선 방) → `EavesdropController`(회차 재생·`ListeningSession`) → `EavesdropUI`(종이 버블).
+      관찰 모드(T)에서 **Tab** → `SonarView`: 저택은 어둠에 가라앉고 소리만 파문으로 보인다(docs/art-concepts 10번 시안).
+      귀(WASD)가 선 방은 호박색, 벽 너머는 회색. 같은 방 = 글자, 벽 너머 = `SonarText.Garble`로 전부 가린 웅얼거림, 그 밖 = 무음.
+      탐색 중 돌아가는 같은 `ListeningSession`을 쓰므로 여기서 들은 것은 거기서도 들은 것이다. 닫으면 청취점을 탐정의 방으로 되돌린다.
+      파문·회전선은 재생 위치(ms)에 묶여 정지하면 같이 멈춘다. 링·정사각형은 `ProceduralTextures`가 만들고 씬은 다시 만들 필요가 없다
+      (`TimelineController`가 실행 시 `SonarView`를 단다). 리눅스에서 mcs 컴파일·NUnit 135개 통과. **Unity 6 batchmode·Play 확인은 미실행**

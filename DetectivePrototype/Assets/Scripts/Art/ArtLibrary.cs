@@ -24,6 +24,8 @@ namespace Detective.Art
         private Texture2D _parchment;
         private Texture2D _vignette;
         private Texture2D _disc;
+        private Texture2D _ring;
+        private Texture2D _square;
 
         private ArtLibrary()
         {
@@ -108,6 +110,20 @@ namespace Detective.Art
         {
             if (_disc == null) _disc = ProceduralTextures.Disc(128, 9f);
             return Cached("disc", () => ProceduralTextures.ToSprite(_disc, 128f));
+        }
+
+        /// <summary>소나 파문용 링(스케일 = 지름).</summary>
+        public Sprite RingSprite()
+        {
+            if (_ring == null) _ring = ProceduralTextures.Ring(128, 5f);
+            return Cached("ring", () => ProceduralTextures.ToSprite(_ring, 128f));
+        }
+
+        /// <summary>흰 정사각형(스케일 = 크기). 가림막·방 강조.</summary>
+        public Sprite SquareSprite()
+        {
+            if (_square == null) _square = ProceduralTextures.Square(4);
+            return Cached("square", () => ProceduralTextures.ToSprite(_square, 4f));
         }
 
         /// <summary>UI 폰트. art.json → OS 한글 폰트 → 내장 폰트.</summary>

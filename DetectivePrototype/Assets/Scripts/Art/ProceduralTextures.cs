@@ -208,6 +208,41 @@ namespace Detective.Art
             return tex;
         }
 
+        /// <summary>속이 빈 링(흰색, 알파만). 소나 파문. 스케일이 곧 지름이 되도록 정사각형 가득 그린다.</summary>
+        public static Texture2D Ring(int size, float thickness)
+        {
+            var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            var px = new Color32[size * size];
+            float r = size * 0.5f - 1f;
+            float c = size * 0.5f;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float d = Mathf.Sqrt((x + 0.5f - c) * (x + 0.5f - c) + (y + 0.5f - c) * (y + 0.5f - c));
+                    float outer = Mathf.Clamp01(r - d + 0.5f);
+                    float inner = Mathf.Clamp01(d - (r - thickness) + 0.5f);
+                    px[y * size + x] = new Color32(255, 255, 255, (byte)(Mathf.Min(outer, inner) * 255f));
+                }
+            }
+            tex.SetPixels32(px);
+            tex.Apply();
+            tex.wrapMode = TextureWrapMode.Clamp;
+            return tex;
+        }
+
+        /// <summary>흰 정사각형. 실행 중에 면(가림막·방 강조)을 그릴 때 쓴다.</summary>
+        public static Texture2D Square(int size)
+        {
+            var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            var px = new Color32[size * size];
+            for (int i = 0; i < px.Length; i++) px[i] = new Color32(255, 255, 255, 255);
+            tex.SetPixels32(px);
+            tex.Apply();
+            tex.wrapMode = TextureWrapMode.Clamp;
+            return tex;
+        }
+
         /// <summary>초상화 자리 대체: 어두운 배경에 흉상 실루엣. 이름 첫 글자는 UI가 위에 따로 얹는다.</summary>
         public static Texture2D PortraitSilhouette(int size, int seed)
         {

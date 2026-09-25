@@ -101,6 +101,16 @@ namespace Detective.NPC
             }
         }
 
+        /// <summary>전부 숨긴다(청취 화면처럼 인물이 보이면 안 되는 모드). 다시 보이려면 ShowTick/ReturnToPresent.</summary>
+        public void HideAll()
+        {
+            for (int i = 0; i < _controllers.Count; i++)
+            {
+                _controllers[i].SetVisible(false);
+                _controllers[i].SetCaption(string.Empty);
+            }
+        }
+
         private void MoveTo(NPCController controller, string roomId, float x, float y, bool instant)
         {
             if (instant || string.IsNullOrEmpty(controller.CurrentRoomId))

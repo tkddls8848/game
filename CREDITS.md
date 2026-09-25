@@ -69,6 +69,17 @@
 | `Assets/Resources/Audio/SFX/page.ogg` | [Kenney RPG Audio](https://kenney.nl/assets/rpg-audio) `bookFlip1.ogg` | CC0 |
 | `Assets/Resources/Audio/SFX/inspect.ogg` | [Kenney RPG Audio](https://kenney.nl/assets/rpg-audio) `handleSmallLeather.ogg` | CC0 |
 
+### 방별 룸톤 (엿듣기용, 2026-09-25 추가)
+
+엿듣기에서는 플레이어가 귀를 옮기므로 방마다 소리가 달라야 위치를 알 수 있다.
+둘 다 이음매 없는 루프로 만들고 음량을 `winter_night`(mean −27.8 dB)에 맞췄다.
+
+| 파일 | 출처 | 라이선스 |
+|---|---|---|
+| `Assets/Resources/Audio/Ambient/fireplace.ogg` | [OpenGameArt "Fireplace Sound Loop"](https://opengameart.org/content/fireplace-sound-loop) 의 `fire.wav`. 꼬리 2초를 머리에 녹여 27.3초 루프로 | CC0 |
+| `Assets/Resources/Audio/Ambient/clock_tick.ogg` | [OpenGameArt "Ticking Clock"](https://opengameart.org/content/ticking-clock) 의 `ticking_clock.wav`. 틱 공격점을 검출해 7간격 6.98초로 자름(중앙값 주기로 자르면 다음 틱이 딸려 들어와 루프마다 겹친다) | CC0 |
+| `Assets/Resources/Audio/SFX/Additional/Dining/*.ogg` 6개 | [OpenGameArt "Cutlery sounds"](https://opengameart.org/content/cutlery-sounds) (TinyWorlds). 식당 룸톤용 단발음 — 원본 바이트 그대로 | CC0 |
+
 ---
 
 ## 에셋을 갈아 끼울 때
@@ -82,3 +93,12 @@
 
 새 후보를 찾을 곳은 `ASSET_SOURCES.md`. **CC BY 음원·그림(예: Kevin MacLeod, game-icons.net)을 쓰면
 여기뿐 아니라 게임 안 결과 화면에도 표기해야 한다.** 지금 들어 있는 것은 전부 CC0/퍼블릭 도메인이라 그럴 필요가 없다.
+# 추가 확보 에셋 (2026-09-25)
+
+Kenney의 [RPG Audio](https://kenney.nl/assets/rpg-audio) 효과음 28개,
+[Interface Sounds](https://kenney.nl/assets/interface-sounds) 효과음 12개,
+[Game Icons](https://kenney.nl/assets/game-icons) 흰색 PNG 아이콘 24개를 추가했다.
+모두 CC0 1.0이며 원본 그대로 선별 복사했다. 게임 동작에는 아직 연결하지 않았다.
+라이선스 원문: `DetectivePrototype/Assets/ThirdParty/Kenney/`.
+파일별 출처·해시: [추가 에셋 목록](docs/additional-assets.json).
+용도와 미리보기: [추가 에셋 안내](docs/ADDITIONAL_ASSETS.md).

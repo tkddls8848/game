@@ -31,6 +31,13 @@ namespace Detective.Core
                     errors.Add(label + ": floor '" + room.floor + "' 는 모르는 종류다(" + string.Join("/", FloorKinds) + ").");
                 if (room.tileSize <= 0f) errors.Add(label + ": tileSize는 0보다 커야 한다.");
                 if (!string.IsNullOrEmpty(room.tint) && !LooksLikeHexColor(room.tint)) errors.Add(label + ": tint '" + room.tint + "' 는 #RRGGBB 형식이 아니다.");
+
+                // 방 환경음. 경로 존재는 검사하지 않는다(파일이 없으면 전체 환경음으로 되돌아가는 게 설계다).
+                // 세기는 범위를 벗어나면 조용히 이상해지므로 여기서 잡는다.
+                if (room.ambientVolume < 0f || room.ambientVolume > 1f)
+                    errors.Add(label + ": ambientVolume은 0~1이어야 한다(지금 " + room.ambientVolume + ").");
+                if (!string.IsNullOrEmpty(room.ambient) && room.ambientVolume <= 0f)
+                    errors.Add(label + ": ambient '" + room.ambient + "' 를 지정했는데 ambientVolume이 0이라 들리지 않는다.");
             }
 
             for (int i = 0; i < manifest.npcs.Length; i++)

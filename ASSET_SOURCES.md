@@ -125,3 +125,8 @@
 새 파일을 넣으면 `Assets/Editor/DetectiveEditor/ArtAssetImporter.cs`가 임포트 설정을 자동으로 맞춘다
 (바닥은 Wrap=Repeat · Mesh=Full Rect · PPU=질감 크기, UI 그림은 Sprite, 배경음은 Streaming).
 기본값으로 이미 임포트된 파일은 `Tools/Detective/Reimport Art Assets`.
+# 추가 다운로드 완료 (2026-09-25)
+
+Kenney CC0 에셋 **64개**(효과음 40개, UI 아이콘 24개)를 추가 확보했다.
+[용도·사용 경로](docs/ADDITIONAL_ASSETS.md) · [보기/듣기](docs/additional-assets.html) · [파일별 출처](docs/additional-assets.json).
+기존 에셋 교체 없이 추가했으며 게임 내 연결은 아직 하지 않았다.

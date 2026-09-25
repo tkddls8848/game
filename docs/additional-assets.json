@@ -1,0 +1,629 @@
+{
+  "acquired": "2026-09-25",
+  "status": "Available for use; not connected to gameplay",
+  "packs": [
+    {
+      "name": "rpg-audio",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "archive": "AssetDownloads/Kenney/rpg-audio.zip",
+      "sha256": "6dbeaf8544da958d8f2adcb4a4a4b76c1ade34a05f8ab9edccd327da7375f38b",
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "interface-sounds",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "archive": "AssetDownloads/Kenney/interface-sounds.zip",
+      "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232",
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "game-icons",
+      "source": "https://kenney.nl/assets/game-icons",
+      "archive": "AssetDownloads/Kenney/game-icons.zip",
+      "sha256": "7a86d8d58e0b851e22004b3c70bf90b003632bbf9ac633424daa3bb17d9e7e4e",
+      "license": "CC0-1.0"
+    }
+  ],
+  "assets": [
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/bookOpen.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/bookOpen.ogg",
+      "resource": "Audio/SFX/Additional/RPG/bookOpen",
+      "sha256": "953390534377222bee89ac8cd9e60a58fdc037c71a4d7c18c43cd647c7f34ba8",
+      "bytes": 8273,
+      "seconds": 0.154
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/bookClose.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/bookClose.ogg",
+      "resource": "Audio/SFX/Additional/RPG/bookClose",
+      "sha256": "81e976532565f4372abd14e83d2684195fa548d0a28d345de221e56052454f32",
+      "bytes": 9292,
+      "seconds": 0.231
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/bookFlip2.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/bookFlip2.ogg",
+      "resource": "Audio/SFX/Additional/RPG/bookFlip2",
+      "sha256": "3409042acbfaebc24c1a6327dc073e36f9250841712e96c5040da566a97df73c",
+      "bytes": 12393,
+      "seconds": 0.43
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/bookFlip3.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/bookFlip3.ogg",
+      "resource": "Audio/SFX/Additional/RPG/bookFlip3",
+      "sha256": "c85db5dceb3f1df073e960630277eaa88a5afda0477c1ddd68dad707621767be",
+      "bytes": 9077,
+      "seconds": 0.231
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/bookPlace1.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/bookPlace1.ogg",
+      "resource": "Audio/SFX/Additional/RPG/bookPlace1",
+      "sha256": "26f3ce60fbde85b678b0ad7f6624d80535fe540d88232ad1e38e47a96662d977",
+      "bytes": 9901,
+      "seconds": 0.277
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/cloth1.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/cloth1.ogg",
+      "resource": "Audio/SFX/Additional/RPG/cloth1",
+      "sha256": "ddb93a3671233f95da0e0b10367f082f7eb42fa6caaddcf776410aa8833c747d",
+      "bytes": 16508,
+      "seconds": 0.661
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/cloth2.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/cloth2.ogg",
+      "resource": "Audio/SFX/Additional/RPG/cloth2",
+      "sha256": "8a7451193c38bc05483aec25dd193e163a15d44cf7fff04ac7912573231b0201",
+      "bytes": 11787,
+      "seconds": 0.415
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/cloth3.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/cloth3.ogg",
+      "resource": "Audio/SFX/Additional/RPG/cloth3",
+      "sha256": "a48632d17a4f1416541d261a32a31612e01267144c407fa3ecab3ff410f0085b",
+      "bytes": 12432,
+      "seconds": 0.477
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/creak1.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/creak1.ogg",
+      "resource": "Audio/SFX/Additional/RPG/creak1",
+      "sha256": "8a346186fd297254248cab8e8117060a52a5cf2a84f603153a762108550ea95e",
+      "bytes": 15761,
+      "seconds": 0.661
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/creak2.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/creak2.ogg",
+      "resource": "Audio/SFX/Additional/RPG/creak2",
+      "sha256": "8a990afdc03aebb91d528f5385e2f95582dbfa8e2c12c71098ab01be9142294a",
+      "bytes": 19012,
+      "seconds": 0.83
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/creak3.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/creak3.ogg",
+      "resource": "Audio/SFX/Additional/RPG/creak3",
+      "sha256": "f9638787f95004b9d2d06f8eff8e99d4e594c21b51947daf562856fbcec905d1",
+      "bytes": 10408,
+      "seconds": 0.338
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/doorOpen_1.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/doorOpen_1.ogg",
+      "resource": "Audio/SFX/Additional/RPG/doorOpen_1",
+      "sha256": "4ab93bab96522d8eb109ff96dc57cb6765deb02448fe14c10472084be5bb2a0b",
+      "bytes": 22848,
+      "seconds": 0.919
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/doorOpen_2.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/doorOpen_2.ogg",
+      "resource": "Audio/SFX/Additional/RPG/doorOpen_2",
+      "sha256": "68962fb0458c9bac59dec3adefa9849703c7c89d34712de03dd0075d095e79e9",
+      "bytes": 30280,
+      "seconds": 1.413
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/doorClose_1.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/doorClose_1.ogg",
+      "resource": "Audio/SFX/Additional/RPG/doorClose_1",
+      "sha256": "834d29c60a8a8bfb50b158cdb6b7dfa8f02812a408a1ee9703d038dfab0b1aeb",
+      "bytes": 18564,
+      "seconds": 0.675
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/doorClose_2.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/doorClose_2.ogg",
+      "resource": "Audio/SFX/Additional/RPG/doorClose_2",
+      "sha256": "4aa4fe79836c53cd6d0cb0b22ddc33b9901429463ae1bb75131f072683f63f21",
+      "bytes": 17598,
+      "seconds": 0.612
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/metalLatch.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/metalLatch.ogg",
+      "resource": "Audio/SFX/Additional/RPG/metalLatch",
+      "sha256": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708",
+      "bytes": 10208,
+      "seconds": 0.261
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/handleCoins.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/handleCoins.ogg",
+      "resource": "Audio/SFX/Additional/RPG/handleCoins",
+      "sha256": "8a91f969e932df709df80ee124d86a51389eed9b67f22e5e716bc2bbf60d8dab",
+      "bytes": 25394,
+      "seconds": 0.846
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/handleSmallLeather2.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/handleSmallLeather2.ogg",
+      "resource": "Audio/SFX/Additional/RPG/handleSmallLeather2",
+      "sha256": "a66f6db5918ad016c28a9f2768f127a7f39b5fa04481e5a3b4e78ebe2a1c282d",
+      "bytes": 10028,
+      "seconds": 0.307
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep00.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep00.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep00",
+      "sha256": "6fe61ef1fc3bcf0e253bf2eb64759db6cb69e2fe452f4d88cc597ecf78a3d601",
+      "bytes": 9475,
+      "seconds": 0.249
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep01.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep01.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep01",
+      "sha256": "313472dba31fd0c855376069fa368bb5a198c27251cc8398ef464578b7047a4c",
+      "bytes": 9900,
+      "seconds": 0.282
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep02.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep02.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep02",
+      "sha256": "2d9575b7dead6e1217ca113991fc5229e9b6d998ea0726ebbb277e7398ab888f",
+      "bytes": 9528,
+      "seconds": 0.242
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep03.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep03.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep03",
+      "sha256": "a86756b9af9f370455ab47844239bb07fd1bee7a113068c91f0fcd9b72703fae",
+      "bytes": 10559,
+      "seconds": 0.269
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep04.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep04.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep04",
+      "sha256": "fd264d72a7cd622b82abde202f4ed09fa7de95d34c36473ee938ce66cdf39830",
+      "bytes": 11303,
+      "seconds": 0.323
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep05.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep05.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep05",
+      "sha256": "817957e1f95d97fd36870064c41673895575cde17bccb245f50364c86ed10198",
+      "bytes": 10288,
+      "seconds": 0.276
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep06.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep06.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep06",
+      "sha256": "6cabfe7ae95d227a84066c6e17014ac31cc7c89b14ef51d7877e98352d4a64fb",
+      "bytes": 9885,
+      "seconds": 0.242
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep07.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep07.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep07",
+      "sha256": "42924cdbf998d5b3db180a339fd74afc94c570d594a536687e337ef1bdfdb346",
+      "bytes": 10264,
+      "seconds": 0.256
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep08.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep08.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep08",
+      "sha256": "668f14dc1254d0d0f33025e9c7dbcdf2c2f00462ed0e07fb8f099c1d711c1337",
+      "bytes": 9242,
+      "seconds": 0.256
+    },
+    {
+      "pack": "rpg-audio",
+      "archive_member": "Audio/footstep09.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/RPG/footstep09.ogg",
+      "resource": "Audio/SFX/Additional/RPG/footstep09",
+      "sha256": "9324ebb9b2c5bcd078dcb523c6518d38a9f34081069d511602c2efb14ce06ce2",
+      "bytes": 9356,
+      "seconds": 0.215
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/click_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/click_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/click_001",
+      "sha256": "ccfb7fa0cccdd9faec0eb16033c732b1e308d139d80f799161495d58f7adcdb9",
+      "bytes": 4876,
+      "seconds": 0.1
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/click_002.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/click_002.ogg",
+      "resource": "Audio/SFX/Additional/Interface/click_002",
+      "sha256": "adcd1f4adc35f1b41bc1b5bbefeff7aa44f2f3f0d96d3199b544140c7c1e761c",
+      "bytes": 4275,
+      "seconds": 0.01
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/select_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/select_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/select_001",
+      "sha256": "aec0c31ea934a35936ae0d2ab8fac8123c93aa5647f935853a58dbaf90278b7a",
+      "bytes": 5468,
+      "seconds": 0.043
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/back_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/back_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/back_001",
+      "sha256": "07db973f79f6ae0f2edc34561e7592e24d0577455919fb602cb8ecc0da991dcf",
+      "bytes": 6997,
+      "seconds": 0.064
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/open_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/open_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/open_001",
+      "sha256": "a27c6bb0df7da1e6af5dd5937593c98bc58b6e513f42fe6a3254cd6a6949c648",
+      "bytes": 9834,
+      "seconds": 0.148
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/close_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/close_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/close_001",
+      "sha256": "44af8249b933e0fd35ec957a638bb1a0b01f85b53fbe9674bf77bd3ca3168ef4",
+      "bytes": 9915,
+      "seconds": 0.148
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/confirmation_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/confirmation_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/confirmation_001",
+      "sha256": "063564703b6094d70718a3e787a55cc9141611e4ecd6b6637f8828f79b4a8c3a",
+      "bytes": 8968,
+      "seconds": 0.29
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/error_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/error_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/error_001",
+      "sha256": "46e67425d16339772e8d328fb36a49426c9467418686e11beeb71ff84b0f6433",
+      "bytes": 7373,
+      "seconds": 0.165
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/scroll_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/scroll_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/scroll_001",
+      "sha256": "320c6aafb2c7a503eae508dc443b72d7f7c0a317bfd16813157ed400cd04cf16",
+      "bytes": 21633,
+      "seconds": 1.0
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/switch_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/switch_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/switch_001",
+      "sha256": "3b74efad87f1e69dbd1d05c5ad952ab90859b5a3d11da6ec5bd79b4f03b42afa",
+      "bytes": 6753,
+      "seconds": 0.618
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/tick_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/tick_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/tick_001",
+      "sha256": "9d057b918024c787bbe6c00beed13a7ef72a3fa0c259add3cef36582792f4230",
+      "bytes": 4497,
+      "seconds": 0.023
+    },
+    {
+      "pack": "interface-sounds",
+      "archive_member": "Audio/toggle_001.ogg",
+      "file": "DetectivePrototype/Assets/Resources/Audio/SFX/Additional/Interface/toggle_001.ogg",
+      "resource": "Audio/SFX/Additional/Interface/toggle_001",
+      "sha256": "ca1d2dde5f0b286abac4f070e23edab8f30927c8a533665cdf2ac6492a415e49",
+      "bytes": 7369,
+      "seconds": 0.139
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/forward.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/forward.png",
+      "resource": "Art/Icons/Kenney/forward",
+      "sha256": "c6cb584576c5a4638ad6f883ff14700071b56f0bb83980b15ffc1baf6576f03b",
+      "bytes": 15117,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/pause.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/pause.png",
+      "resource": "Art/Icons/Kenney/pause",
+      "sha256": "e2f5600a771c5da6e523ab1345ba9a4c5251c688933e0a6ff6c75e0982311e25",
+      "bytes": 15015,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/stop.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/stop.png",
+      "resource": "Art/Icons/Kenney/stop",
+      "sha256": "3d2f271c0648ec70e5ee6a066078a5a36ec05096e269f57b32916ba67980e600",
+      "bytes": 15014,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/rewind.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/rewind.png",
+      "resource": "Art/Icons/Kenney/rewind",
+      "sha256": "f81b56d09464f1d03d65378d0918dd511f46c13a04753be06dadcd0de58c25ec",
+      "bytes": 15153,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/fastForward.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/fastForward.png",
+      "resource": "Art/Icons/Kenney/fastForward",
+      "sha256": "bc23e4edc9804d2e6ee15e86e30f7c658f950ce41ab17c05742d931bc9ea021c",
+      "bytes": 15165,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/previous.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/previous.png",
+      "resource": "Art/Icons/Kenney/previous",
+      "sha256": "29c31f37bd89d43501f12ab026a337a94a127f418b600f04d7a51e40c6dee160",
+      "bytes": 15125,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/next.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/next.png",
+      "resource": "Art/Icons/Kenney/next",
+      "sha256": "95145f7c4bb20169a53bba853b4cf6c6f43f916491338096673ece906213ef3b",
+      "bytes": 15142,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/audioOn.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/audioOn.png",
+      "resource": "Art/Icons/Kenney/audioOn",
+      "sha256": "f6b0ce8d046e775cfeda2bc810d980ae4851185e44d1b0a89eaf8e5d482bfd47",
+      "bytes": 15232,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/audioOff.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/audioOff.png",
+      "resource": "Art/Icons/Kenney/audioOff",
+      "sha256": "859dec7d01a1663a9bdc85ba397bb22e6d068ea0d3a01dd6f27ea44b5bb4a7f9",
+      "bytes": 15096,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/musicOn.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/musicOn.png",
+      "resource": "Art/Icons/Kenney/musicOn",
+      "sha256": "479859cecc0caf9560c0b10139e02eef7f538cfdfc29433aadce0628b7e43b4b",
+      "bytes": 15197,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/musicOff.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/musicOff.png",
+      "resource": "Art/Icons/Kenney/musicOff",
+      "sha256": "f45b0a638fbe50aa7db97be5023bc4f1d8e9bafe570bf50e4fd5695c7e43a2b0",
+      "bytes": 15263,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/zoomIn.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/zoomIn.png",
+      "resource": "Art/Icons/Kenney/zoomIn",
+      "sha256": "828e89fbc3fb91ff4f4d6928ec5382f02c9a617d94ee30b4744dc651a1b67ce6",
+      "bytes": 15343,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/zoomOut.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/zoomOut.png",
+      "resource": "Art/Icons/Kenney/zoomOut",
+      "sha256": "ceadaf6ba99bfb12496c6c4922100c7f8955d0a20a7642b117343f91632a9d08",
+      "bytes": 15339,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/question.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/question.png",
+      "resource": "Art/Icons/Kenney/question",
+      "sha256": "7790632728a5c2fd047fef09a93c6643379f5702e799d4a74a59a2b8a6d82956",
+      "bytes": 15265,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/information.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/information.png",
+      "resource": "Art/Icons/Kenney/information",
+      "sha256": "91f0f3916aea0a63373f073aa1c7d9e6fdba5b60b6f1ecb8a79049650564ce8f",
+      "bytes": 15121,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/checkmark.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/checkmark.png",
+      "resource": "Art/Icons/Kenney/checkmark",
+      "sha256": "edc47b1d6cc81aadaa74a18bccebfa30871fdb37d042414a59a3d83cc8144316",
+      "bytes": 15290,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/cross.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/cross.png",
+      "resource": "Art/Icons/Kenney/cross",
+      "sha256": "211fd13fd059d2c7af30dac78421dd8fa4e984da6e760db73303b60de61b254c",
+      "bytes": 15195,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/locked.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/locked.png",
+      "resource": "Art/Icons/Kenney/locked",
+      "sha256": "b5cbe9d0823b83c40a5d282b2ae26ba7c1ddad48fd02fdac47dacb025342eabd",
+      "bytes": 15064,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/unlocked.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/unlocked.png",
+      "resource": "Art/Icons/Kenney/unlocked",
+      "sha256": "fd768776f1ef6379a4e3d43c96f5b16ef069e10110e468c457fddc58c739d5db",
+      "bytes": 15075,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/singleplayer.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/singleplayer.png",
+      "resource": "Art/Icons/Kenney/singleplayer",
+      "sha256": "8bc49e8b3c3249562fd51bf2d29227990f2a9e0bc494fb5f359dff5441c3af8a",
+      "bytes": 15259,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/target.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/target.png",
+      "resource": "Art/Icons/Kenney/target",
+      "sha256": "ac139531c1afdcb5280e33b89fa3956e907cb90009491126e668da4447dc995e",
+      "bytes": 15427,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/gear.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/gear.png",
+      "resource": "Art/Icons/Kenney/gear",
+      "sha256": "95b7231229fb620b331f0aea2ae7bc4a227ec0206ff599f662442d7dcbbdd58b",
+      "bytes": 15475,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/door.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/door.png",
+      "resource": "Art/Icons/Kenney/door",
+      "sha256": "a9bc9c288c3c1d2b49421f2deef07390aa54a2fdba2acc8fa910d59e3e10df65",
+      "bytes": 15149,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "pack": "game-icons",
+      "archive_member": "PNG/White/1x/phone.png",
+      "file": "DetectivePrototype/Assets/Resources/Art/Icons/Kenney/phone.png",
+      "resource": "Art/Icons/Kenney/phone",
+      "sha256": "3c51c70077262109bc9e53b5154e551bdd568fb9547703a803493038883cc4dc",
+      "bytes": 15047,
+      "width": 50,
+      "height": 50
+    }
+  ]
+}

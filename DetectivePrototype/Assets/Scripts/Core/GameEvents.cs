@@ -27,6 +27,13 @@ namespace Detective.Core
         /// <summary>타임라인 관찰 모드에서 보고 있는 시각이 바뀌었을 때. 인자는 틱.</summary>
         public static event Action<int> TimelineTickChanged;
 
+        /// <summary>
+        /// 청취점이 다른 방으로 옮겨 갔을 때. 인자는 방 id, 어느 방에도 속하지 않으면 빈 문자열.
+        /// 방 환경음 교체(AudioDirector)와 엿듣기 가청 판정(EavesdropController)이 이걸 듣는다.
+        /// 둘이 서로를 참조하지 않도록 이벤트로 흘린다(§18-5).
+        /// </summary>
+        public static event Action<string> PlayerRoomChanged;
+
         public static void ShowMessage(string message)
         {
             if (string.IsNullOrEmpty(message)) return;
@@ -67,6 +74,13 @@ namespace Detective.Core
             if (handler != null) handler(tick);
         }
 
+        /// <summary>방을 벗어나 어디에도 속하지 않을 수 있으므로 빈 문자열도 그대로 흘린다.</summary>
+        public static void RaisePlayerRoomChanged(string roomId)
+        {
+            Action<string> handler = PlayerRoomChanged;
+            if (handler != null) handler(roomId ?? string.Empty);
+        }
+
         /// <summary>테스트/씬 재시작용. 남아 있는 구독을 전부 끊는다.</summary>
         public static void ClearAllSubscribers()
         {
@@ -76,6 +90,7 @@ namespace Detective.Core
             NotebookUpdated = null;
             SfxRequested = null;
             TimelineTickChanged = null;
+            PlayerRoomChanged = null;
         }
     }
 }

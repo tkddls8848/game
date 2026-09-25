@@ -1,11 +1,11 @@
 {
   "uiFont": "Fonts/NotoSerifKR-Regular",
   "rooms": [
-    { "roomId": "room_lobby",   "floor": "marble", "floorTexture": "Art/Floors/marble_checker", "tint": "#CCC2B4", "tileSize": 4.0 },
+    { "roomId": "room_lobby",   "floor": "marble", "floorTexture": "Art/Floors/marble_checker", "tint": "#CCC2B4", "tileSize": 4.0, "ambient": "Audio/Ambient/clock_tick", "ambientVolume": 0.75 },
     { "roomId": "room_dining",  "floor": "wood",   "floorTexture": "Art/Floors/wood_planks",    "tint": "#C7B39B", "tileSize": 3.0 },
     { "roomId": "room_storage", "floor": "stone",  "floorTexture": "Art/Floors/stone_cobble",   "tint": "#7A7E85", "tileSize": 4.0 },
     { "roomId": "room_hall",    "floor": "rug",    "floorTexture": "Art/Floors/rug_red",        "tint": "#CCABA3", "tileSize": 4.0 },
-    { "roomId": "room_victim",  "floor": "carpet", "floorTexture": "Art/Floors/carpet_dark",    "tint": "#B292B2", "tileSize": 4.0 },
+    { "roomId": "room_victim",  "floor": "carpet", "floorTexture": "Art/Floors/carpet_dark",    "tint": "#B292B2", "tileSize": 4.0, "ambient": "Audio/Ambient/fireplace", "ambientVolume": 0.85 },
     { "roomId": "room_suspect", "floor": "wood",   "floorTexture": "Art/Floors/wood_parquet",   "tint": "#A2B8AD", "tileSize": 3.0 }
   ],
   "npcs": [

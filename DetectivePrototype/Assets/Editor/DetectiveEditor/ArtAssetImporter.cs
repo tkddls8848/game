@@ -21,6 +21,7 @@ namespace DetectiveEditor
         public const string FloorsFolder = "Assets/Resources/Art/Floors";
         public const string PortraitsFolder = "Assets/Resources/Art/Portraits";
         public const string EvidenceFolder = "Assets/Resources/Art/Evidence";
+        public const string IconsFolder = "Assets/Resources/Art/Icons";
         public const string BgmFolder = "Assets/Resources/Audio/BGM";
         public const string AmbientFolder = "Assets/Resources/Audio/Ambient";
         public const string SfxFolder = "Assets/Resources/Audio/SFX";
@@ -104,7 +105,7 @@ namespace DetectiveEditor
             EditorApplication.delayCall += () =>
             {
                 int fixedCount = 0;
-                foreach (string path in FindAssets("t:Texture2D", FloorsFolder, PortraitsFolder, EvidenceFolder))
+                foreach (string path in FindAssets("t:Texture2D", FloorsFolder, PortraitsFolder, EvidenceFolder, IconsFolder))
                 {
                     var importer = AssetImporter.GetAtPath(path) as TextureImporter;
                     if (importer == null || !NeedsFixing(importer)) continue;
@@ -144,7 +145,7 @@ namespace DetectiveEditor
         public static void ReimportFromMenu()
         {
             int touched = 0;
-            foreach (string path in FindAssets("t:Texture2D", FloorsFolder, PortraitsFolder, EvidenceFolder))
+            foreach (string path in FindAssets("t:Texture2D", FloorsFolder, PortraitsFolder, EvidenceFolder, IconsFolder))
             {
                 var importer = AssetImporter.GetAtPath(path) as TextureImporter;
                 if (importer == null || !ApplyTextureSettings(importer)) continue;
@@ -177,7 +178,7 @@ namespace DetectiveEditor
         {
             string path = importer.assetPath;
             bool floor = InFolder(path, FloorsFolder);
-            bool picture = InFolder(path, PortraitsFolder) || InFolder(path, EvidenceFolder);
+            bool picture = InFolder(path, PortraitsFolder) || InFolder(path, EvidenceFolder) || InFolder(path, IconsFolder);
             if (!floor && !picture) return false;
 
             importer.textureType = TextureImporterType.Sprite;

@@ -51,3 +51,8 @@ crashlytics-build.properties
 # Test results (batchmode)
 TestResults.xml
 *.log
+
+# 에셋 원본 압축본 보관소. 받은 팩을 그대로 두는 곳이라 저장소에 넣지 않는다.
+# 실제로 쓰는 파일은 Assets/Resources 아래에 풀려 있고, 어느 ZIP의 어느 경로에서
+# 왔는지와 SHA-256은 docs/additional-assets.json 에 적혀 있으므로 출처는 추적된다.
+/AssetDownloads/

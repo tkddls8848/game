@@ -241,4 +241,7 @@ Assets/Resources/GameData/
       귀(WASD)가 선 방은 호박색, 벽 너머는 회색. 같은 방 = 글자, 벽 너머 = `SonarText.Garble`로 전부 가린 웅얼거림, 그 밖 = 무음.
       탐색 중 돌아가는 같은 `ListeningSession`을 쓰므로 여기서 들은 것은 거기서도 들은 것이다. 닫으면 청취점을 탐정의 방으로 되돌린다.
       파문·회전선은 재생 위치(ms)에 묶여 정지하면 같이 멈춘다. 링·정사각형은 `ProceduralTextures`가 만들고 씬은 다시 만들 필요가 없다
-      (`TimelineController`가 실행 시 `SonarView`를 단다). 리눅스에서 mcs 컴파일·NUnit 135개 통과. **Unity 6 batchmode·Play 확인은 미실행**
+      (`TimelineController`가 실행 시 `SonarView`를 단다).
+      **Unity 6 batchmode 검증 완료** — 컴파일 `error CS` 0 · `warning CS` 0, EditMode 157/157 통과. Play 확인만 남았다.
+- [ ] **출시 판정 기준은 `DEVELOPMENT_PLAN_RELEASE.md`** — 남은 Phase(U-3~U-6)와 계획에 없던 출시 항목(저장·설정·일시정지 등),
+      그리고 **에이전트가 끝낼 수 없는 것**(한국어 성우 음성, 스토어 작업)을 갈라 적었다. "완성도"의 종료 조건은 거기 있다.

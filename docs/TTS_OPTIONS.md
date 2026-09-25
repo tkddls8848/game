@@ -453,10 +453,22 @@ Standard $4 / Neural $16 / Generative $30 / Long-Form $100 (per 1M자).
 ### 다음에 해야 할 일 (사람이 결정)
 
 1. Azure **S0(유료)** Speech 리소스 생성 → `AZURE_SPEECH_KEY` / `AZURE_SPEECH_REGION` 발급.
-2. `tools/tts_generate.py --provider azure --dry-run`으로 호출 계획 확인.
-3. **배역 5개에 음성 배정** — 후보를 짧은 문장으로 먼저 뽑아 듣고 고른다(비용 $0.001 수준).
-4. 크레딧 화면에 **"등장인물 음성은 AI 합성음입니다(Azure AI Speech)"** 한 줄 추가 → Code of Conduct 고지 의무 충족.
-5. `CREDITS.md`에 출처·라이선스 한 줄 추가 (프로젝트 규칙).
+2. **계정에서 쓸 수 있는 음성 목록 확인** — 이 문서의 이름을 믿지 말고 계정에 직접 묻는다.
+   목록은 계정·지역·시점에 따라 다르고, 틀린 이름을 넣으면 실행 시 알 수 없는 오류가 난다.
+   ```
+   python tools/tts_audition.py --provider azure --list-voices
+   ```
+3. **비교 청취** — 같은 대사를 후보 음성마다 뽑아 듣고 배역 5개를 정한다.
+   ```
+   python tools/tts_audition.py --provider azure --voices <이름1>,<이름2>,<이름3>
+   ```
+   본편 대본에서 배역마다 3줄(회차 앞·중·뒤)을 골라 `AssetDownloads/audition/`에 떨어뜨린다.
+   음성 3종이면 45줄 · 1,400자 · **$0.02** 수준이고, 결과물은 Assets 밖이라 빌드에 섞이지 않는다.
+   귀로 판정할 것은 셋이다 — ①다섯이 서로 다른 사람으로 들리는가(이게 퍼즐이다)
+   ②벽 너머로 뭉갰을 때도 구분이 남는가 ③연기 톤이 평탄하지 않은가.
+4. `tools/tts_generate.py --provider azure --voice-map ... --dry-run`으로 본편 호출 계획 확인.
+5. 크레딧 화면에 **"등장인물 음성은 AI 합성음입니다(Azure AI Speech)"** 한 줄 추가 → Code of Conduct 고지 의무 충족.
+6. `CREDITS.md`에 출처·라이선스 한 줄 추가 (프로젝트 규칙).
 
 ---
 
@@ -469,4 +481,7 @@ Standard $4 / Neural $16 / Generative $30 / Long-Form $100 (per 1M자).
 * **Typecast**: "proper authorization"을 받는 절차. 영문 이용약관(help.typecast.ai) 본문.
 * **Azure**: "유료 티어에서만 상업 이용 가능"의 근거가 Microsoft 모더레이터 **Q&A 답변**이다.
   Product Terms 본문에서 F0/S0을 구분하는 문장 자체는 찾지 못했다. → **안전하게 S0를 쓴다**로 정리했다.
+* **음성 이름 전체 목록**: 이 문서에 적힌 이름은 조사 시점에 공개 문서에서 확인한 일부다.
+  Google Chirp 3: HD의 한국어 음성 이름은 확인하지 못했다. → 그래서 `tts_audition.py --list-voices`가
+  이름을 코드·문서에 박지 않고 공급자에게 물어본다. 계정에서 실제로 쓸 수 있는 것만 나오므로 그쪽이 정확하다.
 * 모든 서비스에 대해 **한국 법상의 성우 퍼블리시티권·초상권 쟁점**은 조사 범위 밖이다. 상업 출시 전에 별도 검토 권장.

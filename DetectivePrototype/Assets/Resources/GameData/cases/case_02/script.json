@@ -1,0 +1,2598 @@
+{
+  "caseId": "case_02",
+  "durationMs": 600000,
+  "speakers": [
+    {
+      "voiceId": "v1",
+      "npcId": "npc_a"
+    },
+    {
+      "voiceId": "v2",
+      "npcId": "npc_b"
+    },
+    {
+      "voiceId": "v3",
+      "npcId": "npc_c"
+    },
+    {
+      "voiceId": "v4",
+      "npcId": "npc_d"
+    },
+    {
+      "voiceId": "v5",
+      "npcId": "npc_victim"
+    }
+  ],
+  "utterances": [
+    {
+      "id": "u001",
+      "startMs": 1200,
+      "durationMs": 6600,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "접시가 열두 장인데 의자는 열네 개요. 누가 또 온다는 소리 못 들었는데."
+    },
+    {
+      "id": "u038",
+      "startMs": 2400,
+      "durationMs": 4600,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "눈이 무릎까지 오네요. 마차가 돌아갈 수 있을까."
+    },
+    {
+      "id": "u062",
+      "startMs": 3000,
+      "durationMs": 3500,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "여섯째 줄. 또 여섯째 줄이 비었군."
+    },
+    {
+      "id": "u039",
+      "startMs": 7700,
+      "durationMs": 4200,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "오늘 밤은 아무도 못 나가요. 길이 끊겼어요."
+    },
+    {
+      "id": "u063",
+      "startMs": 8300,
+      "durationMs": 6200,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "이 집에서 숫자를 속이는 건 어렵지 않다. 숫자를 지우는 게 어렵지."
+    },
+    {
+      "id": "u002",
+      "startMs": 8500,
+      "durationMs": 4700,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "두 자리는 비워 두세요. 선생님이 그렇게 시켰어요."
+    },
+    {
+      "id": "u040",
+      "startMs": 12600,
+      "durationMs": 3500,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "그럼 저는 여기서 자야 하는 거군요."
+    },
+    {
+      "id": "u003",
+      "startMs": 13900,
+      "durationMs": 5600,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "빈 접시 놓고 저녁을 먹으라고? 이 집은 해마다 더 이상해져."
+    },
+    {
+      "id": "u064",
+      "startMs": 16300,
+      "durationMs": 2000,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…펜이 어디 갔나."
+    },
+    {
+      "id": "u041",
+      "startMs": 16800,
+      "durationMs": 4800,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "손님 방은 이 층이 아니라 위층이에요. 서재 반대편."
+    },
+    {
+      "id": "u065",
+      "startMs": 20100,
+      "durationMs": 4200,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "열쇠, 펜, 안경. 셋 중 둘은 늘 사라진다."
+    },
+    {
+      "id": "u004",
+      "startMs": 20200,
+      "durationMs": 5600,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "이상한 게 아니라 습관이에요. 그분 아내 자리하고 아들 자리."
+    },
+    {
+      "id": "u042",
+      "startMs": 22300,
+      "durationMs": 4000,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "알아요. 십오 년 전에도 거기서 잤으니까."
+    },
+    {
+      "id": "u066",
+      "startMs": 26100,
+      "durationMs": 5400,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "서랍 오른쪽. 오른쪽에 다 있다. 내가 넣었으니 내가 안다."
+    },
+    {
+      "id": "u005",
+      "startMs": 26500,
+      "durationMs": 6000,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "아들 얘기는 여기서 꺼내지 마시오. 지난번에 유리잔 두 개 깨졌어."
+    },
+    {
+      "id": "u043",
+      "startMs": 27000,
+      "durationMs": 4700,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "십오 년이면 길군요. 그동안 한 번도 안 오셨어요?"
+    },
+    {
+      "id": "u044",
+      "startMs": 32400,
+      "durationMs": 3800,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "부르지 않으셨죠. 이번엔 편지가 왔어요."
+    },
+    {
+      "id": "u006",
+      "startMs": 33200,
+      "durationMs": 5300,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그럼 꺼내지 않을게요. 대신 포도주는 붉은 것만 올리세요."
+    },
+    {
+      "id": "u067",
+      "startMs": 33300,
+      "durationMs": 6000,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "알약 여섯 알… 스물넷이었는데 여섯이 줄었나. 아니, 내가 먹었지."
+    },
+    {
+      "id": "u_id_v3",
+      "startMs": 36900,
+      "durationMs": 2600,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "편지에 뭐라고요, 줄리안?"
+    },
+    {
+      "id": "u007",
+      "startMs": 39200,
+      "durationMs": 2200,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "흰 걸 찾으실 텐데."
+    },
+    {
+      "id": "u046",
+      "startMs": 40200,
+      "durationMs": 3600,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "'정리할 것이 있다.' 그 한 줄이요."
+    },
+    {
+      "id": "u068",
+      "startMs": 41100,
+      "durationMs": 4000,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "종이 울리기 전에 이 편지를 마쳐야 한다."
+    },
+    {
+      "id": "u_id_v1",
+      "startMs": 42100,
+      "durationMs": 6400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "오늘은 안 찾으실 거예요. 클라라 씨가 그렇게 말했다고 전해도 좋아요."
+    },
+    {
+      "id": "u047",
+      "startMs": 44500,
+      "durationMs": 3800,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "…그 말을 들으니 저도 마음이 무겁네요."
+    },
+    {
+      "id": "u069",
+      "startMs": 46900,
+      "durationMs": 5000,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "'친애하는 선생, 귀하의 예전 병원에 편지를 보냈소.'"
+    },
+    {
+      "id": "u048",
+      "startMs": 49000,
+      "durationMs": 2800,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "선생님도 편지를 받으셨어요?"
+    },
+    {
+      "id": "u009",
+      "startMs": 49200,
+      "durationMs": 4100,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "본인 이름을 본인이 대는 사람은 처음 보네."
+    },
+    {
+      "id": "u049",
+      "startMs": 52500,
+      "durationMs": 4600,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "저는 부름을 받았어요. 진료 가방을 들고 오라고."
+    },
+    {
+      "id": "u070",
+      "startMs": 53700,
+      "durationMs": 3400,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…이 문장은 너무 친절하다. 다시."
+    },
+    {
+      "id": "u010",
+      "startMs": 54000,
+      "durationMs": 5000,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "제 이름을 아무도 안 불러 주니까 제가 부르는 거예요."
+    },
+    {
+      "id": "u050",
+      "startMs": 57800,
+      "durationMs": 2400,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "심장이 또 안 좋으신가."
+    },
+    {
+      "id": "u071",
+      "startMs": 58900,
+      "durationMs": 5000,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "'나는 기다리는 사람이 아니오. 오늘 밤 결정하시오.'"
+    },
+    {
+      "id": "u011",
+      "startMs": 59700,
+      "durationMs": 3800,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그건 그래. 이 집에선 다들 종만 치지."
+    },
+    {
+      "id": "u051",
+      "startMs": 60900,
+      "durationMs": 4600,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "작년보다 나빠요. 그 얘긴 제가 할 게 아니지만."
+    },
+    {
+      "id": "u012",
+      "startMs": 64200,
+      "durationMs": 5900,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "종이 울리면 여덟 시 반이에요. 그때까진 수프가 식으면 안 돼요."
+    },
+    {
+      "id": "u072",
+      "startMs": 65700,
+      "durationMs": 2000,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "좋다. 이게 낫다."
+    },
+    {
+      "id": "u052",
+      "startMs": 66200,
+      "durationMs": 2800,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "가족한테는 말해도 되잖아요."
+    },
+    {
+      "id": "u073",
+      "startMs": 69500,
+      "durationMs": 5900,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "조카에게는 따로 쓸 것이 없다. 그 아이는 내 이름만 필요하니까."
+    },
+    {
+      "id": "u053",
+      "startMs": 69700,
+      "durationMs": 5900,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "가족이라고 하셨어요? 그분은 조카를 가족이라고 부르지 않으시던데."
+    },
+    {
+      "id": "u013",
+      "startMs": 70800,
+      "durationMs": 4100,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "수프는 내가 알아서 해. 대신 부탁이 있소."
+    },
+    {
+      "id": "u014",
+      "startMs": 75600,
+      "durationMs": 1600,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "말해 보세요."
+    },
+    {
+      "id": "u054",
+      "startMs": 76300,
+      "durationMs": 3800,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "…선생님은 늘 그렇게 정확하게 찌르시죠."
+    },
+    {
+      "id": "u074",
+      "startMs": 77200,
+      "durationMs": 3000,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…계단 소리군. 벌써 올라오나."
+    },
+    {
+      "id": "u015",
+      "startMs": 77900,
+      "durationMs": 6000,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "창고 석탄통을 좀 비워야 해. 난로 재를 거기다 붓는 사람이 있어."
+    },
+    {
+      "id": "u055",
+      "startMs": 80800,
+      "durationMs": 3800,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "직업병이에요. 아픈 데를 찾아야 하니까."
+    },
+    {
+      "id": "u016",
+      "startMs": 84600,
+      "durationMs": 2400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "재를 석탄통에? 누가요?"
+    },
+    {
+      "id": "u056",
+      "startMs": 85300,
+      "durationMs": 3000,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "그러면 제 아픈 데는 어딥니까."
+    },
+    {
+      "id": "u017",
+      "startMs": 87700,
+      "durationMs": 5800,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "몰라. 그저께도 그랬고 어제도 그랬어. 새 석탄이 다 회색이야."
+    },
+    {
+      "id": "u057",
+      "startMs": 89000,
+      "durationMs": 4700,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "돈이겠죠. 손이 떨리는 걸 아까부터 보고 있었어요."
+    },
+    {
+      "id": "u018",
+      "startMs": 94200,
+      "durationMs": 2400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그건 하녀들 일이잖아요."
+    },
+    {
+      "id": "u058",
+      "startMs": 94400,
+      "durationMs": 1700,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "추워서 그래요."
+    },
+    {
+      "id": "u059",
+      "startMs": 96800,
+      "durationMs": 3800,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "난로 앞에서 삼십 분을 서 있었는데도요?"
+    },
+    {
+      "id": "u019",
+      "startMs": 97300,
+      "durationMs": 5400,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "하녀는 눈이 와서 못 왔지. 이 집에 지금 다섯 사람뿐이오."
+    },
+    {
+      "id": "u060",
+      "startMs": 101300,
+      "durationMs": 2300,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "…선생님, 그만하세요."
+    },
+    {
+      "id": "u020",
+      "startMs": 103400,
+      "durationMs": 3200,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "다섯이면 다섯이 나눠 하면 돼요."
+    },
+    {
+      "id": "u061",
+      "startMs": 104300,
+      "durationMs": 3800,
+      "voiceId": "v4",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "그만하죠. 올라가서 가방을 풀어야 해요."
+    },
+    {
+      "id": "u021",
+      "startMs": 107300,
+      "durationMs": 3500,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그 말 선생님 앞에서도 할 수 있소?"
+    },
+    {
+      "id": "u022",
+      "startMs": 111500,
+      "durationMs": 2200,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "못 할 이유가 뭐죠."
+    },
+    {
+      "id": "u023",
+      "startMs": 114400,
+      "durationMs": 5200,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "허. 십 년을 옆에 붙어 있으면 그 정도 배짱은 생기나."
+    },
+    {
+      "id": "u114",
+      "startMs": 118000,
+      "durationMs": 5300,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "여보세요. 네, 저예요. 눈 때문에 오늘은 못 내려갑니다."
+    },
+    {
+      "id": "u024",
+      "startMs": 120300,
+      "durationMs": 5400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "배짱이 아니라 장부예요. 숫자를 쥔 사람은 목소리가 커져요."
+    },
+    {
+      "id": "u115",
+      "startMs": 124900,
+      "durationMs": 5400,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "…압니다. 이자까지 압니다. 다음 주 수요일까지라고 하셨죠."
+    },
+    {
+      "id": "u025",
+      "startMs": 126400,
+      "durationMs": 4700,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그 장부 말인데. 어제 서재에서 소리가 크게 났어."
+    },
+    {
+      "id": "u026",
+      "startMs": 131800,
+      "durationMs": 1200,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "들었어요."
+    },
+    {
+      "id": "u116",
+      "startMs": 131900,
+      "durationMs": 5400,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "돈은 나옵니다. 여기서 나옵니다. 며칠만 더 기다려 주세요."
+    },
+    {
+      "id": "u027",
+      "startMs": 133700,
+      "durationMs": 2200,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "누구하고 싸운 거요?"
+    },
+    {
+      "id": "u028",
+      "startMs": 136600,
+      "durationMs": 3000,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "제가 아니에요. 그건 확실해요."
+    },
+    {
+      "id": "u117",
+      "startMs": 138900,
+      "durationMs": 4700,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "아니요, 훔치는 게 아니에요. 제 것이 될 겁니다."
+    },
+    {
+      "id": "u029",
+      "startMs": 140300,
+      "durationMs": 5200,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그럼 조카겠군. 돈 얘기 말고 할 얘기가 없는 사람이니."
+    },
+    {
+      "id": "u075",
+      "startMs": 145000,
+      "durationMs": 1800,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "들어가도 될까요."
+    },
+    {
+      "id": "u118",
+      "startMs": 145200,
+      "durationMs": 4600,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "…유언장은 아직 안 봤습니다. 그래서 온 겁니다."
+    },
+    {
+      "id": "u030",
+      "startMs": 146200,
+      "durationMs": 4200,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "조카는 어제 저녁에 없었어요. 기차가 늦었죠."
+    },
+    {
+      "id": "u076",
+      "startMs": 147500,
+      "durationMs": 2400,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "들어오시오. 문은 닫고."
+    },
+    {
+      "id": "u077",
+      "startMs": 150600,
+      "durationMs": 3600,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "숨소리가 아까보다 거칠어요. 앉으세요."
+    },
+    {
+      "id": "u031",
+      "startMs": 151100,
+      "durationMs": 3200,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그러면 남은 건 의사 선생뿐인데."
+    },
+    {
+      "id": "u119",
+      "startMs": 151400,
+      "durationMs": 6500,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "그 사람은 나이가 일흔둘이고 심장이 나빠요. 계산은 저도 할 줄 압니다."
+    },
+    {
+      "id": "u078",
+      "startMs": 154900,
+      "durationMs": 2600,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "앉아 있었소. 하루 종일."
+    },
+    {
+      "id": "u032",
+      "startMs": 155000,
+      "durationMs": 2400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…수프 보세요, 마르코."
+    },
+    {
+      "id": "u033",
+      "startMs": 158100,
+      "durationMs": 2200,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "봐. 눈을 피하잖아."
+    },
+    {
+      "id": "u_id_v5",
+      "startMs": 158200,
+      "durationMs": 3800,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "팔 걷어 주세요, 에드먼드 헤일 선생님."
+    },
+    {
+      "id": "u120",
+      "startMs": 159500,
+      "durationMs": 4200,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "그런 말 하지 마세요. 저는 기다리는 거예요."
+    },
+    {
+      "id": "u034",
+      "startMs": 161000,
+      "durationMs": 3000,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "피한 게 아니라 냄비가 넘쳐요."
+    },
+    {
+      "id": "u_id_v4",
+      "startMs": 162700,
+      "durationMs": 4700,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "헬렌 선생, 그 가방 열기 전에 들을 얘기가 있소."
+    },
+    {
+      "id": "u035",
+      "startMs": 164700,
+      "durationMs": 4700,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "아이고. 이게 다 남의 집 얘기 하다 생긴 일이지."
+    },
+    {
+      "id": "u121",
+      "startMs": 165300,
+      "durationMs": 2800,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "끊습니다. 누가 지나갑니다."
+    },
+    {
+      "id": "u081",
+      "startMs": 168100,
+      "durationMs": 2600,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…재 보고 나서 듣겠어요."
+    },
+    {
+      "id": "u036",
+      "startMs": 170100,
+      "durationMs": 2200,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그러니 하지 마세요."
+    },
+    {
+      "id": "u082",
+      "startMs": 171400,
+      "durationMs": 4100,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "이 집에서 순서를 정하는 사람은 나 하나요."
+    },
+    {
+      "id": "u037",
+      "startMs": 173000,
+      "durationMs": 5900,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "알았소. 그런데 석탄통은 진짜 봐야 해. 저녁 치우고 내려가겠소."
+    },
+    {
+      "id": "u122",
+      "startMs": 176000,
+      "durationMs": 4600,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "…기다린다고 말해 놓고 계단을 세 번 올려다봤군."
+    },
+    {
+      "id": "u083",
+      "startMs": 176200,
+      "durationMs": 1800,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "무슨 얘기입니까."
+    },
+    {
+      "id": "u084",
+      "startMs": 178700,
+      "durationMs": 3000,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "당신 가방에 니트로 알약 있소?"
+    },
+    {
+      "id": "u085",
+      "startMs": 182400,
+      "durationMs": 3200,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "있어요. 혀 밑에 넣는 갈색 병."
+    },
+    {
+      "id": "u123",
+      "startMs": 182500,
+      "durationMs": 6400,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "이 집은 벽마다 귀가 있어. 그러니 여기선 아무 말도 하면 안 되는데."
+    },
+    {
+      "id": "u_pills",
+      "startMs": 186300,
+      "durationMs": 7800,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "그 병 없이는 발작이 왔을 때 십 분을 못 버티세요. 그러니 서랍에서 절대 빼지 마세요."
+    },
+    {
+      "id": "u124",
+      "startMs": 190800,
+      "durationMs": 4200,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "아버지가 죽던 해에도 이 난로가 여기 있었지."
+    },
+    {
+      "id": "u087",
+      "startMs": 194800,
+      "durationMs": 4100,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "알고 있소. 그래서 늘 오른쪽 서랍에 둔다."
+    },
+    {
+      "id": "u125",
+      "startMs": 196900,
+      "durationMs": 5200,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "그때 삼촌은 나한테 손수건 한 장을 주고 그걸로 끝냈어."
+    },
+    {
+      "id": "u_blackmail",
+      "startMs": 199600,
+      "durationMs": 8200,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "내가 당신 예전 병원에 사람을 보냈소. 1907년 겨울 기록을 봤소. 당신이 고친 그 줄도."
+    },
+    {
+      "id": "u126",
+      "startMs": 204000,
+      "durationMs": 4400,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "…의사 선생 얼굴을 어디서 봤는지 이제 알겠다."
+    },
+    {
+      "id": "u131",
+      "startMs": 206000,
+      "durationMs": 4400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…마르코가 내려갔네. 석탄통이 그렇게 중요한가."
+    },
+    {
+      "id": "u089",
+      "startMs": 208500,
+      "durationMs": 2200,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…무엇을 원하십니까."
+    },
+    {
+      "id": "u127",
+      "startMs": 210300,
+      "durationMs": 3200,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "신문이었어. 1908년 봄 신문."
+    },
+    {
+      "id": "u090",
+      "startMs": 211400,
+      "durationMs": 6500,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "오늘 밤 내 서명 하나가 필요하오. 당신이 그걸 받아 적어 주면 되겠소."
+    },
+    {
+      "id": "u143",
+      "startMs": 212000,
+      "durationMs": 4600,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "석탄이 또 회색이군. 이게 무슨 석탄이야, 재지."
+    },
+    {
+      "id": "u132",
+      "startMs": 212100,
+      "durationMs": 4600,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "여섯째 줄. 선생님이 여섯째 줄을 세 번 물었어."
+    },
+    {
+      "id": "u133",
+      "startMs": 218400,
+      "durationMs": 6200,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "제가 지운 게 아닌데요. 그렇게 말하면 될 텐데 왜 말이 안 나올까."
+    },
+    {
+      "id": "u144",
+      "startMs": 218400,
+      "durationMs": 4200,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "누가 아래층까지 내려와서 재를 붓는단 말인가."
+    },
+    {
+      "id": "u091",
+      "startMs": 218600,
+      "durationMs": 2400,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…생각할 시간을 주세요."
+    },
+    {
+      "id": "u092",
+      "startMs": 221700,
+      "durationMs": 5400,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "종이 울릴 때까지. 나는 복도에 나가 벽시계를 보고 오겠소."
+    },
+    {
+      "id": "u145",
+      "startMs": 224400,
+      "durationMs": 4600,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "…삽이 어디 갔나. 삽도 사라지는 집이야 여기는."
+    },
+    {
+      "id": "u134",
+      "startMs": 226300,
+      "durationMs": 2900,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "왜냐하면 지운 사람을 아니까."
+    },
+    {
+      "id": "u146",
+      "startMs": 230800,
+      "durationMs": 5600,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "기름 램프는 셋, 초는 넉 자루. 눈이 더 오면 이걸로 이틀."
+    },
+    {
+      "id": "u135",
+      "startMs": 230900,
+      "durationMs": 5300,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…의사 선생 왕진비. 작년에 열한 번, 올해는 스물세 번."
+    },
+    {
+      "id": "u097",
+      "startMs": 231000,
+      "durationMs": 5900,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…1907년 겨울. 그 한 줄을 십팔 년 동안 아무도 안 봤는데."
+    },
+    {
+      "id": "u136",
+      "startMs": 237900,
+      "durationMs": 5000,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "스물세 번 중 아홉 번은 오지도 않았어. 돈만 나갔지."
+    },
+    {
+      "id": "u147",
+      "startMs": 238200,
+      "durationMs": 3600,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "포도주는… 붉은 것 여섯, 흰 것 둘."
+    },
+    {
+      "id": "u_clock",
+      "startMs": 240000,
+      "durationMs": 6800,
+      "voiceId": "v5",
+      "room": "room_hall",
+      "clip": "",
+      "text": "벽시계가 이제 여덟 시 십사 분이군. 저녁 종까지 십육 분 남았소."
+    },
+    {
+      "id": "u_swap",
+      "startMs": 241500,
+      "durationMs": 7000,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "오른쪽 서랍. 갈색 병. 스물네 알. 색이 똑같은 걸 골라 왔으니 알아볼 사람은 없다."
+    },
+    {
+      "id": "u_gossip_past",
+      "startMs": 243000,
+      "durationMs": 7000,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "그 신문에 실린 얼굴이 모로 선생이었어. 환자 둘이 죽고, 기록이 고쳐졌다고 적혀 있었지. 그 병원 이름이 갈색 약병에도 찍혀 있었고."
+    },
+    {
+      "id": "u148",
+      "startMs": 243600,
+      "durationMs": 4100,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "흰 걸 찾으실 거라고 내가 말했는데 말이지."
+    },
+    {
+      "id": "u137",
+      "startMs": 244600,
+      "durationMs": 4600,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그걸 여섯째 줄에 적었다가 지운 사람이 누구겠어."
+    },
+    {
+      "id": "u094",
+      "startMs": 247600,
+      "durationMs": 5200,
+      "voiceId": "v5",
+      "room": "room_hall",
+      "clip": "",
+      "text": "복도가 서재보다 차다. 이 집은 늘 가운데가 제일 차지."
+    },
+    {
+      "id": "u099",
+      "startMs": 249500,
+      "durationMs": 5300,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…손이 떨리네. 줄리안한테 떤다고 핀잔을 준 게 방금인데."
+    },
+    {
+      "id": "u149",
+      "startMs": 249500,
+      "durationMs": 4200,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "이 집에서 내 말이 맞은 적은 한 번도 없어."
+    },
+    {
+      "id": "u138",
+      "startMs": 250900,
+      "durationMs": 5400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…선생님한테 말하면 제가 의심받아요. 장부를 쥔 건 저니까."
+    },
+    {
+      "id": "u129",
+      "startMs": 252000,
+      "durationMs": 5000,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "…내가 잘못 봤을 수도 있어. 십팔 년 전 신문이니까."
+    },
+    {
+      "id": "u095",
+      "startMs": 253500,
+      "durationMs": 3500,
+      "voiceId": "v5",
+      "room": "room_hall",
+      "clip": "",
+      "text": "…서재에서 서랍 여는 소리가 나는데."
+    },
+    {
+      "id": "u150",
+      "startMs": 255500,
+      "durationMs": 4700,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "…천장에서 소리가 나네. 서재 바로 아래가 여기지."
+    },
+    {
+      "id": "u100",
+      "startMs": 256300,
+      "durationMs": 5600,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "병은 그냥 두면 안 된다. 라벨에 내 병원 이름이 찍혀 있어."
+    },
+    {
+      "id": "u096",
+      "startMs": 258000,
+      "durationMs": 3800,
+      "voiceId": "v5",
+      "room": "room_hall",
+      "clip": "",
+      "text": "아니, 의사 선생이 가방을 여는 거겠지."
+    },
+    {
+      "id": "u139",
+      "startMs": 258000,
+      "durationMs": 3800,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그러니까 입을 다물고 있었지. 십 년을."
+    },
+    {
+      "id": "u130",
+      "startMs": 258500,
+      "durationMs": 4800,
+      "voiceId": "v3",
+      "room": "room_lobby",
+      "clip": "",
+      "text": "하지만 그 얼굴은 안 잊어. 나는 얼굴은 잘 기억해."
+    },
+    {
+      "id": "u151",
+      "startMs": 262000,
+      "durationMs": 3400,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "서랍 여는 소리. 그리고 또 서랍."
+    },
+    {
+      "id": "u101",
+      "startMs": 263400,
+      "durationMs": 5900,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "난로에 던지면 유리가 깨지면서 소리가 난다. 밑에 창고가 있었지."
+    },
+    {
+      "id": "u140",
+      "startMs": 263500,
+      "durationMs": 3400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "오늘은 말할까. 종이 울리고 나면."
+    },
+    {
+      "id": "u152",
+      "startMs": 267200,
+      "durationMs": 2900,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "선생님이 뭘 그렇게 찾으시나."
+    },
+    {
+      "id": "u141",
+      "startMs": 268600,
+      "durationMs": 4600,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…아니. 오늘은 조카가 와 있어. 오늘은 안 돼."
+    },
+    {
+      "id": "u102",
+      "startMs": 270800,
+      "durationMs": 4200,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "석탄통. 재하고 같이 부으면 아무도 안 본다."
+    },
+    {
+      "id": "u153",
+      "startMs": 271900,
+      "durationMs": 4000,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "…아니, 발소리가 가볍다. 여자 걸음이야."
+    },
+    {
+      "id": "u155",
+      "startMs": 274000,
+      "durationMs": 3400,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "…이 복도는 예전보다 길어 보이네."
+    },
+    {
+      "id": "u142",
+      "startMs": 274900,
+      "durationMs": 1800,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "수프를 데워야지."
+    },
+    {
+      "id": "u103",
+      "startMs": 276500,
+      "durationMs": 5400,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…나는 사람을 죽이는 게 아니다. 그냥 약을 안 주는 거다."
+    },
+    {
+      "id": "u154",
+      "startMs": 277700,
+      "durationMs": 4800,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "내가 이런 걸 세고 있으니 요리사가 아니라 문지기지."
+    },
+    {
+      "id": "u156",
+      "startMs": 279000,
+      "durationMs": 4000,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "서재 문이 닫혀 있고. 손님 방은 저 끝."
+    },
+    {
+      "id": "u104",
+      "startMs": 283400,
+      "durationMs": 5800,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "약을 안 주는 건 죄가 아니야. 의사는 매일 그런 결정을 한다."
+    },
+    {
+      "id": "u157",
+      "startMs": 284600,
+      "durationMs": 4100,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "벽시계가 여덟 시 이십 분. 종까지 십 분."
+    },
+    {
+      "id": "u158",
+      "startMs": 290300,
+      "durationMs": 3000,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "…서재에서 유리 소리가 났는데."
+    },
+    {
+      "id": "u105",
+      "startMs": 290700,
+      "durationMs": 2600,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…아니. 그건 거짓말이지."
+    },
+    {
+      "id": "u106",
+      "startMs": 294800,
+      "durationMs": 4600,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "종이 울리면 내려가서 아무 일 없는 얼굴을 하자."
+    },
+    {
+      "id": "u159",
+      "startMs": 294900,
+      "durationMs": 5800,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "노크를 할까. 아니, 지금 들어가면 또 돈 얘기냐고 하실 거야."
+    },
+    {
+      "id": "u107",
+      "startMs": 300900,
+      "durationMs": 7000,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "발작은 오늘 올 수도 있고 다음 주에 올 수도 있다. 내가 정하는 게 아니야."
+    },
+    {
+      "id": "u160",
+      "startMs": 302300,
+      "durationMs": 2600,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "…내려가자. 밥이나 먹자."
+    },
+    {
+      "id": "u108",
+      "startMs": 309400,
+      "durationMs": 2900,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "그러니 이건 내 손이 아니다."
+    },
+    {
+      "id": "u109",
+      "startMs": 313800,
+      "durationMs": 6000,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…편지. 편지를 찾아야 한다. 그 사람이 내 병원에 보냈다는 편지."
+    },
+    {
+      "id": "u110",
+      "startMs": 321300,
+      "durationMs": 3200,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "책상 위엔 없고… 서랍에도 없고…"
+    },
+    {
+      "id": "u111",
+      "startMs": 326000,
+      "durationMs": 2400,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "부쳤구나. 이미 부쳤어."
+    },
+    {
+      "id": "u112",
+      "startMs": 329900,
+      "durationMs": 5600,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "그러면 이 사람이 살아 있는 동안에는 아무것도 끝나지 않는다."
+    },
+    {
+      "id": "u113",
+      "startMs": 337000,
+      "durationMs": 1400,
+      "voiceId": "v4",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…내려가자."
+    },
+    {
+      "id": "u161",
+      "startMs": 342000,
+      "durationMs": 1600,
+      "voiceId": "v1",
+      "room": "room_hall",
+      "clip": "",
+      "text": "…모로 선생?"
+    },
+    {
+      "id": "u166",
+      "startMs": 344000,
+      "durationMs": 4600,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "여기가 창고입니까? 아래층은 처음 내려와 봅니다."
+    },
+    {
+      "id": "u162",
+      "startMs": 345100,
+      "durationMs": 4400,
+      "voiceId": "v1",
+      "room": "room_hall",
+      "clip": "",
+      "text": "창고 문에서 나오시는 걸 봤는데. 대답이 없네."
+    },
+    {
+      "id": "u167",
+      "startMs": 349200,
+      "durationMs": 3600,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "손님이 내려올 데가 아니오. 뭘 찾소?"
+    },
+    {
+      "id": "u163",
+      "startMs": 351000,
+      "durationMs": 5200,
+      "voiceId": "v1",
+      "room": "room_hall",
+      "clip": "",
+      "text": "치마에 석탄 가루가 묻어 있었어. 저 사람이 왜 창고에."
+    },
+    {
+      "id": "u168",
+      "startMs": 353400,
+      "durationMs": 4800,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "포도주요. 붉은 것으로 한 병 올려 달라고 하시던데."
+    },
+    {
+      "id": "u164",
+      "startMs": 357700,
+      "durationMs": 3200,
+      "voiceId": "v1",
+      "room": "room_hall",
+      "clip": "",
+      "text": "…물어볼 걸. 왜 못 물어봤을까."
+    },
+    {
+      "id": "u169",
+      "startMs": 358800,
+      "durationMs": 6200,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "누가 그러셨소? 아, 클라라 씨겠지. 그 사람은 늘 붉은 것만 찾아."
+    },
+    {
+      "id": "u165",
+      "startMs": 362400,
+      "durationMs": 4800,
+      "voiceId": "v1",
+      "room": "room_hall",
+      "clip": "",
+      "text": "십 년을 물어보지 못한 사람인데 오늘 갑자기 되겠나."
+    },
+    {
+      "id": "u_id_v2",
+      "startMs": 365600,
+      "durationMs": 5600,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "이름이 마르코 맞으시죠? 어릴 때 여기서 빵을 얻어먹었습니다."
+    },
+    {
+      "id": "u171",
+      "startMs": 371800,
+      "durationMs": 2800,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "…아. 그 꼬마가 당신이오?"
+    },
+    {
+      "id": "u172",
+      "startMs": 375200,
+      "durationMs": 1700,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "그 꼬마입니다."
+    },
+    {
+      "id": "u189",
+      "startMs": 376000,
+      "durationMs": 3600,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "…석탄 가루. 치마를 갈아입어야 한다."
+    },
+    {
+      "id": "u173",
+      "startMs": 377500,
+      "durationMs": 3500,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "많이 컸군. 그때는 손이 이만했는데."
+    },
+    {
+      "id": "u190",
+      "startMs": 381100,
+      "durationMs": 4400,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "복도에서 누가 내 이름을 불렀는데. 클라라였나."
+    },
+    {
+      "id": "u174",
+      "startMs": 381600,
+      "durationMs": 3400,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "손은 커졌는데 주머니는 그대로예요."
+    },
+    {
+      "id": "u198",
+      "startMs": 384000,
+      "durationMs": 1600,
+      "voiceId": "v5",
+      "room": "room_dining",
+      "clip": "",
+      "text": "수프가 짜군."
+    },
+    {
+      "id": "u175",
+      "startMs": 385600,
+      "durationMs": 5300,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "그 얘긴 하지 마시오. 이 집에서 돈 얘기하면 재수 없어."
+    },
+    {
+      "id": "u199",
+      "startMs": 386300,
+      "durationMs": 4700,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "죄송합니다. 마르코가 내려가 있어서 제가 데웠어요."
+    },
+    {
+      "id": "u191",
+      "startMs": 387000,
+      "durationMs": 5900,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "대답하지 않은 게 낫다. 대답하면 거짓말을 하나 더 해야 하니까."
+    },
+    {
+      "id": "u176",
+      "startMs": 391500,
+      "durationMs": 3500,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "…그런데 여기 냄새가 좀 이상합니다."
+    },
+    {
+      "id": "u200",
+      "startMs": 391700,
+      "durationMs": 2300,
+      "voiceId": "v5",
+      "room": "room_dining",
+      "clip": "",
+      "text": "마르코는 왜 내려갔소."
+    },
+    {
+      "id": "u192",
+      "startMs": 394400,
+      "durationMs": 3000,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "가방을 열자. 세어 봐야 한다."
+    },
+    {
+      "id": "u201",
+      "startMs": 394700,
+      "durationMs": 5400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "석탄통을 비운다고요. 누가 난로 재를 거기 붓는다고 합니다."
+    },
+    {
+      "id": "u177",
+      "startMs": 395600,
+      "durationMs": 4100,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "재 냄새요. 누가 난로 재를 석탄통에 부어."
+    },
+    {
+      "id": "u193",
+      "startMs": 398900,
+      "durationMs": 6200,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "…열두 알. 열두 알이 남았어. 스물네 알 중 열둘을 넣었으니 맞다."
+    },
+    {
+      "id": "u178",
+      "startMs": 400300,
+      "durationMs": 1100,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "누가요?"
+    },
+    {
+      "id": "u202",
+      "startMs": 400800,
+      "durationMs": 1100,
+      "voiceId": "v5",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…재를."
+    },
+    {
+      "id": "u179",
+      "startMs": 402000,
+      "durationMs": 5200,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "그걸 알면 내가 여기 서 있겠소? 삽으로 퍼내는 중이오."
+    },
+    {
+      "id": "u203",
+      "startMs": 402600,
+      "durationMs": 2900,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "선생님, 여섯째 줄 말인데요."
+    },
+    {
+      "id": "u204",
+      "startMs": 406200,
+      "durationMs": 3000,
+      "voiceId": "v5",
+      "room": "room_dining",
+      "clip": "",
+      "text": "지금은 안 되겠소. 숨이 차오."
+    },
+    {
+      "id": "u194",
+      "startMs": 406600,
+      "durationMs": 3500,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "색이 같아서 다행이야. 크기도 같고."
+    },
+    {
+      "id": "u180",
+      "startMs": 407800,
+      "durationMs": 2200,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "제가 들어 드릴까요."
+    },
+    {
+      "id": "u205",
+      "startMs": 409900,
+      "durationMs": 3000,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "약을 드셔야 하는 거 아닌가요."
+    },
+    {
+      "id": "u181",
+      "startMs": 410600,
+      "durationMs": 4700,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "손님이 무슨. …아니, 그 통 한쪽을 잡아 주시오."
+    },
+    {
+      "id": "u195",
+      "startMs": 411600,
+      "durationMs": 5000,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "맛은 다르지. 하지만 혀 밑에 넣는 약을 누가 맛보나."
+    },
+    {
+      "id": "u206",
+      "startMs": 413600,
+      "durationMs": 3000,
+      "voiceId": "v5",
+      "room": "room_dining",
+      "clip": "",
+      "text": "서랍에 있소. 올라가면 먹겠소."
+    },
+    {
+      "id": "u182",
+      "startMs": 415900,
+      "durationMs": 2300,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "무겁네요. 하나, 둘."
+    },
+    {
+      "id": "u207",
+      "startMs": 417300,
+      "durationMs": 1800,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "제가 가져올까요."
+    },
+    {
+      "id": "u183",
+      "startMs": 418800,
+      "durationMs": 3600,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "됐소. 밑에 깔린 걸 좀 봐야 하는데."
+    },
+    {
+      "id": "u208",
+      "startMs": 419800,
+      "durationMs": 3000,
+      "voiceId": "v5",
+      "room": "room_dining",
+      "clip": "",
+      "text": "내 서랍을 남이 여는 건 싫소."
+    },
+    {
+      "id": "u209",
+      "startMs": 423500,
+      "durationMs": 1600,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…알겠습니다."
+    },
+    {
+      "id": "u_coal",
+      "startMs": 430000,
+      "durationMs": 7000,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "잠깐. 석탄통 밑에 갈색 유리 약병이 처박혀 있소. 재를 덮어 놨는데 라벨이 안 타고 남았어. 성 앨런 요양원이라고 찍혀 있고."
+    },
+    {
+      "id": "u_drawer",
+      "startMs": 431000,
+      "durationMs": 6000,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "서재 책상 오른쪽 서랍. 거기 있던 진짜 병은 내가 가져 나왔고, 지금 그 서랍에 든 병은 내 병이다."
+    },
+    {
+      "id": "u_saw",
+      "startMs": 434000,
+      "durationMs": 7000,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그런데 선생님. 아까 복도에서 모로 선생이 창고 문에서 나오는 걸 봤어요. 치마에 석탄 가루가 묻어 있었고요."
+    },
+    {
+      "id": "u185",
+      "startMs": 438000,
+      "durationMs": 4200,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "…성 앨런 요양원. 그 이름을 어디서 봤는데."
+    },
+    {
+      "id": "u_sugar",
+      "startMs": 438000,
+      "durationMs": 6000,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "설탕 알약 열두 알. 혀 밑에서 녹기는 녹는다. 다만 심장에는 아무 일도 하지 않는다."
+    },
+    {
+      "id": "u211",
+      "startMs": 441500,
+      "durationMs": 1400,
+      "voiceId": "v5",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…창고에서."
+    },
+    {
+      "id": "u186",
+      "startMs": 443000,
+      "durationMs": 4800,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "약병이 왜 석탄통에 들어가나. 이건 누가 숨긴 거요."
+    },
+    {
+      "id": "u187",
+      "startMs": 448600,
+      "durationMs": 3000,
+      "voiceId": "v3",
+      "room": "room_storage",
+      "clip": "",
+      "text": "병 안에 알약이 남아 있습니까?"
+    },
+    {
+      "id": "u188",
+      "startMs": 452400,
+      "durationMs": 4400,
+      "voiceId": "v2",
+      "room": "room_storage",
+      "clip": "",
+      "text": "스물네 알. 하나도 안 줄었어. 갈색 알약이오."
+    },
+    {
+      "id": "u212",
+      "startMs": 456000,
+      "durationMs": 3200,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "계단 열여섯 칸이 이렇게 길었나."
+    },
+    {
+      "id": "u213",
+      "startMs": 460600,
+      "durationMs": 2800,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…앉자. 앉으면 가라앉는다."
+    },
+    {
+      "id": "u214",
+      "startMs": 464800,
+      "durationMs": 2400,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "오른쪽 서랍. 갈색 병."
+    },
+    {
+      "id": "u215",
+      "startMs": 468600,
+      "durationMs": 3800,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "있군. 있어. 스물네 알… 아니, 열둘."
+    },
+    {
+      "id": "u247",
+      "startMs": 472000,
+      "durationMs": 3500,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "이거 좀 보시오. 석탄통에서 나왔소."
+    },
+    {
+      "id": "u216",
+      "startMs": 473800,
+      "durationMs": 3400,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "누가 열둘을 먹었나. 내가 먹었나."
+    },
+    {
+      "id": "u227",
+      "startMs": 474000,
+      "durationMs": 3000,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "선생님. 잠깐 뵐 수 있을까요."
+    },
+    {
+      "id": "u248",
+      "startMs": 476400,
+      "durationMs": 3400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…갈색 약병. 라벨이 남아 있네요."
+    },
+    {
+      "id": "u228",
+      "startMs": 477700,
+      "durationMs": 2900,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "…들어오세요. 무슨 일입니까."
+    },
+    {
+      "id": "u217",
+      "startMs": 478600,
+      "durationMs": 2200,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "혀 밑에. …녹는다."
+    },
+    {
+      "id": "u249",
+      "startMs": 480700,
+      "durationMs": 5400,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "성 앨런 요양원. 이 집 약은 늘 마을 약방에서 오지 않소?"
+    },
+    {
+      "id": "u229",
+      "startMs": 481300,
+      "durationMs": 3500,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "성 앨런 요양원이라는 이름 아십니까."
+    },
+    {
+      "id": "u218",
+      "startMs": 482200,
+      "durationMs": 2600,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "녹는데 왜 가라앉지 않나."
+    },
+    {
+      "id": "u230",
+      "startMs": 485500,
+      "durationMs": 1400,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "…모릅니다."
+    },
+    {
+      "id": "u219",
+      "startMs": 486200,
+      "durationMs": 2600,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "한 알 더. …두 알 더."
+    },
+    {
+      "id": "u250",
+      "startMs": 487000,
+      "durationMs": 5300,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "와요. 스물세 번 왕진비를 제가 다 적었으니 제가 알아요."
+    },
+    {
+      "id": "u231",
+      "startMs": 487600,
+      "durationMs": 4700,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "창고 석탄통에서 그 이름이 찍힌 약병이 나왔습니다."
+    },
+    {
+      "id": "u220",
+      "startMs": 490200,
+      "durationMs": 2300,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "이건 내 약이 아니다."
+    },
+    {
+      "id": "u232",
+      "startMs": 493000,
+      "durationMs": 6500,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "약병이 창고에서 나올 일이 뭐가 있겠어요. 요리사가 뭘 잘못 본 거겠죠."
+    },
+    {
+      "id": "u251",
+      "startMs": 493200,
+      "durationMs": 2400,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그럼 이건 누구 병이오."
+    },
+    {
+      "id": "u221",
+      "startMs": 493900,
+      "durationMs": 3600,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "맛이 없다. 내 약은 쓴데 이건 달다."
+    },
+    {
+      "id": "u252",
+      "startMs": 496500,
+      "durationMs": 2300,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…가방을 든 사람이죠."
+    },
+    {
+      "id": "u222",
+      "startMs": 498900,
+      "durationMs": 2200,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…선생. 모로 선생!"
+    },
+    {
+      "id": "u253",
+      "startMs": 499700,
+      "durationMs": 1400,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "의사 선생?"
+    },
+    {
+      "id": "u233",
+      "startMs": 500200,
+      "durationMs": 5400,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "요리사는 스물네 알을 세었습니다. 잘못 보기 어려운 숫자죠."
+    },
+    {
+      "id": "u254",
+      "startMs": 502000,
+      "durationMs": 5300,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "제가 아까 복도에서 그 사람이 창고에서 나오는 걸 봤어요."
+    },
+    {
+      "id": "u223",
+      "startMs": 502500,
+      "durationMs": 2600,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "종을… 종을 쳐야 하는데."
+    },
+    {
+      "id": "u234",
+      "startMs": 506300,
+      "durationMs": 4400,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "…그래서 저한테 무슨 말을 듣고 싶으신 겁니까."
+    },
+    {
+      "id": "u224",
+      "startMs": 506500,
+      "durationMs": 4200,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "여섯째 줄이 아니었어. 여섯째 줄이 아니었다."
+    },
+    {
+      "id": "u255",
+      "startMs": 508200,
+      "durationMs": 2400,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "그 얘길 왜 이제 하오!"
+    },
+    {
+      "id": "u235",
+      "startMs": 511400,
+      "durationMs": 5900,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "1908년 봄 신문에 실린 얼굴을 봤습니다. 선생님 얼굴이었어요."
+    },
+    {
+      "id": "u256",
+      "startMs": 511500,
+      "durationMs": 2300,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "물어보지 못했으니까요."
+    },
+    {
+      "id": "u225",
+      "startMs": 512100,
+      "durationMs": 2300,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "가방을 든 사람이었어."
+    },
+    {
+      "id": "u257",
+      "startMs": 514700,
+      "durationMs": 3200,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "선생님한테 올라가야 하오. 지금."
+    },
+    {
+      "id": "u226",
+      "startMs": 515800,
+      "durationMs": 600,
+      "voiceId": "v5",
+      "room": "room_victim",
+      "clip": "",
+      "text": "…"
+    },
+    {
+      "id": "u236",
+      "startMs": 518000,
+      "durationMs": 3200,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "신문은 사람을 팔아서 먹고삽니다."
+    },
+    {
+      "id": "u258",
+      "startMs": 518800,
+      "durationMs": 4400,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…선생님은 이미 올라가셨어요. 약을 드시겠다고."
+    },
+    {
+      "id": "u237",
+      "startMs": 521900,
+      "durationMs": 4600,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "그럴 수도 있죠. 저도 신문에 한 번 났으니까요."
+    },
+    {
+      "id": "u259",
+      "startMs": 524100,
+      "durationMs": 2000,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "약을. 어느 약을."
+    },
+    {
+      "id": "u260",
+      "startMs": 527000,
+      "durationMs": 1700,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "서랍의 약을요."
+    },
+    {
+      "id": "u238",
+      "startMs": 527200,
+      "durationMs": 1700,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "…무슨 일로요."
+    },
+    {
+      "id": "u239",
+      "startMs": 529600,
+      "durationMs": 3600,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "도박장에서요. 저는 부정하지 않습니다."
+    },
+    {
+      "id": "u261",
+      "startMs": 529600,
+      "durationMs": 5000,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…클라라 씨. 이 병에 스물네 알이 그대로 들어 있소."
+    },
+    {
+      "id": "u240",
+      "startMs": 533900,
+      "durationMs": 4000,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "그럼 서로 아는 척하지 않는 게 낫겠네요."
+    },
+    {
+      "id": "u262",
+      "startMs": 535500,
+      "durationMs": 2600,
+      "voiceId": "v1",
+      "room": "room_dining",
+      "clip": "",
+      "text": "…그러면 서랍에 있는 건."
+    },
+    {
+      "id": "u241",
+      "startMs": 538600,
+      "durationMs": 4100,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "아니요. 저는 오늘 밤 삼촌한테 갈 겁니다."
+    },
+    {
+      "id": "u263",
+      "startMs": 539000,
+      "durationMs": 3000,
+      "voiceId": "v2",
+      "room": "room_dining",
+      "clip": "",
+      "text": "종을 치시오. 나는 올라가겠소."
+    },
+    {
+      "id": "u242",
+      "startMs": 543400,
+      "durationMs": 1600,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "…뭘 들고요."
+    },
+    {
+      "id": "u243",
+      "startMs": 545700,
+      "durationMs": 1700,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "약병을 들고요."
+    },
+    {
+      "id": "u244",
+      "startMs": 548100,
+      "durationMs": 5600,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "그건 당신 몫이 아니에요. 그 병은 당신을 위한 게 아닙니다."
+    },
+    {
+      "id": "u245",
+      "startMs": 554400,
+      "durationMs": 4000,
+      "voiceId": "v3",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "제 몫이 아닌 게 이 집에 뭐가 있었나요."
+    },
+    {
+      "id": "u246",
+      "startMs": 559100,
+      "durationMs": 2900,
+      "voiceId": "v4",
+      "room": "room_suspect",
+      "clip": "",
+      "text": "…앉으세요. 얘기를 좀 하죠."
+    },
+    {
+      "id": "u264",
+      "startMs": 566000,
+      "durationMs": 2600,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "…서재 문이 열려 있는데."
+    },
+    {
+      "id": "u265",
+      "startMs": 569800,
+      "durationMs": 1600,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "삼촌? 삼촌!"
+    },
+    {
+      "id": "u266",
+      "startMs": 572600,
+      "durationMs": 3000,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "종이 울리네. 여덟 시 반이야."
+    },
+    {
+      "id": "u267",
+      "startMs": 576800,
+      "durationMs": 3200,
+      "voiceId": "v3",
+      "room": "room_hall",
+      "clip": "",
+      "text": "…선생님! 사람 좀 불러 주세요!"
+    }
+  ],
+  "facts": [
+    {
+      "id": "fact_voice1_is_clara",
+      "description": "목소리 v1은 저택의 개인 비서 클라라 보스다",
+      "utteranceIds": [
+        "u_id_v1"
+      ]
+    },
+    {
+      "id": "fact_voice2_is_marco",
+      "description": "목소리 v2는 요리사 마르코 벨리니다",
+      "utteranceIds": [
+        "u_id_v2"
+      ]
+    },
+    {
+      "id": "fact_voice3_is_julian",
+      "description": "목소리 v3은 피해자의 조카 줄리안 헤일이다",
+      "utteranceIds": [
+        "u_id_v3"
+      ]
+    },
+    {
+      "id": "fact_voice4_is_helen",
+      "description": "목소리 v4는 주치의 헬렌 모로다",
+      "utteranceIds": [
+        "u_id_v4"
+      ]
+    },
+    {
+      "id": "fact_voice5_is_edmund",
+      "description": "목소리 v5는 저택의 주인 에드먼드 헤일이다",
+      "utteranceIds": [
+        "u_id_v5"
+      ]
+    },
+    {
+      "id": "fact_edmund_heart_pills",
+      "description": "에드먼드는 서재 서랍의 갈색 병에 든 니트로 알약 없이는 발작을 못 넘긴다",
+      "utteranceIds": [
+        "u_pills"
+      ]
+    },
+    {
+      "id": "fact_blackmail",
+      "description": "에드먼드는 헬렌의 1907년 진료 기록 조작을 알아내 그것으로 그를 쥐고 있었다",
+      "utteranceIds": [
+        "u_blackmail"
+      ]
+    },
+    {
+      "id": "fact_helen_past",
+      "description": "헬렌은 예전 병원에서 환자를 죽게 하고 기록을 고친 사람이다",
+      "utteranceIds": [
+        "u_gossip_past"
+      ]
+    },
+    {
+      "id": "fact_clock_814",
+      "description": "벽시계로 여덟 시 십사 분인 순간이 회차의 이 지점이다",
+      "utteranceIds": [
+        "u_clock"
+      ]
+    },
+    {
+      "id": "fact_swap_moment",
+      "description": "그 순간 서재 오른쪽 서랍에서 갈색 병이 바꿔치기되고 있었다",
+      "utteranceIds": [
+        "u_swap"
+      ]
+    },
+    {
+      "id": "fact_sugar_pills",
+      "description": "바꿔 넣은 알약은 심장에 아무 일도 하지 않는 설탕 알약이다",
+      "utteranceIds": [
+        "u_sugar"
+      ]
+    },
+    {
+      "id": "fact_drawer_place",
+      "description": "바꿔치기가 일어난 곳은 서재 책상 오른쪽 서랍이다",
+      "utteranceIds": [
+        "u_drawer"
+      ]
+    },
+    {
+      "id": "fact_bottle_in_coal",
+      "description": "창고 석탄통에 성 앨런 요양원 라벨이 붙은 갈색 약병이 숨겨져 있다",
+      "utteranceIds": [
+        "u_coal"
+      ]
+    },
+    {
+      "id": "fact_helen_left_storage",
+      "description": "헬렌이 창고에서 나오는 것을 본 사람이 있다",
+      "utteranceIds": [
+        "u_saw"
+      ]
+    }
+  ],
+  "conclusions": [
+    {
+      "id": "concl_voices_named",
+      "text": "다섯 목소리의 이름: v1 클라라 보스, v2 마르코 벨리니, v3 줄리안 헤일, v4 헬렌 모로, v5 에드먼드 헤일",
+      "requiresFacts": [
+        "fact_voice1_is_clara",
+        "fact_voice2_is_marco",
+        "fact_voice3_is_julian",
+        "fact_voice4_is_helen",
+        "fact_voice5_is_edmund"
+      ]
+    },
+    {
+      "id": "concl_culprit",
+      "text": "범인은 목소리 v4 — 주치의 헬렌 모로다",
+      "requiresFacts": [
+        "fact_voice4_is_helen",
+        "fact_swap_moment",
+        "fact_drawer_place"
+      ]
+    },
+    {
+      "id": "concl_motive",
+      "text": "동기는 협박 — 에드먼드가 헬렌의 옛 기록 조작을 쥐고 서명을 요구했다",
+      "requiresFacts": [
+        "fact_voice4_is_helen",
+        "fact_voice5_is_edmund",
+        "fact_blackmail",
+        "fact_helen_past"
+      ]
+    },
+    {
+      "id": "concl_time",
+      "text": "범행 시각은 벽시계 여덟 시 십사 분이다",
+      "requiresFacts": [
+        "fact_clock_814",
+        "fact_swap_moment"
+      ]
+    },
+    {
+      "id": "concl_place",
+      "text": "범행 장소는 서재 — 책상 오른쪽 서랍이다",
+      "requiresFacts": [
+        "fact_drawer_place",
+        "fact_swap_moment"
+      ]
+    },
+    {
+      "id": "concl_method",
+      "text": "수법은 약 바꿔치기 — 니트로 알약을 설탕 알약으로 갈아 두어 발작을 막지 못하게 했다",
+      "requiresFacts": [
+        "fact_edmund_heart_pills",
+        "fact_sugar_pills",
+        "fact_swap_moment"
+      ]
+    },
+    {
+      "id": "concl_evidence",
+      "text": "결정적 증거는 창고 석탄통에 숨겨진 성 앨런 요양원 라벨의 갈색 약병이다",
+      "requiresFacts": [
+        "fact_bottle_in_coal",
+        "fact_helen_left_storage",
+        "fact_voice2_is_marco",
+        "fact_voice1_is_clara"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>블랙우드 저택 아트 시안</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Brush+Script&family=Nanum+Pen+Script&family=Gaegu:wght@400;700&family=Song+Myung&family=Special+Elite&family=Cinzel:wght@400;700&family=DotGothic16&family=VT323&family=Gowun+Batang:wght@400;700&family=Do+Hyeon&display=swap">
+<style>
+/* ============ 보드(컨테이너) ============ */
+:root{
+  color-scheme:dark;
+  --wall:#1b1916; --wall-2:#221f1b; --card:#2a2621; --line:#3d372f;
+  --text:#ece5d8; --text-2:#b8ae9c; --text-3:#7f7566;
+  --ink-red:#c0392b; --brass:#c9a24a;
+  --serif:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;
+  --sans:"Noto Sans KR",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    color-scheme:light;
+    --wall:#efe9dd; --wall-2:#e6dfd0; --card:#faf6ee; --line:#d3c9b6;
+    --text:#211c16; --text-2:#5a5145; --text-3:#8a7f6e;
+    --ink-red:#a5281c; --brass:#8f6d1f;
+  }
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --wall:#efe9dd; --wall-2:#e6dfd0; --card:#faf6ee; --line:#d3c9b6;
+  --text:#211c16; --text-2:#5a5145; --text-3:#8a7f6e;
+  --ink-red:#a5281c; --brass:#8f6d1f;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--wall);color:var(--text);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:36px 80px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin:0 0 10px}
+h1{font-family:var(--serif);font-size:clamp(30px,5vw,48px);font-weight:700;line-height:1.15;margin:0 0 14px;text-wrap:balance;letter-spacing:-.01em}
+.lede{font-size:clamp(15px,1.6vw,17px);color:var(--text-2);max-width:66ch;margin:0 0 10px}
+.lede b{color:var(--text);font-weight:600}
+.facts{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 26px;font-family:var(--mono);font-size:12px;color:var(--text-3)}
+.facts b{color:var(--ink-red);font-weight:500;font-variant-numeric:tabular-nums}
+
+nav.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 40px}
+nav.chips a{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border:1px solid var(--line);background:var(--wall-2);color:var(--text-2);text-decoration:none;font-size:13px;border-radius:2px}
+nav.chips a:hover{color:var(--text);border-color:var(--text-3)}
+nav.chips a i{width:14px;height:14px;border-radius:2px;display:inline-block;border:1px solid rgba(0,0,0,.25)}
+nav.chips a:focus-visible{outline:2px solid var(--ink-red);outline-offset:2px}
+
+section.concept{margin:0 0 64px;padding-top:16px;border-top:1px solid var(--line)}
+.c-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 24px;align-items:end;margin-bottom:14px}
+.c-head h2{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;margin:0;line-height:1.2}
+.c-head h2 small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);font-weight:400;margin-bottom:4px}
+.c-head .tag{font-family:var(--serif);color:var(--text-2);font-size:15px;max-width:60ch}
+.c-head .tech{font-family:var(--mono);font-size:11px;color:var(--text-3);text-align:right;line-height:1.7;white-space:nowrap}
+@media (max-width:720px){.c-head{grid-template-columns:1fr}.c-head .tech{text-align:left;white-space:normal}}
+
+.screen-wrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;border:1px solid var(--line)}
+.screen{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden;font-family:var(--serif)}
+.screen svg.plan{position:absolute;inset:0;width:1600px;height:900px}
+.screen .hud-top,.screen .hud-side,.screen .hud-time,.screen .bubble{position:absolute}
+.screen .hud-side{left:1160px;top:60px;width:390px;height:720px;padding:18px 20px}
+.screen .hud-time{left:50px;top:796px;width:1080px;height:74px;padding:8px 14px}
+.screen .hud-top{left:50px;top:18px;font-size:16px}
+.screen .bubble{width:330px;padding:12px 16px;font-size:20px;line-height:1.45}
+.screen .bubble .who{font-size:12px;letter-spacing:.14em;opacity:.75;display:block;margin-bottom:3px;font-family:var(--mono)}
+.screen .bubble.far{opacity:.72}
+.hud-side .h{font-size:13px;letter-spacing:.12em;margin:0 0 10px;font-family:var(--mono);text-transform:uppercase}
+.hud-side .voice{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center;padding:10px 0;border-top:1px solid currentColor;border-color:color-mix(in srgb,currentColor 25%,transparent)}
+.hud-side .voice .vid{font-family:var(--mono);font-size:13px;line-height:1.3}
+.hud-side .voice .vid b{display:block;font-size:18px;font-family:inherit}
+.hud-side .cands{display:flex;gap:6px;flex-wrap:wrap}
+.hud-side .cands img{width:44px;height:44px;object-fit:cover;display:block}
+.hud-side .cands .q{width:44px;height:44px;display:grid;place-items:center;font-size:22px;border:1px dashed currentColor;opacity:.6}
+.hud-side .guess{font-size:14px;margin-top:4px;opacity:.85}
+.hud-side .heard{margin-top:14px;font-size:14px;line-height:1.5}
+.hud-side .heard .h{margin-top:6px}
+.hud-side .heard div{padding:5px 0;border-top:1px dotted color-mix(in srgb,currentColor 35%,transparent)}
+.hud-side .heard time{font-family:var(--mono);font-size:12px;margin-right:8px;opacity:.8}
+.hud-time{font-family:var(--mono);font-size:12px}
+.hud-time .lanes{position:relative;height:34px;margin-top:4px}
+.hud-time .lane{position:absolute;left:0;right:0;height:14px}
+.hud-time .lane span{position:absolute;top:2px;height:10px;display:block}
+.hud-time .lane i{position:absolute;left:-2px;top:0;transform:translateX(-100%);font-style:normal;padding-right:8px;font-size:11px;line-height:14px}
+.hud-time .head{position:absolute;top:-6px;bottom:-4px;width:2px}
+.hud-time .bar{display:flex;justify-content:space-between;align-items:center}
+.svg-text{font-family:inherit}
+
+.c-body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px 32px;margin-top:18px}
+@media (max-width:860px){.c-body{grid-template-columns:1fr}}
+.c-body p{margin:0 0 10px;font-size:15px;color:var(--text-2)}
+.c-body p b{color:var(--text)}
+.kv{display:grid;grid-template-columns:96px 1fr;gap:6px 14px;font-size:14px;margin:12px 0}
+.kv dt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);padding-top:4px}
+.kv dd{margin:0;color:var(--text-2)}
+.kv dd b{color:var(--text);font-weight:600}
+.swatches{display:flex;flex-wrap:wrap;gap:6px}
+.sw{display:flex;flex-direction:column;gap:3px;width:78px}
+.sw i{display:block;height:34px;border:1px solid rgba(0,0,0,.3)}
+.sw small{font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.3}
+.sw small b{display:block;color:var(--text-2);font-weight:500}
+.faces{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.faces figure{margin:0;width:88px;text-align:center}
+.faces img{width:88px;height:88px;object-fit:cover;display:block}
+.faces figcaption{font-size:11px;color:var(--text-3);margin-top:4px;font-family:var(--mono)}
+.evcard{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;margin-top:12px;padding:10px;border:1px solid var(--line);background:var(--wall-2)}
+.evcard img{width:96px;height:96px;object-fit:cover;display:block}
+.evcard .t{font-family:var(--serif);font-size:15px}
+.evcard .s{font-size:12px;color:var(--text-3);font-family:var(--mono)}
+.bars{display:grid;gap:6px;margin-top:14px}
+.bar{display:grid;grid-template-columns:110px 1fr 36px;gap:10px;align-items:center;font-size:12px;color:var(--text-2)}
+.bar .track{height:6px;background:var(--line);position:relative}
+.bar .track i{position:absolute;left:0;top:0;bottom:0;background:var(--brass)}
+.bar .n{font-family:var(--mono);text-align:right;color:var(--text-3)}
+.how{margin-top:14px;font-size:13.5px;color:var(--text-2)}
+.how li{margin:3px 0}
+.how code{font-family:var(--mono);font-size:12px;background:var(--wall-2);padding:1px 5px;border:1px solid var(--line)}
+
+h2.sec{font-family:var(--serif);font-size:26px;margin:20px 0 6px}
+.sub{color:var(--text-3);font-size:14px;margin:0 0 16px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px;background:var(--wall-2)}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--card);font-size:12px;font-family:var(--mono);letter-spacing:.06em;font-weight:500}
+tbody th{font-weight:600;white-space:nowrap}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.pick{color:var(--ink-red);font-weight:600}
+.reco{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.reco div{border:1px solid var(--line);background:var(--wall-2);padding:14px 16px;font-size:14px;color:var(--text-2)}
+.reco div b{display:block;font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:6px}
+footer{margin-top:60px;font-size:12px;color:var(--text-3);font-family:var(--mono);line-height:1.8}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">Art direction study · 12 concepts</p>
+<h1>블랙우드 저택, 열두 가지 그림</h1>
+<p class="lede">같은 게임 화면을 열두 연출로 그린 시안이다. 화면은 전부 <b>실제 데이터</b>로 세웠다. 방과 문은 <code>rooms.json</code>의 좌표(36 × 24 m, 방 6·문 5), 목소리와 시각은 엿듣기 슬라이스 대본(<code>script_slice.json</code>) 0:34 시점, 초상화는 지금 저장소에 든 사전트·소른 그림이다.</p>
+<p class="lede">각 시안은 같은 순간을 보여 준다. 청취점이 복도 식당 문 앞에 서 있고, 복도의 목소리 2는 또렷하게, 식당 안 목소리 1은 멀어서 글자가 빠진 채 들린다. 아래 오른쪽 판은 "누구의 목소리인가"를 맞히는 식별 보드다.</p>
+<div class="facts"><span>평면도 <b>36 × 24 m</b></span><span>방 <b>6</b> · 문 <b>5</b></span><span>대본 <b>90 s</b> · 발화 <b>13</b></span><span>시점 <b>0:34</b> (u06·u07 겹침)</span><span>초상 <b>5</b> · 단서 <b>1</b></span></div>
+<nav class="chips" id="chips" aria-label="시안 목록"></nav>
+<main id="board"></main>
+
+<h2 class="sec">한눈에 비교</h2>
+<p class="sub">점수는 이 프로토타입 기준의 주관 평가다. 제작 비용은 지금 코드(ProceduralTextures·SceneBuilder·uGUI 종이 패널)에서 얼마나 바꿔야 하는지로 잡았다.</p>
+<div class="tablewrap"><table id="cmp"><thead><tr><th>시안</th><th>한 줄</th><th>분위기</th><th>엿듣기 궁합</th><th>제작 비용</th><th>CC0 조달</th><th>바꾸는 것</th></tr></thead><tbody></tbody></table></div>
+
+<h2 class="sec">다음에 손댈 셋</h2>
+<p class="sub">지금 연출(사건 파일)을 버리지 않고도 시험할 수 있는 순서다.</p>
+<div class="reco">
+  <div><b>① 소나 — 엿듣기 전용 화면</b>인물이 익명이고 소리만 단서인 게임에 가장 정직한 그림이다. 링·가청 반경·글자 빠짐은 전부 코드로 그려서 외부 에셋이 0이다. 사건 파일 종이 패널 위에 관찰 모드(T)로만 얹어 봐도 된다.</div>
+  <div><b>② 코르크 보드 — 식별 보드의 형태</b>수사 노트를 "인물 식별 보드"로 바꾸는 Phase에 그대로 쓸 수 있는 UI 언어다. 붉은 실·핀·폴라로이드는 전부 uGUI 이미지 몇 장으로 되고, 초상화는 지금 것을 그대로 쓴다.</div>
+  <div><b>③ 청사진 — 관찰 모드의 대안 스킨</b>평면도를 도면으로 읽게 하면 "치수·시각·위치"가 정보로 보인다. 선 색 두 개와 격자 패턴만 있으면 되므로 SceneBuilder에서 바닥 질감을 끄고 선만 남기는 옵션 하나로 시험할 수 있다.</div>
+</div>
+
+<footer>
+초상화·단서 그림은 저장소의 <code>Assets/Resources/Art/</code>에 든 퍼블릭 도메인 회화를 각 시안의 필터로 다시 칠한 것이다(CREDITS.md). 시안의 무늬·질감·선은 전부 SVG 패턴·필터, 캔버스, CSS로 그려서 외부 그림을 쓰지 않았다.<br>
+서체는 Google Fonts(OFL): Noto Serif/Sans KR, Nanum Myeongjo, Nanum Brush/Pen Script, Gaegu, Song Myung, Gowun Batang, Do Hyeon, IBM Plex Mono, Special Elite, Cinzel, DotGothic16, VT323.
+</footer>
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="pf-defs"></defs></svg>
+<script>
+/* ============ 공용 씬 모델 (rooms.json · script_slice.json 그대로) ============ */
+const ASSET_BASE='../../DetectivePrototype/Assets/Resources/Art/';
+const P=id=>ASSET_BASE+'Portraits/'+id+'.png';
+const EV=id=>ASSET_BASE+'Evidence/'+id+'.png';
+const FL=id=>ASSET_BASE+'Floors/'+id+'.jpg';
+const ROOMS=[
+ {id:'room_lobby',n:'로비',en:'LOBBY',x:0,y:0,w:12,h:10,floor:'marble_checker'},
+ {id:'room_dining',n:'식당',en:'DINING',x:12,y:0,w:12,h:10,floor:'wood_planks'},
+ {id:'room_storage',n:'창고',en:'STORAGE',x:24,y:0,w:12,h:10,floor:'stone_cobble'},
+ {id:'room_hall',n:'복도',en:'HALL',x:0,y:10,w:36,h:4,floor:'rug_red'},
+ {id:'room_victim',n:'서재',en:'STUDY',x:2,y:14,w:12,h:10,floor:'carpet_dark'},
+ {id:'room_suspect',n:'손님 방',en:'GUEST',x:22,y:14,w:12,h:10,floor:'wood_parquet'}];
+const DOORS=[{x:5,y:9.7,w:2,h:.6},{x:17,y:9.7,w:2,h:.6},{x:29,y:9.7,w:2,h:.6},{x:7,y:13.7,w:2,h:.6},{x:27,y:13.7,w:2,h:.6}];
+const PX=30,OX=50,OY=60,WALL=0.4*PX;
+const sx=x=>OX+x*PX, sy=y=>OY+(24-y)*PX;
+const FIGS=[{id:'v1',x:18.2,y:4.2,voice:'목소리 1',near:false},{id:'v2',x:15.6,y:12.1,voice:'목소리 2',near:true},{id:'f3',x:4.6,y:5.4},{id:'f4',x:8.4,y:3.2},{id:'f5',x:7.6,y:19.4}];
+const LISTEN={x:19.3,y:11.7,r:5};
+const PEOPLE=[{id:'npc_victim',n:'에드먼드 헤일'},{id:'npc_a',n:'클라라 보스'},{id:'npc_b',n:'마르코 벨리니'},{id:'npc_c',n:'줄리안 헤일'},{id:'npc_d',n:'헬렌 모로'}];
+const UTT=[[2,3.5,1],[5,4,2],[11,4,1],[16,4.5,2],[21,4.5,1],[30,7,2],[32,6,1],[44,4,2],[47,4,1],[56,4.5,2],[62,4.5,1],[72,5,2],[80,3,1]];
+const NOW=34,DUR=90;
+const B2='아내가 골라 준 초록 넥타이인데… 이 색은 영 나한테 안 어울려.';
+const B1='이름은 전화로 못 ▒▒▒. 초록 ▒▒▒▒ 맨 남자예요. 열쇠는 ▒ ▒▒▒ 갖고 있어요.';
+const HEARD=[['0:30','목소리 2','아내가 골라 준 초록 넥타이인데…'],['0:32','목소리 1','이름은 전화로 못 ▒▒▒. 초록…'],['0:21','목소리 1','열쇠요? 제가 갖고 있으면 의심받죠.']];
+const V2X=sx(FIGS[1].x),V2Y=sy(FIGS[1].y),V1X=sx(FIGS[0].x),V1Y=sy(FIGS[0].y),LX=sx(LISTEN.x),LY=sy(LISTEN.y),LR=LISTEN.r*PX;
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+/* ---- SVG 조각 ---- */
+function roomRects(fill,extra=''){return ROOMS.map(r=>`<rect class="room ${r.id}" x="${sx(r.x)}" y="${sy(r.y+r.h)}" width="${r.w*PX}" height="${r.h*PX}" fill="${typeof fill==='function'?fill(r):fill}" ${typeof extra==='function'?extra(r):extra}/>`).join('');}
+function roomLabels(dy=26,cls='rl',fn){return ROOMS.map(r=>`<text class="${cls}" x="${sx(r.x+r.w/2)}" y="${sy(r.y+r.h)+dy}" text-anchor="middle">${fn?fn(r):r.n}</text>`).join('');}
+function wallRects(stroke,w=WALL,extra=''){return ROOMS.map(r=>`<rect x="${sx(r.x)}" y="${sy(r.y+r.h)}" width="${r.w*PX}" height="${r.h*PX}" fill="none" stroke="${stroke}" stroke-width="${w}" ${extra}/>`).join('');}
+function doorRects(fill,extra=''){return DOORS.map(d=>`<rect x="${sx(d.x)}" y="${sy(d.y+d.h)}" width="${d.w*PX}" height="${d.h*PX}" fill="${fill}" ${extra}/>`).join('');}
+function doorArcs(stroke,w=1.4){return DOORS.map(d=>{const x0=sx(d.x),x1=sx(d.x+d.w),y=sy(d.y+d.h/2),r=d.w*PX;return `<path d="M${x0} ${y} A${r} ${r} 0 0 0 ${x0+r} ${y-r} L${x0+r} ${y}" fill="none" stroke="${stroke}" stroke-width="${w}"/>`;}).join('');}
+function tokens(fn){return FIGS.map(f=>fn(f,sx(f.x),sy(f.y))).join('');}
+function hear(fill,extra=''){return `<circle cx="${LX}" cy="${LY}" r="${LR}" fill="${fill}" ${extra}/>`;}
+
+/* ---- HTML 조각 ---- */
+function bubbles(o={}){
+  const b2=`<div class="bubble v2 near" style="left:${o.x2??545}px;top:${o.y2??252}px"><span class="who">${o.who2??'목소리 2 · 복도 · 또렷함'}</span>${o.t2??B2}</div>`;
+  const b1=`<div class="bubble v1 far" style="left:${o.x1??640}px;top:${o.y1??690}px"><span class="who">${o.who1??'목소리 1 · 식당 · 멀다'}</span>${o.t1??B1}</div>`;
+  return b2+b1;
+}
+function portraits(c,size){return PEOPLE.map(p=>`<span class="pw" title="${p.n}"><img src="${P(p.id)}" alt="${p.n}" loading="lazy"></span>`).join('');}
+function hud(c,o={}){
+  const side=`<div class="hud-side">
+    <div class="h">${o.title??'누구의 목소리인가'}</div>
+    <div class="voice"><div class="vid">${o.v2label??'복도'}<b>목소리 2</b></div><div><div class="cands">${portraits(c)}<span class="q">?</span></div><div class="guess">${o.g2??'초록 넥타이 · 아내 있음 → 마르코?'}</div></div></div>
+    <div class="voice"><div class="vid">${o.v1label??'식당 · 전화'}<b>목소리 1</b></div><div><div class="cands">${portraits(c)}<span class="q">?</span></div><div class="guess">${o.g1??'"열쇠는 다른 사람에게" → ?'}</div></div></div>
+    <div class="heard"><div class="h">${o.heard??'들은 말 · 2회차'}</div>${HEARD.map(h=>`<div><time>${h[0]}</time><span class="hv">${h[1]}</span> ${esc(h[2])}</div>`).join('')}</div>
+  </div>`;
+  const lanes=[2,1].map((v,i)=>`<div class="lane" style="top:${i*16}px"><i>목소리 ${v}</i>${UTT.filter(u=>u[2]===v).map(u=>`<span style="left:${u[0]/DUR*100}%;width:${u[1]/DUR*100}%"></span>`).join('')}</div>`).join('');
+  const time=`<div class="hud-time"><div class="bar"><span>${o.tl??'기록 재생 · 18:00 – 18:01:30'}</span><span>◀◀ &nbsp;❚❚&nbsp; ▶▶ &nbsp; ×1 &nbsp; <b>0:34</b> / 1:30</span></div><div class="lanes" style="margin-left:56px">${lanes}<div class="head" style="left:${NOW/DUR*100}%"></div></div></div>`;
+  const top=`<div class="hud-top">${o.top??'블랙우드 저택 · 1층 · 청취점을 옮기려면 WASD'}</div>`;
+  return side+time+top;
+}
+function genericScreen(c,o){
+  return `<svg class="plan" viewBox="0 0 1600 900"><defs>${o.defs||''}</defs>
+    <rect width="1600" height="900" fill="${o.bg}"/>${o.under||''}
+    <g class="rooms">${roomRects(o.roomFill,o.roomExtra)}</g>${o.roomsOver||''}
+    <g class="walls">${o.walls??wallRects(o.wallStroke,o.wallW)}</g>
+    <g class="doors">${o.doors??doorRects(o.door)}</g>
+    <g class="labels">${o.labels??roomLabels()}</g>
+    ${o.hear??''}
+    <g class="tokens">${tokens(o.token)}</g>
+    ${o.listener||''}
+    ${o.over||''}
+  </svg>${o.bubbles??bubbles()}${o.hud??hud(c)}`;
+}
+const noise=(id,f='.8',oct=2,seed=1)=>`<filter id="${id}" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="${f}" numOctaves="${oct}" seed="${seed}" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 .5  0 0 0 0 .45  0 0 0 0 .4  0 0 0 -1.4 1"/></filter>`;
+const grainRect=(id,op)=>`<rect width="1600" height="900" filter="url(#${id})" opacity="${op}" style="mix-blend-mode:multiply"/>`;
+const vignette=(id,c='0,0,0',a=.75)=>`<radialGradient id="${id}" cx="50%" cy="50%" r="70%"><stop offset="55%" stop-color="rgb(${c})" stop-opacity="0"/><stop offset="100%" stop-color="rgb(${c})" stop-opacity="${a}"/></radialGradient>`;
+
+const CONCEPTS=[];
+/* ================================================================
+   1. 사건 파일 — 지금 연출을 다듬은 기준선
+   ================================================================ */
+CONCEPTS.push({
+ id:'dossier',name:'사건 파일',en:'Case Dossier',
+ tag:'어두운 저택 위에 바랜 종이가 놓이고, 붉은 잉크가 청취점을 가리킨다. 지금 게임이 가는 방향의 정제판.',
+ tech:['실제 바닥 질감 6장','feTurbulence 종이결','uGUI 이중 테두리 재현'],
+ pal:[['먹','#1d1813'],['종이','#e8dcc4'],['바랜 종이','#cfc3a7'],['잉크 붉음','#8c2f28'],['놋쇠','#a07c33'],['무대','#17140f']],
+ type:'Noto Serif KR 본문 · IBM Plex Mono 시각',
+ mood:'제일 낮은 위험. 이미 저장소에 든 질감·초상·폰트를 그대로 쓰고, 종이 패널의 이중 테두리(UIFactory.AddPaper)와 붉은 잉크만 규칙으로 굳힌다. 청취점은 붉은 잉크 표적, 목소리는 보드게임 말에 붉은 링을 두른다. 먼 목소리는 종이 위 글자가 지워진 것처럼 빠진다.',
+ how:['바닥은 art.json의 6장을 그대로 타일링하고 방 tint를 곱한다. 씬 빌더 변경 없음.','청취점·가청 반경은 SpriteRenderer 두 장(표적·반투명 원)으로 충분하다.','식별 보드는 지금 수사 노트 패널을 그대로 쓰고 초상화 5장에 세피아만 곱한다.'],
+ scores:{mood:4,fit:3,cost:1,cc0:5},change:'거의 없음 — 규칙만 고정',line:'현행 유지 · 붉은 잉크 표적과 종이 식별 보드 추가',
+ filter:`<filter id="pf-dossier"><feColorMatrix type="matrix" values=".393 .769 .189 0 0 .349 .686 .168 0 0 .272 .534 .131 0 0 0 0 0 1 0"/><feComponentTransfer><feFuncR type="linear" slope="1.1" intercept="-.06"/><feFuncG type="linear" slope="1.1" intercept="-.06"/><feFuncB type="linear" slope="1.1" intercept="-.06"/></feComponentTransfer></filter>`,
+ css:`.c-dossier{background:#17140f;color:#e8dcc4}
+ .c-dossier .rl{font-family:"Noto Serif KR";font-size:20px;fill:#efe4cc;paint-order:stroke;stroke:#17140f;stroke-width:5px;font-weight:600}
+ .c-dossier .hud-side,.c-dossier .hud-time,.c-dossier .bubble{background:#e6dcc4;color:#2b221a;box-shadow:inset 0 0 0 2px rgba(41,33,26,.85),inset 0 0 0 8px #e6dcc4,inset 0 0 0 9px rgba(41,33,26,.28),0 8px 18px rgba(0,0,0,.5)}
+ .c-dossier .hud-side{padding:26px 28px}
+ .c-dossier .hud-side .h,.c-dossier .hud-time .bar b{color:#8c2f28}
+ .c-dossier .hud-time{padding:12px 20px}
+ .c-dossier .hud-time .lane span{background:#5b4a3a}.c-dossier .hud-time .lane:first-child span{background:#8c2f28}.c-dossier .hud-time .head{background:#8c2f28}
+ .c-dossier .hud-top{color:#cfc3a7;font-size:15px;letter-spacing:.04em}
+ .c-dossier .bubble{padding:16px 20px}.c-dossier .bubble .who{color:#8c2f28}
+ .c-dossier .bubble.far{color:#6b5f52}
+ .c-dossier .cands img{filter:url(#pf-dossier);border:1px solid #6b5a46}.c-dossier .cands .q{border-color:#8c2f28;color:#8c2f28}
+ .c-dossier .hud-side .hv{color:#8c2f28;font-family:"IBM Plex Mono";font-size:12px}`,
+ render(c){
+  const defs=ROOMS.map(r=>`<pattern id="d-fl-${r.id}" patternUnits="userSpaceOnUse" width="120" height="120"><image href="${FL(r.floor)}" width="120" height="120" preserveAspectRatio="none"/></pattern>`).join('')
+   +noise('d-noise','.9',2)+vignette('d-vig','10,7,4',.85)+`<radialGradient id="d-hear"><stop offset="0" stop-color="#c0392b" stop-opacity=".22"/><stop offset="1" stop-color="#c0392b" stop-opacity=".02"/></radialGradient>`;
+  const tint={room_lobby:'#CCC2B4',room_dining:'#C7B39B',room_storage:'#7A7E85',room_hall:'#CCABA3',room_victim:'#B292B2',room_suspect:'#A2B8AD'};
+  return genericScreen(c,{defs,bg:'#17140f',
+   under:grainRect('d-noise',.25),
+   roomFill:r=>`url(#d-fl-${r.id})`,
+   roomsOver:`<g style="mix-blend-mode:multiply">${roomRects(r=>tint[r.id],'opacity=".75"')}</g><g style="mix-blend-mode:multiply">${roomRects('#5a4a3c','opacity=".35"')}</g>`,
+   wallStroke:'#14100d',door:'#6d4b2f',
+   hear:hear('url(#d-hear)')+`<circle cx="${LX}" cy="${LY}" r="${LR}" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6 6" opacity=".7"/>`,
+   token:(f,X,Y)=>`<ellipse cx="${X+3}" cy="${Y+14}" rx="15" ry="6" fill="rgba(0,0,0,.45)"/><circle cx="${X}" cy="${Y}" r="15" fill="#2c2420" stroke="#d9c9a8" stroke-width="2"/><circle cx="${X}" cy="${Y}" r="7" fill="#d9c9a8"/>${f.voice?`<circle cx="${X}" cy="${Y}" r="21" fill="none" stroke="#c0392b" stroke-width="2.5"/>`:''}`,
+   listener:`<g stroke="#c0392b" fill="none" stroke-width="3"><circle cx="${LX}" cy="${LY}" r="12"/><path d="M${LX-22} ${LY}h14M${LX+8} ${LY}h14M${LX} ${LY-22}v14M${LX} ${LY+8}v14"/></g>`,
+   over:`<rect width="1600" height="900" fill="url(#d-vig)"/>`});
+ }
+});
+
+/* ================================================================
+   2. 청사진 — 건축 도면
+   ================================================================ */
+CONCEPTS.push({
+ id:'blueprint',name:'청사진',en:'Blueprint',
+ tag:'저택을 도면으로 읽는다. 치수·시각·위치가 전부 정보로 보이고, 목소리는 도면 위 주석이다.',
+ tech:['SVG 격자·해칭 패턴','치수선(dimension line)','시아노타입 초상 필터'],
+ pal:[['프러시안 블루','#10305c'],['짙은 청','#0b2444'],['선 흰색','#e6eef8'],['연한 청','#9db8d9'],['표시 노랑','#f2d26b']],
+ type:'IBM Plex Mono 주석 · Noto Sans KR 본문',
+ mood:'추리 게임의 화면이 "계산할 수 있는 장면"이라는 것을 그림으로 말한다. 벽은 두 줄 사이 해칭(poché), 문은 여닫는 호, 방 이름은 도면 표기. 청취점은 측량 기준점, 가청 반경은 r = 5.0 m로 적힌 원이다. 시아노타입으로 인화한 초상은 인물이 "서류 속 사람"임을 강조한다.',
+ how:['바닥 질감을 끄고 방 테두리·문 호·격자만 남기면 되므로 SceneBuilder에 "도면 모드" 플래그 하나로 시험 가능하다.','선 색 2개(흰·연청)와 격자 패턴 1장이 에셋 전부다. 치수는 rooms.json에서 자동으로 적는다.','초상은 기존 PNG에 feColorMatrix 시아노타입만 곱한다. 새 그림 없음.'],
+ scores:{mood:4,fit:4,cost:2,cc0:5},change:'바닥 질감 제거 · 선 렌더러 · 격자',line:'평면도를 도면으로 · 치수·주석·측량점',
+ filter:`<filter id="pf-blueprint"><feColorMatrix type="matrix" values=".33 .33 .33 0 0 .33 .33 .33 0 0 .33 .33 .33 0 0 0 0 0 1 0"/><feComponentTransfer><feFuncR type="table" tableValues=".05 .28 .75"/><feFuncG type="table" tableValues=".14 .45 .86"/><feFuncB type="table" tableValues=".33 .70 .97"/></feComponentTransfer></filter>`,
+ css:`.c-blueprint{background:#10305c;color:#e6eef8;font-family:"Noto Sans KR"}
+ .c-blueprint .rl{font-family:"IBM Plex Mono";font-size:13px;letter-spacing:.2em;fill:#cfe0f5}
+ .c-blueprint .rk{font-family:"Noto Sans KR";font-size:18px;fill:#e6eef8;font-weight:500}
+ .c-blueprint .dim{font-family:"IBM Plex Mono";font-size:12px;fill:#9db8d9}
+ .c-blueprint .hud-side,.c-blueprint .hud-time,.c-blueprint .bubble{background:rgba(9,32,64,.7);border:1px solid #e6eef8;color:#e6eef8}
+ .c-blueprint .hud-side{box-shadow:inset 0 0 0 4px rgba(9,32,64,.7),inset 0 0 0 5px rgba(230,238,248,.6)}
+ .c-blueprint .hud-side .h,.c-blueprint .hud-time,.c-blueprint .bubble .who{font-family:"IBM Plex Mono";color:#9db8d9}
+ .c-blueprint .hud-time .lane span{background:#e6eef8}.c-blueprint .hud-time .lane:first-child span{background:#f2d26b}.c-blueprint .hud-time .head{background:#f2d26b}.c-blueprint .hud-time .bar b{color:#f2d26b}
+ .c-blueprint .hud-top{font-family:"IBM Plex Mono";font-size:13px;letter-spacing:.14em;color:#9db8d9}
+ .c-blueprint .bubble{font-family:"Noto Sans KR";font-size:18px;border-left:3px solid #f2d26b}
+ .c-blueprint .bubble.far{color:#9db8d9;border-left-color:#9db8d9}
+ .c-blueprint .cands img{filter:url(#pf-blueprint);border:1px solid #9db8d9}.c-blueprint .cands .q{color:#f2d26b;border-color:#f2d26b}
+ .c-blueprint .hv{color:#f2d26b;font-family:"IBM Plex Mono";font-size:12px}`,
+ render(c){
+  const defs=`<pattern id="bp-grid" patternUnits="userSpaceOnUse" width="30" height="30"><path d="M30 0H0V30" fill="none" stroke="#e6eef8" stroke-opacity=".08"/></pattern>
+   <pattern id="bp-grid2" patternUnits="userSpaceOnUse" width="150" height="150"><path d="M150 0H0V150" fill="none" stroke="#e6eef8" stroke-opacity=".16"/></pattern>
+   <pattern id="bp-hatch" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)"><path d="M0 0V7" stroke="#e6eef8" stroke-opacity=".55" stroke-width="1"/></pattern>`;
+  const dim=(x1,y1,x2,y2,label,vert)=>`<g class="dimg" stroke="#9db8d9" stroke-width="1"><path d="M${x1} ${y1}L${x2} ${y2}"/>${vert?`<path d="M${x1-5} ${y1}h10M${x2-5} ${y2}h10"/>`:`<path d="M${x1} ${y1-5}v10M${x2} ${y2-5}v10"/>`}</g><text class="dim" x="${(x1+x2)/2}" y="${vert?(y1+y2)/2:y1-6}" text-anchor="middle" ${vert?`transform="rotate(-90 ${x1} ${(y1+y2)/2})" dy="-6"`:''}>${label}</text>`;
+  const dims=dim(sx(0),sy(24)-26,sx(36),sy(24)-26,'36.00 m')+dim(sx(0)-26,sy(24),sx(0)-26,sy(0),'24.00 m',true)+dim(sx(0),sy(0)+28,sx(12),sy(0)+28,'12.00')+dim(sx(12),sy(0)+28,sx(24),sy(0)+28,'12.00')+dim(sx(24),sy(0)+28,sx(36),sy(0)+28,'12.00');
+  const walls=wallRects('url(#bp-hatch)',WALL)+ROOMS.map(r=>`<rect x="${sx(r.x)-6}" y="${sy(r.y+r.h)-6}" width="${r.w*PX+12}" height="${r.h*PX+12}" fill="none" stroke="#e6eef8" stroke-width="1.4"/><rect x="${sx(r.x)+6}" y="${sy(r.y+r.h)+6}" width="${r.w*PX-12}" height="${r.h*PX-12}" fill="none" stroke="#e6eef8" stroke-width="1.4"/>`).join('');
+  return genericScreen(c,{defs,bg:'#10305c',
+   under:`<rect width="1600" height="900" fill="url(#bp-grid)"/><rect width="1600" height="900" fill="url(#bp-grid2)"/>`,
+   roomFill:'rgba(230,238,248,.03)',walls,
+   doors:doorRects('#10305c')+doorArcs('#e6eef8',1.3),
+   labels:roomLabels(24,'rl',r=>r.en)+roomLabels(48,'rk')+dims,
+   hear:`<circle cx="${LX}" cy="${LY}" r="${LR}" fill="rgba(242,210,107,.08)" stroke="#f2d26b" stroke-width="1.2" stroke-dasharray="8 6"/><path d="M${LX} ${LY}L${LX+LR*.7} ${LY-LR*.7}" stroke="#f2d26b" stroke-width="1" stroke-dasharray="3 4"/><text class="dim" x="${LX+LR*.42}" y="${LY-LR*.42-6}" fill="#f2d26b" style="fill:#f2d26b">r = 5.00 m</text>`,
+   token:(f,X,Y)=>`<g fill="none" stroke="#e6eef8" stroke-width="1.5"><circle cx="${X}" cy="${Y}" r="12"/><path d="M${X-16} ${Y}h32M${X} ${Y-16}v32"/>${f.voice?`<circle cx="${X}" cy="${Y}" r="19" stroke="#f2d26b"/>`:''}</g><text class="dim" x="${X+22}" y="${Y-14}" ${f.voice?'style="fill:#f2d26b"':''}>${f.voice?f.id.toUpperCase():'FIG-'+f.id.slice(1)}</text>`,
+   listener:`<g fill="none" stroke="#f2d26b" stroke-width="1.6"><circle cx="${LX}" cy="${LY}" r="9"/><circle cx="${LX}" cy="${LY}" r="3" fill="#f2d26b"/><path d="M${LX} ${LY-26}l5 12h-10zM${LX} ${LY+26}l5-12h-10zM${LX-26} ${LY}l12-5v10zM${LX+26} ${LY}l-12-5v10z" fill="#f2d26b"/></g><text class="dim" x="${LX+18}" y="${LY+30}" style="fill:#f2d26b">STA 0+34</text>`,
+   over:`<text class="dim" x="1130" y="880" text-anchor="end">BLACKWOOD MANOR · GROUND FLOOR · SCALE 1:120 · SHEET A-01</text>`,
+   hud:hud(c,{title:'IDENTIFICATION · 누구의 목소리인가',top:'DWG A-01 · BLACKWOOD MANOR · GROUND FLOOR · REV 2',tl:'PLAYBACK 18:00:00 – 18:01:30'})});
+ }
+});
+
+/* ================================================================
+   3. 필름 누아르 — 흑백 고대비, 블라인드 빛
+   ================================================================ */
+CONCEPTS.push({
+ id:'noir',name:'필름 누아르',en:'Film Noir',
+ tag:'빛은 블라인드 사이로만 들어오고, 인물은 그림자다. 붉은 점 하나가 청취점이다.',
+ tech:['회전 줄무늬 패턴 + 그라디언트 마스크','기울인 긴 그림자','필름 그레인 필터'],
+ pal:[['검정','#070707'],['어둔 회색','#1c1c1c'],['빛','#d8d8d8'],['중간 회색','#6d6d6d'],['붉은 점','#d3202a']],
+ type:'Special Elite 타자기 + Noto Serif KR',
+ mood:'엿듣기는 어둠 속에서 하는 일이다. 방은 거의 검고, 블라인드 빛줄기가 한쪽 창에서만 들어와 바닥에 줄을 긋는다. 인물은 이름 없는 실루엣과 긴 그림자뿐이라 "누가 누구인지"가 화면 자체로 질문이 된다. 색은 청취점의 붉은 점 하나만 허용한다.',
+ how:['바닥 질감을 회색조 한 장으로 줄이고 블라인드 빛은 스프라이트 한 장(줄무늬 + 알파 그라디언트)을 회전해 얹는다.','토큰은 실루엣 스프라이트 + 기울인 그림자 스프라이트 두 장. ProceduralTextures의 실루엣 코드를 재사용.','전체 화면 그레인·비네팅은 지금 VignetteSprite 위에 노이즈 한 장 더.'],
+ scores:{mood:5,fit:4,cost:2,cc0:5},change:'색 제거 · 조명 스프라이트 · 그레인',line:'흑백 고대비 · 블라인드 빛 · 붉은 점 하나',
+ filter:`<filter id="pf-noir"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.7" intercept="-.32"/><feFuncG type="linear" slope="1.7" intercept="-.32"/><feFuncB type="linear" slope="1.7" intercept="-.32"/></feComponentTransfer></filter>`,
+ css:`.c-noir{background:#070707;color:#d8d8d8}
+ .c-noir .rl{font-family:"Special Elite","Noto Serif KR";font-size:16px;letter-spacing:.22em;fill:#9a9a9a}
+ .c-noir .hud-side,.c-noir .hud-time,.c-noir .bubble{background:#0a0a0a;border:1px solid #6d6d6d;color:#d8d8d8}
+ .c-noir .hud-side{border-left:14px solid transparent;border-image:repeating-linear-gradient(#0a0a0a 0 6px,#6d6d6d 6px 8px,#0a0a0a 8px 22px) 14;padding:22px 24px 22px 30px}
+ .c-noir .hud-side .h,.c-noir .hud-time,.c-noir .bubble .who,.c-noir .hud-top{font-family:"Special Elite","IBM Plex Mono";letter-spacing:.16em}
+ .c-noir .hud-top{color:#9a9a9a;font-size:13px}
+ .c-noir .hud-time .lane span{background:#d8d8d8}.c-noir .hud-time .lane:first-child span{background:#9a9a9a}.c-noir .hud-time .head{background:#d3202a}.c-noir .hud-time .bar b{color:#d3202a}
+ .c-noir .bubble{font-family:"Noto Serif KR";font-size:19px;letter-spacing:.02em;padding:14px 18px}
+ .c-noir .bubble.far{color:#8a8a8a;border-style:dashed}
+ .c-noir .cands img{filter:url(#pf-noir) contrast(1.1);border:1px solid #444}.c-noir .cands .q{color:#d3202a;border-color:#d3202a}
+ .c-noir .hv{color:#d3202a;font-family:"Special Elite";font-size:12px}`,
+ render(c){
+  const defs=`<pattern id="n-blind" patternUnits="userSpaceOnUse" width="26" height="26" patternTransform="rotate(-22)"><rect width="26" height="26" fill="#000"/><rect width="26" height="13" fill="#fff"/></pattern>
+   <linearGradient id="n-fade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".55" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+   <mask id="n-mask"><rect x="${sx(0)}" y="${sy(24)}" width="${36*PX}" height="${24*PX}" fill="url(#n-fade)"/></mask>
+   <filter id="n-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="7" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>${vignette('n-vig','0,0,0',.98)}`;
+  const shadow=(X,Y)=>`<path d="M${X-10} ${Y+8} L${X+44} ${Y+34} L${X+62} ${Y+30} L${X+12} ${Y+8}Z" fill="#000" opacity=".8"/>`;
+  return genericScreen(c,{defs,bg:'#070707',
+   roomFill:'#1c1c1c',
+   roomsOver:`<g mask="url(#n-mask)" opacity=".16">${roomRects('url(#n-blind)')}</g>`,
+   wallStroke:'#cfcfcf',door:'#2a2a2a',
+   labels:roomLabels(24,'rl',r=>r.en+' · '+r.n),
+   hear:`<circle cx="${LX}" cy="${LY}" r="${LR}" fill="rgba(211,32,42,.06)" stroke="#d3202a" stroke-width="1" stroke-dasharray="2 8" opacity=".8"/>`,
+   token:(f,X,Y)=>shadow(X,Y)+`<circle cx="${X}" cy="${Y-9}" r="8" fill="#000" stroke="#d8d8d8" stroke-width="1.2"/><path d="M${X-15} ${Y+16} q0-18 15-18 q15 0 15 18 z" fill="#000" stroke="#d8d8d8" stroke-width="1.2"/>${f.voice?`<circle cx="${X}" cy="${Y}" r="24" fill="none" stroke="#d8d8d8" stroke-width="1" stroke-dasharray="3 3"/>`:''}`,
+   listener:`<circle cx="${LX}" cy="${LY}" r="20" fill="none" stroke="#d3202a" stroke-width="1"/><circle cx="${LX}" cy="${LY}" r="7" fill="#d3202a"/>`,
+   over:`<rect width="1600" height="900" filter="url(#n-grain)" opacity=".13" style="mix-blend-mode:overlay"/><rect width="1600" height="900" fill="url(#n-vig)"/>`,
+   hud:hud(c,{title:'WHO IS SPEAKING · 누구의 목소리인가',top:'BLACKWOOD MANOR — 18:00 — REEL 2',tl:'REEL 2 · 18:00:00 – 18:01:30'})});
+ }
+});
+
+/* ================================================================
+   4. 동판화 — 빅토리아 신문 삽화
+   ================================================================ */
+CONCEPTS.push({
+ id:'engrave',name:'동판화',en:'Engraving',
+ tag:'19세기 신문 삽화처럼 해칭으로만 명암을 낸다. 사건은 이미 "기사"가 된 과거다.',
+ tech:['해칭·교차 해칭 SVG 패턴','이중선 벽','포스터라이즈 + 선 오버레이 초상'],
+ pal:[['크림','#efe6d3'],['잉크','#1a1512'],['바랜 잉크','#5a4a3c'],['붉은 인장','#9b2b21'],['연한 잉크','#a89880']],
+ type:'Nanum Myeongjo 본문 · Song Myung 제목',
+ mood:'초상화(사전트·소른)와 시대가 맞는 유일한 시안. 방은 방향이 다른 해칭으로 구분되고, 벽은 잉크 두 줄, 문은 판화의 호. 인물은 문장(紋章) 같은 원형 장식이고, 목소리는 로마 숫자 I·II. 글자가 빠진 먼 목소리는 인쇄가 번진 것처럼 보인다.',
+ how:['해칭 패턴 3장(사선·교차·수평)을 회색조로 만들고 방마다 불투명도만 바꾼다. ProceduralTextures에 패턴 생성기를 하나 더 넣으면 된다.','초상은 회색조 → 4단계 포스터라이즈 → 선 패턴을 곱한다. 셰이더 없이 텍스처 후처리로 가능.','종이 패널은 지금 것을 그대로, 붉은 인장(스탬프) 스프라이트 하나만 추가.'],
+ scores:{mood:5,fit:3,cost:2,cc0:5},change:'바닥 → 해칭 · 초상 후처리',line:'19세기 삽화 · 해칭 · 이중선 · 로마 숫자',
+ filter:`<filter id="pf-engrave"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="discrete" tableValues=".08 .35 .62 .9"/><feFuncG type="discrete" tableValues=".07 .31 .55 .84"/><feFuncB type="discrete" tableValues=".06 .27 .48 .76"/></feComponentTransfer></filter>`,
+ css:`.c-engrave{background:#efe6d3;color:#1a1512;font-family:"Nanum Myeongjo"}
+ .c-engrave .rl{font-family:"Song Myung";font-size:21px;letter-spacing:.12em;fill:#1a1512}
+ .c-engrave .hud-side,.c-engrave .hud-time,.c-engrave .bubble{background:#efe6d3;color:#1a1512;border:1.5px solid #1a1512;box-shadow:inset 0 0 0 3px #efe6d3,inset 0 0 0 4px #1a1512}
+ .c-engrave .hud-side{padding:24px 26px}
+ .c-engrave .hud-side .h{font-family:"Song Myung";font-size:15px;letter-spacing:.2em;text-align:center;border-bottom:1.5px solid #1a1512;padding-bottom:6px}
+ .c-engrave .hud-time,.c-engrave .bubble .who{font-family:"Nanum Myeongjo"}
+ .c-engrave .hud-time .lane span{background:#1a1512}.c-engrave .hud-time .lane:first-child span{background:#5a4a3c}.c-engrave .hud-time .head{background:#9b2b21}.c-engrave .hud-time .bar b{color:#9b2b21}
+ .c-engrave .hud-top{font-family:"Song Myung";letter-spacing:.2em;font-size:14px;color:#5a4a3c}
+ .c-engrave .bubble{font-size:20px;padding:14px 20px}.c-engrave .bubble .who{color:#9b2b21;letter-spacing:.2em}
+ .c-engrave .bubble.far{color:#7a6a5a}
+ .c-engrave .pw{position:relative;display:inline-block}.c-engrave .pw::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(26,21,18,.55) 0 1px,transparent 1px 3px);mix-blend-mode:multiply;pointer-events:none}
+ .c-engrave .cands img{filter:url(#pf-engrave);border:1px solid #1a1512}.c-engrave .cands .q{color:#9b2b21;border-color:#9b2b21}
+ .c-engrave .hv{color:#9b2b21;font-size:12px}`,
+ render(c){
+  const hatch=(id,rot,gap)=>`<pattern id="${id}" patternUnits="userSpaceOnUse" width="${gap}" height="${gap}" patternTransform="rotate(${rot})"><path d="M0 0V${gap}" stroke="#1a1512" stroke-width=".9"/></pattern>`;
+  const defs=hatch('e-h1',45,6)+hatch('e-h2',-45,6)+hatch('e-h3',0,5)+hatch('e-h4',90,7)+noise('e-noise','.7',3,3);
+  const op={room_lobby:.22,room_dining:.38,room_storage:.6,room_hall:.28,room_victim:.5,room_suspect:.34};
+  const pat={room_lobby:'e-h4',room_dining:'e-h1',room_storage:'e-h1',room_hall:'e-h3',room_victim:'e-h2',room_suspect:'e-h1'};
+  return genericScreen(c,{defs,bg:'#efe6d3',
+   under:grainRect('e-noise',.12),
+   roomFill:r=>`url(#${pat[r.id]})`,roomExtra:r=>`opacity="${op[r.id]}"`,
+   roomsOver:`<g opacity=".3">${roomRects(r=>r.id==='room_storage'||r.id==='room_victim'?'url(#e-h2)':'none')}</g>`,
+   walls:wallRects('#1a1512',WALL)+wallRects('#efe6d3',2),
+   doors:doorRects('#efe6d3')+doorArcs('#1a1512',1.6),
+   labels:roomLabels(30),
+   hear:`<circle cx="${LX}" cy="${LY}" r="${LR}" fill="none" stroke="#1a1512" stroke-width="1.2" stroke-dasharray="1 5"/><circle cx="${LX}" cy="${LY}" r="${LR-6}" fill="none" stroke="#1a1512" stroke-width=".7"/>`,
+   token:(f,X,Y)=>`<circle cx="${X}" cy="${Y}" r="16" fill="#efe6d3" stroke="#1a1512" stroke-width="2"/><circle cx="${X}" cy="${Y}" r="11" fill="url(#e-h1)" stroke="#1a1512" stroke-width="1"/><circle cx="${X}" cy="${Y}" r="4" fill="#1a1512"/>${f.voice?`<circle cx="${X}" cy="${Y}" r="22" fill="none" stroke="#9b2b21" stroke-width="1.5"/><text x="${X}" y="${Y-27}" text-anchor="middle" style="font-family:'Song Myung';font-size:15px;fill:#9b2b21">${f.id==='v1'?'I':'II'}</text>`:''}`,
+   listener:`<g fill="#9b2b21"><path d="M${LX} ${LY-24}l4 18 18-4-18 6 4 18-4-14-4 14 4-18-18 6 18-4z"/><circle cx="${LX}" cy="${LY}" r="4" fill="#efe6d3" stroke="#9b2b21" stroke-width="1.5"/></g>`,
+   hud:hud(c,{title:'저택 통신 · 누구의 목소리인가',top:'블랙우드 저택 살인 사건 · 삽화판 · 제2회',heard:'들은 말 · 제2회',tl:'기록 재생 · 오후 6시 – 6시 1분 30초'})});
+ }
+});
+</script>
+<script>
+/* ================================================================
+   5. 종이 극장 — 오려 붙인 종이 디오라마
+   ================================================================ */
+CONCEPTS.push({
+ id:'paper',name:'종이 극장',en:'Paper Theatre',
+ tag:'저택은 무대 위에 오려 붙인 종이 층이고, 인물은 막대에 꽂힌 종이 인형이다. 조명 하나가 청취점.',
+ tech:['feDropShadow 종이 층','clip-path 찢은 종이','방사형 스포트라이트 + 커튼'],
+ pal:[['무대 어둠','#2b1d16'],['크림 종이','#efe3c6'],['묵은 종이','#dccbaa'],['갈색 잉크','#4a3323'],['조명','#ffd98a'],['커튼','#7b1f1f']],
+ type:'Gaegu 손글씨 · Noto Serif KR 본문',
+ mood:'"이미 벌어진 한 시간의 기록"을 되감아 보는 게임이라면, 화면은 재연극 무대일 수 있다. 방마다 조금씩 기운 종이가 그림자를 드리우고, 벽은 두꺼운 종이 띠, 문은 오려낸 구멍. 청취점은 무대 조명이라 가청 반경이 곧 빛의 반경이다. 인물은 익명의 종이 인형, 목소리는 종이 카드로 나온다.',
+ how:['방·벽을 개별 스프라이트로 그리고 그림자 스프라이트(같은 형태, 검정 반투명, 오프셋)를 밑에 하나씩 둔다. SceneBuilder에서 벽 조각마다 그림자 하나 추가.','조명은 방사형 그라디언트 한 장. 가청 반경 = 조명 반경이라 코드가 같다.','커튼·프로시니엄은 화면 가장자리 이미지 2장. 초상은 타원으로 오려 흰 테두리를 두른다.'],
+ scores:{mood:4,fit:4,cost:3,cc0:5},change:'그림자 레이어 · 조명 · 커튼',line:'오려 붙인 종이 · 무대 조명 · 종이 인형',
+ filter:`<filter id="pf-paper"><feColorMatrix type="matrix" values="1.05 0 0 0 .02 0 .98 0 0 0 0 0 .85 0 0 0 0 0 1 0"/></filter>`,
+ css:`.c-paper{background:#2b1d16;color:#4a3323}
+ .c-paper .rl{font-family:"Gaegu";font-size:24px;font-weight:700;fill:#4a3323}
+ .c-paper .hud-side,.c-paper .hud-time,.c-paper .bubble{background:#efe3c6;color:#4a3323;box-shadow:4px 8px 14px rgba(0,0,0,.55)}
+ .c-paper .hud-side{clip-path:polygon(0 1%,3% 0,97% .6%,100% 2%,99.4% 98%,97% 100%,4% 99.4%,0 97%);padding:26px 28px}
+ .c-paper .hud-side .h{font-family:"Gaegu";font-size:20px;font-weight:700;letter-spacing:0;text-transform:none}
+ .c-paper .hud-time{font-family:"Gaegu";font-size:15px;transform:rotate(-.4deg)}
+ .c-paper .hud-time .lane span{background:#4a3323;border-radius:3px}.c-paper .hud-time .lane:first-child span{background:#7b1f1f}.c-paper .hud-time .head{background:#ffb347}.c-paper .hud-time .bar b{color:#7b1f1f}
+ .c-paper .hud-top{font-family:"Gaegu";font-size:20px;color:#dccbaa}
+ .c-paper .bubble{font-family:"Gaegu";font-size:24px;line-height:1.35;clip-path:polygon(2% 0,100% 3%,98% 100%,0 96%);transform:rotate(1.2deg)}
+ .c-paper .bubble.far{transform:rotate(-1.6deg);color:#8a7458}
+ .c-paper .bubble .who{font-family:"Gaegu";font-size:15px;letter-spacing:0;color:#7b1f1f}
+ .c-paper .cands img{filter:url(#pf-paper);clip-path:ellipse(46% 48% at 50% 50%);box-shadow:none}
+ .c-paper .pw{display:inline-block;background:#fff;clip-path:ellipse(50% 50% at 50% 50%);padding:3px;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.35))}
+ .c-paper .cands .q{border-color:#7b1f1f;color:#7b1f1f;border-radius:50%}
+ .c-paper .hv{color:#7b1f1f;font-family:"Gaegu";font-size:14px}`,
+ render(c){
+  const defs=`<filter id="p-sh" x="-10%" y="-10%" width="130%" height="140%"><feDropShadow dx="5" dy="9" stdDeviation="5" flood-color="#000" flood-opacity=".5"/></filter>
+   <filter id="p-sh2" x="-10%" y="-10%" width="130%" height="140%"><feDropShadow dx="3" dy="5" stdDeviation="3" flood-color="#000" flood-opacity=".45"/></filter>
+   <radialGradient id="p-light"><stop offset="0" stop-color="#ffd98a" stop-opacity=".55"/><stop offset=".7" stop-color="#ffd98a" stop-opacity=".15"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>
+   <pattern id="p-curt" patternUnits="userSpaceOnUse" width="22" height="900"><rect width="22" height="900" fill="#7b1f1f"/><rect width="8" height="900" fill="#5c1414"/><rect x="14" width="3" height="900" fill="#9a2d2d"/></pattern>
+   ${noise('p-noise','.6',3,5)}`;
+  const tone={room_lobby:'#e9ddbf',room_dining:'#e3d2ab',room_storage:'#d6c5a3',room_hall:'#ecdfc2',room_victim:'#dfcdb0',room_suspect:'#e6d8b8'};
+  const rot={room_lobby:-.5,room_dining:.4,room_storage:-.3,room_hall:.15,room_victim:.6,room_suspect:-.45};
+  const rooms=ROOMS.map(r=>`<g transform="rotate(${rot[r.id]} ${sx(r.x+r.w/2)} ${sy(r.y+r.h/2)})" filter="url(#p-sh)"><rect x="${sx(r.x)}" y="${sy(r.y+r.h)}" width="${r.w*PX}" height="${r.h*PX}" fill="${tone[r.id]}"/><rect x="${sx(r.x)}" y="${sy(r.y+r.h)}" width="${r.w*PX}" height="${r.h*PX}" fill="url(#p-noise)" opacity=".25" style="mix-blend-mode:multiply"/></g>`).join('');
+  const walls=`<g filter="url(#p-sh2)">${wallRects('#a98e63',WALL+4)}</g>${wallRects('#cdb88f',WALL-4)}`;
+  const puppet=(f,X,Y)=>`<path d="M${X+6} ${Y+10}L${X+34} ${Y+40}" stroke="#2b1d16" stroke-width="3" opacity=".6"/><g filter="url(#p-sh2)"><path d="M${X} ${Y+6}L${X} ${Y+30}" stroke="#8a6a3a" stroke-width="4"/><path d="M${X-14} ${Y+12} q0-16 14-16 q14 0 14 16 z" fill="#4a3323" stroke="#efe3c6" stroke-width="2"/><circle cx="${X}" cy="${Y-12}" r="9" fill="#4a3323" stroke="#efe3c6" stroke-width="2"/></g>${f.voice?`<path d="M${X+10} ${Y-28}h24l-6 8 6 8h-24z" fill="#7b1f1f" stroke="#efe3c6" stroke-width="1.5"/>`:''}`;
+  return genericScreen(c,{defs,bg:'#2b1d16',
+   under:`<rect width="1600" height="900" fill="url(#p-noise)" opacity=".18"/>`,
+   roomFill:'none',roomsOver:rooms,walls,
+   doors:doorRects('#2b1d16')+doorRects('#1a100b','opacity=".6" transform="translate(0,4)"'),
+   labels:roomLabels(34),
+   hear:`<circle cx="${LX}" cy="${LY}" r="${LR*1.15}" fill="url(#p-light)" style="mix-blend-mode:screen"/>`,
+   token:puppet,
+   listener:`<g filter="url(#p-sh2)"><path d="M${LX-12} ${LY+14}h24l-6-26h-12z" fill="#3a2a20" stroke="#ffd98a" stroke-width="1.5"/><circle cx="${LX}" cy="${LY-16}" r="8" fill="#ffd98a"/></g>`,
+   over:`<rect x="0" y="0" width="34" height="900" fill="url(#p-curt)"/><rect x="1566" y="0" width="34" height="900" fill="url(#p-curt)"/><rect x="0" y="0" width="1600" height="14" fill="#5c1414"/><rect x="0" y="886" width="1600" height="14" fill="#1a100b"/>`,
+   hud:hud(c,{title:'출연진 — 누구의 목소리인가',top:'블랙우드 저택 · 제2막 · 다시 올리는 한 시간',heard:'들은 대사 · 제2막',tl:'되감기 무대 · 18:00 – 18:01:30'})});
+ }
+});
+
+/* ================================================================
+   6. 아르데코 — 검정과 금
+   ================================================================ */
+CONCEPTS.push({
+ id:'deco',name:'아르데코',en:'Art Deco',
+ tag:'1920년대 호텔 안내판처럼 검정 위에 금 상감. 화려한 저택, 화려한 거짓말.',
+ tech:['금 상감 이중선·모서리 부채꼴','지그재그 패턴','금 듀오톤 초상'],
+ pal:[['검정','#0b0a0c'],['숯','#161418'],['금','#c9a24a'],['옅은 금','#e6c777'],['크림','#efe4c8'],['에메랄드','#1f6b5a']],
+ type:'Cinzel 라틴 제목 · Song Myung 한글',
+ mood:'저택이 부유하고 인물이 화려할수록 횡령과 유언장 다툼이 어울린다. 바닥은 검정에 금 지그재그, 방마다 금 이중 테두리와 모서리 부채꼴, 목소리는 금 메달리온에 숫자. 청취점은 금빛 선버스트라 가청 반경이 "빛나는 범위"로 읽힌다. 에메랄드 하나가 초록 넥타이 단서를 위해 남겨 둔 색이다.',
+ how:['바닥은 검정 + 금 선 패턴 한 장(코드 생성). 방 테두리 장식은 벽 조각 생성기에서 안쪽으로 오프셋한 선 두 줄을 추가로 그린다.','메달리온·선버스트는 ProceduralTextures에 원+방사선 생성기 하나.','초상은 금 듀오톤(feComponentTransfer 테이블) 후처리. 폰트는 Cinzel(OFL) 추가.'],
+ scores:{mood:4,fit:3,cost:3,cc0:5},change:'패턴 생성기 · 장식 선 · 금 후처리',line:'검정 + 금 상감 · 메달리온 · 선버스트',
+ filter:`<filter id="pf-deco"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="table" tableValues=".08 .45 .90"/><feFuncG type="table" tableValues=".06 .34 .78"/><feFuncB type="table" tableValues=".03 .12 .45"/></feComponentTransfer></filter>`,
+ css:`.c-deco{background:#0b0a0c;color:#efe4c8;font-family:"Song Myung"}
+ .c-deco .rl{font-family:"Cinzel";font-size:15px;letter-spacing:.32em;fill:#c9a24a}
+ .c-deco .rk{font-family:"Song Myung";font-size:19px;fill:#efe4c8}
+ .c-deco .hud-side,.c-deco .hud-time,.c-deco .bubble{background:#0b0a0c;color:#efe4c8;border:1px solid #c9a24a;box-shadow:inset 0 0 0 4px #0b0a0c,inset 0 0 0 5px #c9a24a}
+ .c-deco .hud-side{clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px);padding:26px 28px}
+ .c-deco .hud-side .h{font-family:"Cinzel";color:#c9a24a;font-size:13px;letter-spacing:.3em;text-align:center}
+ .c-deco .hud-time,.c-deco .bubble .who{font-family:"Cinzel";color:#c9a24a;letter-spacing:.2em}
+ .c-deco .hud-time .lane span{background:#c9a24a}.c-deco .hud-time .lane:first-child span{background:#e6c777}.c-deco .hud-time .head{background:#efe4c8}.c-deco .hud-time .bar b{color:#e6c777}
+ .c-deco .hud-top{font-family:"Cinzel";letter-spacing:.3em;font-size:13px;color:#c9a24a}
+ .c-deco .bubble{font-size:21px;padding:14px 20px;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
+ .c-deco .bubble.far{color:#a5956f;opacity:.9}
+ .c-deco .cands img{filter:url(#pf-deco);border:1px solid #c9a24a}.c-deco .cands .q{border-color:#e6c777;color:#e6c777}
+ .c-deco .hv{color:#c9a24a;font-family:"Cinzel";font-size:11px;letter-spacing:.1em}
+ .c-deco .heard{font-family:"Song Myung"}`,
+ render(c){
+  const defs=`<pattern id="a-zig" patternUnits="userSpaceOnUse" width="40" height="24"><path d="M0 18 L10 6 L20 18 L30 6 L40 18" fill="none" stroke="#c9a24a" stroke-opacity=".22" stroke-width="1.2"/></pattern>
+   <radialGradient id="a-hear"><stop offset="0" stop-color="#e6c777" stop-opacity=".28"/><stop offset="1" stop-color="#e6c777" stop-opacity="0"/></radialGradient>`;
+  const inlay=ROOMS.map(r=>{const x=sx(r.x),y=sy(r.y+r.h),w=r.w*PX,h=r.h*PX;const fan=(cx,cy,sxn,syn)=>`<g transform="translate(${cx} ${cy}) scale(${sxn} ${syn})">${[10,18,26].map(rr=>`<path d="M0 ${rr} A${rr} ${rr} 0 0 1 ${rr} 0" fill="none" stroke="#c9a24a" stroke-width="1.1"/>`).join('')}</g>`;
+   return `<rect x="${x+10}" y="${y+10}" width="${w-20}" height="${h-20}" fill="none" stroke="#c9a24a" stroke-width="1.4"/><rect x="${x+16}" y="${y+16}" width="${w-32}" height="${h-32}" fill="none" stroke="#c9a24a" stroke-width=".6"/>${fan(x+16,y+16,1,1)}${fan(x+w-16,y+16,-1,1)}${fan(x+16,y+h-16,1,-1)}${fan(x+w-16,y+h-16,-1,-1)}`;}).join('');
+  const sun=(X,Y,n,r1,r2)=>{let s='';for(let i=0;i<n;i++){const a=i/n*Math.PI*2;s+=`<path d="M${X+Math.cos(a)*r1} ${Y+Math.sin(a)*r1}L${X+Math.cos(a)*r2} ${Y+Math.sin(a)*r2}"/>`;}return s;};
+  return genericScreen(c,{defs,bg:'#0b0a0c',
+   roomFill:'#161418',roomsOver:`${roomRects('url(#a-zig)')}${inlay}`,
+   wallStroke:'#c9a24a',wallW:8,door:'#0b0a0c',
+   labels:roomLabels(40,'rl',r=>r.en)+roomLabels(64,'rk'),
+   hear:hear('url(#a-hear)')+`<circle cx="${LX}" cy="${LY}" r="${LR}" fill="none" stroke="#c9a24a" stroke-width=".8"/>`,
+   token:(f,X,Y)=>`<circle cx="${X}" cy="${Y}" r="17" fill="#0b0a0c" stroke="#c9a24a" stroke-width="2"/><g stroke="#c9a24a" stroke-width="1">${sun(X,Y,12,11,15)}</g><circle cx="${X}" cy="${Y}" r="6" fill="#c9a24a"/>${f.voice?`<circle cx="${X}" cy="${Y}" r="23" fill="none" stroke="#e6c777" stroke-width="1"/><text x="${X}" y="${Y-29}" text-anchor="middle" style="font-family:Cinzel;font-size:14px;fill:#e6c777">${f.id==='v1'?'I':'II'}</text>`:''}`,
+   listener:`<g stroke="#e6c777" stroke-width="1.6">${sun(LX,LY,16,12,30)}</g><circle cx="${LX}" cy="${LY}" r="10" fill="#0b0a0c" stroke="#e6c777" stroke-width="2"/><circle cx="${LX}" cy="${LY}" r="4" fill="#e6c777"/>`,
+   over:`<rect x="12" y="12" width="1576" height="876" fill="none" stroke="#c9a24a" stroke-width="1"/><rect x="18" y="18" width="1564" height="864" fill="none" stroke="#c9a24a" stroke-width=".5"/>`,
+   hud:hud(c,{title:'Whose Voice · 누구의 목소리인가',top:'BLACKWOOD MANOR · GROUND FLOOR · SECOND HEARING',tl:'PLAYBACK · 18:00 – 18:01:30'})});
+ }
+});
+
+/* ================================================================
+   7. 먹과 한지 — 수묵
+   ================================================================ */
+CONCEPTS.push({
+ id:'ink',name:'먹과 한지',en:'Ink Wash',
+ tag:'한지 위에 먹으로 그린 평면도. 붓 자국 벽, 번지는 먹점, 붉은 낙관이 청취점.',
+ tech:['feDisplacementMap 거친 붓선','feGaussianBlur 먹 번짐','세로쓰기 패널 · 낙관'],
+ pal:[['한지','#efe7d5'],['먹','#1a1714'],['옅은 먹','#8d857a'],['담묵','#c9c1b0'],['인주','#b3271e']],
+ type:'Nanum Brush Script 대사 · Gowun Batang 본문',
+ mood:'서양 저택을 동양 화법으로 그리면 낯설어져서 오히려 "기록"처럼 보인다. 벽은 한 번에 그은 붓, 방은 담묵으로 넓게 깔고, 인물은 번진 먹점. 목소리에는 붉은 낙관에 一·二가 찍히고, 청취점은 聽(들을 청) 인장이다. 먼 목소리는 먹이 마른 것처럼 옅어진다.',
+ how:['벽 조각에 노이즈 변위(Displacement) 셰이더 하나, 또는 붓 질감 스프라이트를 9-slice로. 후자가 쉽다.','방 바닥은 담묵 그라디언트 한 장 + 한지 노이즈. ProceduralTextures의 fbm을 그대로 쓴다.','낙관은 붉은 사각 + 흰 글자 스프라이트. 폰트 Nanum Brush Script·Gowun Batang(OFL) 추가.'],
+ scores:{mood:4,fit:4,cost:3,cc0:5},change:'붓 질감 벽 · 담묵 바닥 · 인장 UI',line:'수묵 평면도 · 붓 벽 · 낙관 청취점',
+ filter:`<filter id="pf-ink"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="table" tableValues=".05 .25 .55 .8 .95"/><feFuncG type="table" tableValues=".04 .23 .52 .77 .93"/><feFuncB type="table" tableValues=".03 .2 .47 .7 .86"/></feComponentTransfer><feGaussianBlur stdDeviation=".35"/></filter>`,
+ css:`.c-ink{background:#efe7d5;color:#1a1714;font-family:"Gowun Batang"}
+ .c-ink .rl{font-family:"Nanum Brush Script";font-size:34px;fill:#1a1714}
+ .c-ink .hud-side,.c-ink .hud-time,.c-ink .bubble{background:rgba(239,231,213,.92);color:#1a1714;border:2px solid #1a1714;border-radius:3px 40px 3px 40px/40px 3px 40px 3px}
+ .c-ink .hud-side{padding:26px 28px}
+ .c-ink .hud-side .h{font-family:"Nanum Brush Script";font-size:26px;letter-spacing:0;text-transform:none}
+ .c-ink .hud-side .h::before{content:"聽";display:inline-grid;place-items:center;width:26px;height:26px;background:#b3271e;color:#efe7d5;font-family:serif;font-size:16px;margin-right:10px;vertical-align:-3px}
+ .c-ink .hud-time{font-family:"Gowun Batang";font-size:14px}
+ .c-ink .hud-time .lane span{background:#1a1714;border-radius:6px;filter:blur(.4px)}.c-ink .hud-time .lane:first-child span{background:#8d857a}.c-ink .hud-time .head{background:#b3271e}.c-ink .hud-time .bar b{color:#b3271e}
+ .c-ink .hud-top{font-family:"Nanum Brush Script";font-size:28px;color:#1a1714}
+ .c-ink .bubble{font-family:"Nanum Brush Script";font-size:30px;line-height:1.25;padding:14px 20px}
+ .c-ink .bubble .who{font-family:"Gowun Batang";color:#b3271e;font-size:13px}
+ .c-ink .bubble.far{color:#8d857a;border-color:#8d857a;border-style:dashed}
+ .c-ink .cands img{filter:url(#pf-ink);mix-blend-mode:multiply}.c-ink .cands .q{color:#b3271e;border-color:#b3271e}
+ .c-ink .hv{color:#b3271e;font-size:13px}`,
+ render(c){
+  const defs=`<filter id="i-rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="3" seed="11" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
+   <filter id="i-bleed" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="fractalNoise" baseFrequency=".12" numOctaves="2" seed="3" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="9" result="d"/><feGaussianBlur in="d" stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="d"/></feMerge></filter>
+   <filter id="i-hanji" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="4" seed="9" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .3 0 0 0 -1.2 1.1"/></filter>
+   <linearGradient id="i-wash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9d2c0"/><stop offset="1" stop-color="#bfb7a4"/></linearGradient>
+   <radialGradient id="i-hear"><stop offset="0" stop-color="#1a1714" stop-opacity="0"/><stop offset=".85" stop-color="#1a1714" stop-opacity=".05"/><stop offset="1" stop-color="#1a1714" stop-opacity=".22"/></radialGradient>`;
+  const op={room_lobby:.5,room_dining:.7,room_storage:.95,room_hall:.45,room_victim:.85,room_suspect:.6};
+  return genericScreen(c,{defs,bg:'#efe7d5',
+   under:`<rect width="1600" height="900" filter="url(#i-hanji)" opacity=".5" style="mix-blend-mode:multiply"/>`,
+   roomFill:'url(#i-wash)',roomExtra:r=>`opacity="${op[r.id]}" filter="url(#i-bleed)"`,
+   walls:`<g filter="url(#i-rough)">${wallRects('#1a1714',WALL-2)}</g><g filter="url(#i-rough)" opacity=".5">${wallRects('#1a1714',3,'transform="translate(3,2)" stroke-dasharray="40 9 22 6"')}</g>`,
+   doors:doorRects('#efe7d5'),
+   labels:roomLabels(40),
+   hear:`<circle cx="${LX}" cy="${LY}" r="${LR}" fill="url(#i-hear)" filter="url(#i-bleed)"/>`,
+   token:(f,X,Y)=>`<g filter="url(#i-bleed)"><circle cx="${X}" cy="${Y}" r="13" fill="#1a1714"/><circle cx="${X+9}" cy="${Y+6}" r="7" fill="#1a1714" opacity=".7"/></g>${f.voice?`<rect x="${X+16}" y="${Y-30}" width="22" height="22" fill="#b3271e" transform="rotate(4 ${X+27} ${Y-19})"/><text x="${X+27}" y="${Y-13}" text-anchor="middle" style="font-family:serif;font-size:15px;fill:#efe7d5">${f.id==='v1'?'一':'二'}</text>`:''}`,
+   listener:`<rect x="${LX-16}" y="${LY-16}" width="32" height="32" fill="#b3271e" transform="rotate(-5 ${LX} ${LY})"/><text x="${LX}" y="${LY+8}" text-anchor="middle" style="font-family:serif;font-size:22px;fill:#efe7d5">聽</text>`,
+   over:`<rect x="1490" y="820" width="46" height="46" fill="#b3271e" transform="rotate(3 1513 843)"/><text x="1513" y="852" text-anchor="middle" style="font-family:serif;font-size:14px;fill:#efe7d5">黑木</text>`,
+   hud:hud(c,{title:'누구의 목소리인가',top:'검은 숲 저택 · 다시 듣는 한 시간',tl:'기록 · 유시(酉時) 18:00 – 18:01:30'})});
+ }
+});
+
+/* ================================================================
+   8. 픽셀 아트 — 400×225 캔버스, CRT
+   ================================================================ */
+CONCEPTS.push({
+ id:'pixel',name:'픽셀 아트',en:'Pixel · CRT',
+ tag:'400×225 화소로 그리고 네 배로 키운다. 90년대 어드벤처의 저택. 주사선이 낀 브라운관.',
+ tech:['Canvas 2D 저해상 렌더 + image-rendering: pixelated','16색 팔레트 · 2×2 디더','문자열 스프라이트'],
+ pal:[['밤','#1a1c2c'],['벽','#d8c8a8'],['식당 마루','#4a3a2c'],['서재 카펫','#3a2a3d'],['낮은 청','#2e3c4d'],['형광 노랑','#f4e06d'],['형광 청','#5be3d4']],
+ type:'DotGothic16 라틴 · 한글은 Noto Sans KR을 화소로 뭉갬',
+ mood:'가장 싸게 "게임처럼" 보이는 길. 화면 전체가 400×225 화소라 벽은 2화소, 인물은 6×9 스프라이트, 대사는 RPG 상자다. 먼 목소리는 글자 대신 ▒ 화소 블록으로 빠진다. 주사선과 둥근 모서리로 브라운관을 흉내 내면 "옛 기록을 본다"는 느낌이 공짜로 따라온다.',
+ how:['카메라 해상도를 낮추고(렌더 텍스처 400×225, Point 필터) 화면에 늘리기만 하면 지금 씬이 그대로 픽셀 아트가 된다. 셰이더 0개.','스프라이트는 갈무리(OFL 픽셀 한글 폰트)와 CC0 탑다운 팩(ASSET_SOURCES §2)으로 대체 가능.','주사선은 uGUI 이미지 한 장(반복 타일).'],
+ scores:{mood:3,fit:3,cost:1,cc0:4},change:'렌더 텍스처 해상도 · 픽셀 폰트',line:'400×225 저해상 · 16색 · 주사선',
+ filter:`<filter id="pf-pixel"><feColorMatrix type="saturate" values=".7"/><feComponentTransfer><feFuncR type="discrete" tableValues=".1 .3 .5 .7 .9"/><feFuncG type="discrete" tableValues=".1 .3 .5 .7 .9"/><feFuncB type="discrete" tableValues=".15 .35 .55 .75 .95"/></feComponentTransfer></filter>`,
+ css:`.c-pixel{background:#1a1c2c;color:#f4f4f4}
+ .c-pixel canvas{position:absolute;inset:0;width:1600px;height:900px;image-rendering:pixelated;image-rendering:crisp-edges}
+ .c-pixel .crt{position:absolute;inset:0;background:repeating-linear-gradient(rgba(0,0,0,0) 0 3px,rgba(0,0,0,.28) 3px 4px),radial-gradient(ellipse at center,rgba(0,0,0,0) 60%,rgba(0,0,0,.55) 100%);pointer-events:none}
+ .c-pixel .cands img{filter:url(#pf-pixel);image-rendering:pixelated;width:44px;height:44px}
+ .faces .c-pixel-face{image-rendering:pixelated}`,
+ render(c){return `<canvas width="400" height="225" data-pixel></canvas><div class="crt"></div>`;},
+ after(el){
+  const cv=el.querySelector('canvas[data-pixel]');const g=cv.getContext('2d');g.imageSmoothingEnabled=false;
+  const S=PX/4,ox=OX/4,oy=OY/4;const X=x=>Math.round(ox+x*S),Y=y=>Math.round(oy+(24-y)*S);
+  const pal={room_lobby:['#2e3c4d','#35475a'],room_dining:['#4a3a2c','#553f2f'],room_storage:['#33322e','#3b3a35'],room_hall:['#3c2f3c','#463646'],room_victim:['#3a2a3d','#452f45'],room_suspect:['#2f403c','#364a45']};
+  g.fillStyle='#1a1c2c';g.fillRect(0,0,400,225);
+  ROOMS.forEach(r=>{const x0=X(r.x),y0=Y(r.y+r.h),w=Math.round(r.w*S),h=Math.round(r.h*S);g.fillStyle=pal[r.id][0];g.fillRect(x0,y0,w,h);g.fillStyle=pal[r.id][1];for(let y=y0;y<y0+h;y++)for(let x=x0+(y&1);x<x0+w;x+=2)g.fillRect(x,y,1,1);});
+  g.fillStyle='#d8c8a8';ROOMS.forEach(r=>{const x0=X(r.x),y0=Y(r.y+r.h),w=Math.round(r.w*S),h=Math.round(r.h*S);g.fillRect(x0-1,y0-1,w+2,2);g.fillRect(x0-1,y0+h-1,w+2,2);g.fillRect(x0-1,y0-1,2,h+2);g.fillRect(x0+w-1,y0-1,2,h+2);});
+  g.fillStyle='#8c5a3c';DOORS.forEach(d=>g.fillRect(X(d.x),Y(d.y+d.h),Math.round(d.w*S),Math.round(d.h*S)+1));
+  g.font='8px "DotGothic16","Noto Sans KR",sans-serif';g.textAlign='center';g.fillStyle='#e8e0c8';ROOMS.forEach(r=>g.fillText(r.n,X(r.x+r.w/2),Y(r.y+r.h)+11));
+  // 가청 반경 (점 원)
+  const lx=X(LISTEN.x),ly=Y(LISTEN.y),lr=Math.round(LISTEN.r*S);g.fillStyle='#5be3d4';for(let a=0;a<360;a+=6){g.fillRect(Math.round(lx+Math.cos(a*Math.PI/180)*lr),Math.round(ly+Math.sin(a*Math.PI/180)*lr),1,1);}
+  const SPR=['.ffff.','.ffff.','..ff..','.cccc.','cccccc','c.cc.c','..cc..','.c..c.','.c..c.'];
+  const spr=(x,y,coat)=>{SPR.forEach((row,j)=>[...row].forEach((ch,i)=>{if(ch==='.')return;g.fillStyle=ch==='f'?'#e8c39e':coat;g.fillRect(x-3+i,y-5+j,1,1);}));};
+  g.fillStyle='rgba(0,0,0,.4)';FIGS.forEach(f=>g.fillRect(X(f.x)-3,Y(f.y)+4,7,2));
+  FIGS.forEach(f=>spr(X(f.x),Y(f.y),f.id==='v1'?'#c9314b':f.id==='v2'?'#2f8f6f':'#5b5b7a'));
+  g.fillStyle='#f4e06d';g.fillRect(lx-1,ly-1,3,3);g.fillStyle='#1a1c2c';g.fillRect(lx,ly,1,1);
+  const box=(x,y,w,h,fill='#0f1024')=>{g.fillStyle='#f4f4f4';g.fillRect(x,y,w,h);g.fillStyle=fill;g.fillRect(x+1,y+1,w-2,h-2);g.fillStyle='#5b5b7a';g.fillRect(x+2,y+h-2,w-4,1);};
+  const wrap=(t,x,y,w,col)=>{g.fillStyle=col;g.textAlign='left';let line='',ly2=y;for(const ch of t){if(g.measureText(line+ch).width>w){g.fillText(line,x,ly2);line=ch;ly2+=9;}else line+=ch;}g.fillText(line,x,ly2);};
+  box(140,52,132,46);g.fillStyle='#5be3d4';g.textAlign='left';g.fillText('목소리 2',144,61);wrap(B2,144,71,124,'#f4f4f4');
+  box(150,158,132,46);g.fillStyle='#c9314b';g.fillText('목소리 1 (멀다)',154,167);wrap(B1,154,177,124,'#9a9ab0');
+  box(290,15,100,180);g.fillStyle='#f4e06d';g.fillText('누구의 목소리인가',294,25);
+  const rows=[['목소리 2','복도',36],['목소리 1','식당',82]];
+  const imgs=PEOPLE.map(p=>{const im=new Image();im.src=P(p.id);return im;});
+  const drawRow=()=>{rows.forEach(([v,r,y])=>{g.fillStyle='#f4f4f4';g.fillText(v,294,y);g.fillStyle='#9a9ab0';g.fillText(r,330,y);imgs.forEach((im,i)=>{const x=294+i*18,yy=y+4;g.fillStyle='#2e3c4d';g.fillRect(x,yy,16,16);try{if(im.complete&&im.naturalWidth)g.drawImage(im,x,yy,16,16);}catch(e){}});g.fillStyle='#5b5b7a';g.fillRect(294,y+24,90,1);g.fillStyle='#f4e06d';g.fillText(v==='목소리 2'?'→ 마르코?':'→ ?',294,y+32);});
+   g.fillStyle='#f4f4f4';g.fillText('들은 말',294,130);HEARD.forEach((h,i)=>{g.fillStyle='#9a9ab0';g.fillText(h[0],294,141+i*20);wrap(h[2].slice(0,16)+'…',312,141+i*20,74,'#e8e0c8');});};
+  drawRow();imgs.forEach(im=>im.addEventListener('load',drawRow));
+  // 타임라인
+  box(12,200,270,20,'#0f1024');g.fillStyle='#9a9ab0';g.fillText('0:34 / 1:30  ×1',16,209);
+  UTT.forEach(u=>{const x=Math.round(90+u[0]/DUR*180),w=Math.max(1,Math.round(u[1]/DUR*180));g.fillStyle=u[2]===2?'#2f8f6f':'#c9314b';g.fillRect(x,u[2]===2?205:211,w,3);});
+  g.fillStyle='#f4e06d';g.fillRect(Math.round(90+NOW/DUR*180),203,1,14);
+  g.fillStyle='#e8e0c8';g.fillText('블랙우드 저택 · 18:00 · 2회차',14,10);
+ }
+});
+</script>
+<script>
+/* ================================================================
+   9. 코르크 보드 — 붉은 실, 핀, 폴라로이드
+   ================================================================ */
+CONCEPTS.push({
+ id:'cork',name:'코르크 보드',en:'Evidence Board',
+ tag:'평면도는 보드에 핀으로 꽂힌 인쇄물이고, 목소리와 인물은 붉은 실로 이어진다. 식별 보드가 곧 화면.',
+ tech:['feTurbulence 코르크','붉은 실 2차 곡선 + 그림자','폴라로이드·색인 카드·테이프'],
+ pal:[['코르크','#b07d4b'],['액자 나무','#5b3a22'],['종이','#f6f2e8'],['붉은 실','#c8332b'],['연필','#3b3835'],['핀 노랑','#f0c419']],
+ type:'Nanum Pen Script 손글씨 · Special Elite 타자기',
+ mood:'"누가 누구인지"를 알아내는 게임이라면 화면이 곧 수사 보드다. 평면도는 타자기로 찍힌 인쇄물, 인물은 폴라로이드, 목소리는 색인 카드, 그 사이를 붉은 실이 잇는다. 플레이어가 이름을 배정하면 실이 폴라로이드에 걸린다. 청취점은 노란 핀에 연필로 그린 원이다.',
+ how:['보드·핀·테이프·실은 전부 uGUI 이미지 몇 장. 실은 LineRenderer나 UI 라인 한 개로 두 점을 잇는다.','평면도는 지금 씬을 회색조 렌더 텍스처로 찍어 "인쇄물" 이미지로 쓰면 된다.','초상은 그대로 폴라로이드 프레임에 넣는다. 폰트 Nanum Pen Script(OFL) 추가.'],
+ scores:{mood:4,fit:5,cost:2,cc0:5},change:'식별 보드 UI · 실 렌더러',line:'수사 보드 · 붉은 실 · 폴라로이드',
+ filter:`<filter id="pf-cork"><feColorMatrix type="saturate" values=".55"/><feComponentTransfer><feFuncR type="linear" slope=".95" intercept=".05"/><feFuncG type="linear" slope=".92" intercept=".05"/><feFuncB type="linear" slope=".85" intercept=".06"/></feComponentTransfer></filter>`,
+ css:`.c-cork{background:#b07d4b;color:#3b3835;font-family:"Nanum Pen Script"}
+ .c-cork .rl{font-family:"Special Elite","Nanum Gothic Coding";font-size:15px;letter-spacing:.14em;fill:#3b3835}
+ .c-cork .hud-side{background:transparent;padding:0}
+ .c-cork .hud-side .h{font-family:"Nanum Pen Script";font-size:26px;letter-spacing:0;text-transform:none;color:#f6f2e8;text-shadow:1px 1px 0 #5b3a22;transform:rotate(-2deg)}
+ .c-cork .hud-side .voice{background:#f6f2e8;border:0;padding:12px 14px;margin-bottom:14px;box-shadow:3px 4px 8px rgba(0,0,0,.45);position:relative;transform:rotate(1deg);background-image:repeating-linear-gradient(transparent 0 21px,#b9c8de 21px 22px);background-position:0 8px}
+ .c-cork .hud-side .voice:nth-child(3){transform:rotate(-1.3deg)}
+ .c-cork .hud-side .voice::before{content:"";position:absolute;left:50%;top:-6px;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff8f85,#c8332b 60%,#7a1a12);box-shadow:1px 2px 3px rgba(0,0,0,.5)}
+ .c-cork .hud-side .vid{font-family:"Nanum Pen Script";font-size:18px;color:#c8332b}.c-cork .hud-side .vid b{font-size:24px}
+ .c-cork .pw{display:inline-block;background:#fff;padding:3px 3px 10px;box-shadow:1px 2px 4px rgba(0,0,0,.4);transform:rotate(-3deg)}.c-cork .pw:nth-child(2n){transform:rotate(2.5deg)}
+ .c-cork .cands img{filter:url(#pf-cork);width:36px;height:36px}
+ .c-cork .cands .q{color:#c8332b;border-color:#c8332b;font-family:"Nanum Pen Script"}
+ .c-cork .guess{font-family:"Nanum Pen Script";font-size:20px;color:#1f3f8a}
+ .c-cork .heard{background:#f6f2e8;padding:12px 14px;box-shadow:3px 4px 8px rgba(0,0,0,.45);transform:rotate(.8deg);font-size:19px;background-image:linear-gradient(#c8332b,#c8332b) 0 30px/100% 1px no-repeat,repeating-linear-gradient(transparent 0 24px,#b9c8de 24px 25px)}
+ .c-cork .heard .h{color:#3b3835;text-shadow:none;font-size:22px;transform:none;margin:0 0 8px}
+ .c-cork .heard div{border:0}.c-cork .heard time{font-family:"Special Elite";font-size:12px}
+ .c-cork .hv{color:#c8332b}
+ .c-cork .hud-time{background:#e9dcc0;font-family:"Nanum Pen Script";font-size:17px;box-shadow:2px 3px 6px rgba(0,0,0,.4);transform:rotate(-.3deg);background-image:repeating-linear-gradient(90deg,transparent 0 40px,rgba(0,0,0,.05) 40px 41px)}
+ .c-cork .hud-time .lane span{background:#c8332b;height:8px;top:3px}.c-cork .hud-time .lane:first-child span{background:#2f8f6f}.c-cork .hud-time .head{background:#f0c419;width:4px}.c-cork .hud-time .bar b{color:#c8332b}
+ .c-cork .hud-top{font-family:"Special Elite";font-size:14px;color:#f6f2e8;background:#3b3835;padding:4px 12px;letter-spacing:.1em;top:22px}
+ .c-cork .bubble{background:#fffdf5;font-family:"Nanum Pen Script";font-size:26px;line-height:1.2;padding:16px 18px 14px;box-shadow:3px 5px 8px rgba(0,0,0,.5);transform:rotate(-2deg);background-image:linear-gradient(#c8332b,#c8332b) 0 34px/100% 1px no-repeat,repeating-linear-gradient(transparent 0 25px,#b9c8de 25px 26px)}
+ .c-cork .bubble.far{transform:rotate(2.5deg);color:#7a7570}
+ .c-cork .bubble .who{font-family:"Special Elite";font-size:11px;color:#c8332b;letter-spacing:.1em}
+ .c-cork .bubble::before{content:"";position:absolute;left:calc(50% - 7px);top:-7px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff3a8,#f0c419 55%,#8a6d00);box-shadow:1px 2px 3px rgba(0,0,0,.5)}`,
+ render(c){
+  const defs=`<filter id="k-cork" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="4" seed="21" stitchTiles="stitch"/><feColorMatrix type="matrix" values=".9 0 0 0 .2  .6 0 0 0 .1  .3 0 0 0 .02  0 0 0 0 1"/></filter>
+   <filter id="k-sh" x="-10%" y="-10%" width="130%" height="130%"><feDropShadow dx="4" dy="7" stdDeviation="5" flood-color="#000" flood-opacity=".5"/></filter>
+   <filter id="k-str" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="2" dy="3" stdDeviation="1.5" flood-color="#000" flood-opacity=".45"/></filter>
+   <pattern id="k-half" patternUnits="userSpaceOnUse" width="5" height="5"><circle cx="2.5" cy="2.5" r="1" fill="#3b3835" opacity=".35"/></pattern>`;
+  const pin=(x,y,col='#c8332b')=>`<g filter="url(#k-str)"><circle cx="${x}" cy="${y}" r="8" fill="${col}"/><circle cx="${x-2.5}" cy="${y-2.5}" r="2.5" fill="#fff" opacity=".6"/></g>`;
+  const string=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2+40;return `<path d="M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}" fill="none" stroke="#c8332b" stroke-width="2.4" filter="url(#k-str)"/>`;};
+  const cx=590,cy=420;
+  const sheet=`<g transform="rotate(-1.4 ${cx} ${cy})" filter="url(#k-sh)"><rect x="30" y="34" width="1120" height="770" fill="#f6f2e8"/><rect x="30" y="34" width="1120" height="770" fill="url(#k-half)" opacity=".5"/>
+    ${roomRects('#ece7da')}${wallRects('#3b3835',8)}${doorRects('#f6f2e8')}${doorArcs('#3b3835',1.2)}${roomLabels(24,'rl',r=>r.en+'  '+r.n)}
+    <text x="60" y="790" class="rl">BLACKWOOD MANOR — GROUND FLOOR — PRINT 2/2</text>
+    <circle cx="${LX}" cy="${LY}" r="${LR}" fill="none" stroke="#3b3835" stroke-width="2" stroke-dasharray="9 7" opacity=".8" transform="rotate(-3 ${LX} ${LY})"/>
+    ${tokens((f,X,Y)=>`<circle cx="${X}" cy="${Y}" r="13" fill="none" stroke="#3b3835" stroke-width="2.2" stroke-dasharray="30 3 8 3"/><circle cx="${X}" cy="${Y}" r="5" fill="#3b3835"/>`)}
+    </g>${pin(50,56)}${pin(1132,50)}${pin(46,790)}${pin(1128,792)}`;
+  return `<svg class="plan" viewBox="0 0 1600 900"><defs>${defs}</defs><rect width="1600" height="900" fill="#b07d4b"/><rect width="1600" height="900" filter="url(#k-cork)" opacity=".85"/><rect x="0" y="0" width="1600" height="900" fill="none" stroke="#5b3a22" stroke-width="28"/><rect x="14" y="14" width="1572" height="872" fill="none" stroke="#3a2412" stroke-width="2"/>
+   ${sheet}
+   ${string(V2X,V2Y,1355,150)}${string(V1X,V1Y,1355,318)}${string(V2X,V2Y,700,262)}${string(V1X,V1Y,800,700)}
+   ${pin(V2X,V2Y,'#2f8f6f')}${pin(V1X,V1Y,'#c8332b')}${pin(LX,LY,'#f0c419')}
+   </svg>${bubbles({x2:545,y2:258,x1:640,y1:700})}${hud(c,{title:'누구의 목소리인가?',top:'CASE 02 · BLACKWOOD MANOR · 18:00 · PASS 2',tl:'기록 재생 18:00 – 18:01:30'})}`;
+ }
+});
+
+/* ================================================================
+   10. 소나 — 소리만 보이는 화면
+   ================================================================ */
+CONCEPTS.push({
+ id:'sonar',name:'소나',en:'Sonar',
+ tag:'평면도는 희미하고, 보이는 것은 소리뿐이다. 목소리는 파문, 청취점은 귀, 먼 소리는 글자가 깨진다.',
+ tech:['동심원 파문 CSS 애니메이션','가청 반경 방사형 그라디언트','파형 타임라인(스펙트로그램풍)'],
+ pal:[['심해','#04070a'],['희미한 선','#1e5f6b'],['청록','#4fe3d8'],['호박','#ffb454'],['잡음 회색','#5a6a70']],
+ type:'IBM Plex Mono 데이터 · Noto Sans KR 대사',
+ mood:'엿듣기 게임에 가장 정직한 화면. 인물은 보이지 않고 말할 때만 파문으로 드러난다. 청취점의 호박색 원 안으로 파문이 들어와야 글자가 생기고, 경계에 걸치면 깨진다. 초상은 후보로만 희미하게 있고, 식별 보드에는 목소리마다 성문(聲紋)이 그려진다. 관찰 모드(T)에서 이 화면만 켜도 된다.',
+ how:['파문은 원 스프라이트 하나를 스케일·페이드하는 코루틴. 발화의 startMs·durationMs가 그대로 애니메이션 파라미터다.','가청 판정은 이미 코드에 있다(벽 맞닿음). 그 결과를 글자 마스킹 비율로 바꾸기만 하면 된다.','외부 에셋 0. 폰트는 IBM Plex Mono(OFL).'],
+ scores:{mood:5,fit:5,cost:1,cc0:5},change:'파문 코루틴 · 글자 마스킹 · 색 2개',line:'소리만 보임 · 파문 · 가청 원 · 성문',
+ filter:`<filter id="pf-sonar"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="table" tableValues=".02 .1 .3"/><feFuncG type="table" tableValues=".05 .4 .85"/><feFuncB type="table" tableValues=".07 .42 .82"/></feComponentTransfer></filter>`,
+ css:`.c-sonar{background:#04070a;color:#bfe9e6;font-family:"Noto Sans KR"}
+ .c-sonar .rl{font-family:"IBM Plex Mono";font-size:12px;letter-spacing:.24em;fill:#1e5f6b}
+ .c-sonar .ring{fill:none;stroke:#4fe3d8;transform-box:fill-box;transform-origin:center;animation:s-ring 2.6s linear infinite}
+ .c-sonar .ring.d1{animation-delay:-.65s}.c-sonar .ring.d2{animation-delay:-1.3s}.c-sonar .ring.d3{animation-delay:-1.95s}
+ .c-sonar .ring.far{stroke:#5a6a70}
+ @keyframes s-ring{0%{transform:scale(.15);opacity:.9}100%{transform:scale(1);opacity:0}}
+ .c-sonar .sweep{transform-box:fill-box;transform-origin:center;animation:s-sweep 6s linear infinite}
+ @keyframes s-sweep{to{transform:rotate(360deg)}}
+ .c-sonar .hud-side,.c-sonar .hud-time,.c-sonar .bubble{background:rgba(4,12,16,.85);color:#bfe9e6;border:1px solid #1e5f6b}
+ .c-sonar .hud-side .h,.c-sonar .hud-time,.c-sonar .bubble .who,.c-sonar .hud-top{font-family:"IBM Plex Mono";color:#4fe3d8}
+ .c-sonar .hud-top{font-size:12px;letter-spacing:.2em}
+ .c-sonar .hud-time .lane span{background:#4fe3d8;box-shadow:0 0 6px #4fe3d8}.c-sonar .hud-time .lane:first-child span{background:#5a6a70;box-shadow:none}.c-sonar .hud-time .head{background:#ffb454;box-shadow:0 0 8px #ffb454}.c-sonar .hud-time .bar b{color:#ffb454}
+ .c-sonar .bubble{font-size:19px;border-left:3px solid #4fe3d8;font-variant-numeric:tabular-nums}
+ .c-sonar .bubble.far{border-left-color:#5a6a70;color:#7f9297}
+ .c-sonar .cands img{filter:url(#pf-sonar);opacity:.55;border:1px solid #1e5f6b}.c-sonar .cands .q{color:#ffb454;border-color:#ffb454}
+ .c-sonar .hv{color:#4fe3d8;font-family:"IBM Plex Mono";font-size:12px}
+ .c-sonar .vp{display:block;height:18px;margin-top:4px}`,
+ render(c){
+  const defs=`<radialGradient id="s-hear"><stop offset="0" stop-color="#ffb454" stop-opacity=".22"/><stop offset=".8" stop-color="#ffb454" stop-opacity=".06"/><stop offset="1" stop-color="#ffb454" stop-opacity="0"/></radialGradient>
+   <pattern id="s-dots" patternUnits="userSpaceOnUse" width="30" height="30"><circle cx="1" cy="1" r="1" fill="#1e5f6b" opacity=".5"/></pattern>
+   <linearGradient id="s-sweepg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffb454" stop-opacity="0"/><stop offset="1" stop-color="#ffb454" stop-opacity=".25"/></linearGradient>`;
+  const rings=(X,Y,far)=>[0,1,2,3].map(i=>`<circle class="ring d${i} ${far?'far':''}" cx="${X}" cy="${Y}" r="${far?150:120}" stroke-width="${far?1.2:2}"/>`).join('');
+  const bars=(X,Y,col)=>[...Array(9)].map((_,i)=>{const h=4+((i*37)%13);return `<rect x="${X-18+i*4}" y="${Y+22-h/2}" width="2" height="${h}" fill="${col}"/>`;}).join('');
+  const vprint=(seed,col)=>`<svg class="vp" viewBox="0 0 120 18">${[...Array(40)].map((_,i)=>{const h=2+((i*seed)%9);return `<rect x="${i*3}" y="${9-h/2}" width="2" height="${h}" fill="${col}"/>`;}).join('')}</svg>`;
+  return genericScreen(c,{defs,bg:'#04070a',
+   under:`<rect width="1600" height="900" fill="url(#s-dots)"/>`,
+   roomFill:'rgba(79,227,216,.03)',wallStroke:'#1e5f6b',wallW:2,door:'#04070a',
+   doors:doorRects('#04070a')+DOORS.map(d=>`<line x1="${sx(d.x)}" y1="${sy(d.y+d.h/2)}" x2="${sx(d.x+d.w)}" y2="${sy(d.y+d.h/2)}" stroke="#1e5f6b" stroke-dasharray="3 4"/>`).join(''),
+   labels:roomLabels(22,'rl',r=>r.en),
+   hear:`<circle cx="${LX}" cy="${LY}" r="${LR}" fill="url(#s-hear)"/><circle cx="${LX}" cy="${LY}" r="${LR}" fill="none" stroke="#ffb454" stroke-width="1" opacity=".7"/><path class="sweep" d="M${LX} ${LY} L${LX+LR} ${LY} A${LR} ${LR} 0 0 0 ${LX+LR*.5} ${LY-LR*.866} Z" fill="url(#s-sweepg)"/>`,
+   token:(f,X,Y)=>f.voice?`${rings(X,Y,!f.near)}<circle cx="${X}" cy="${Y}" r="5" fill="${f.near?'#4fe3d8':'#5a6a70'}"/>${bars(X,Y,f.near?'#4fe3d8':'#5a6a70')}`:`<circle cx="${X}" cy="${Y}" r="6" fill="none" stroke="#1e5f6b" stroke-width="1" stroke-dasharray="2 2"/>`,
+   listener:`<circle cx="${LX}" cy="${LY}" r="9" fill="none" stroke="#ffb454" stroke-width="2"/><circle cx="${LX}" cy="${LY}" r="3" fill="#ffb454"/>`,
+   over:`<text x="${LX+14}" y="${LY+34}" style="font-family:'IBM Plex Mono';font-size:12px;fill:#ffb454;letter-spacing:.1em">EAR · r 5.0 m</text><text x="${V1X+30}" y="${V1Y-24}" style="font-family:'IBM Plex Mono';font-size:12px;fill:#5a6a70">SNR 0.31 · 벽 1</text><text x="${V2X+30}" y="${V2Y-24}" style="font-family:'IBM Plex Mono';font-size:12px;fill:#4fe3d8">SNR 0.92</text>`,
+   bubbles:bubbles({who2:'V2 · HALL · 0:30.0 – 0:37.0 · CLEAR',who1:'V1 · DINING · 0:32.0 – 0:38.0 · PARTIAL'}),
+   hud:hud(c,{title:'VOICEPRINT · 누구의 목소리인가',v2label:'HALL'+vprint(7,'#4fe3d8'),v1label:'DINING'+vprint(11,'#5a6a70'),top:'BLACKWOOD MANOR · LISTENING POST · PASS 2',tl:'PLAYBACK 18:00:00 – 18:01:30 · 90 000 ms'})});
+ }
+});
+
+/* ================================================================
+   11. 수채 삽화 — 번진 물감과 연필 선
+   ================================================================ */
+CONCEPTS.push({
+ id:'water',name:'수채 삽화',en:'Watercolor',
+ tag:'물감이 번진 방 위에 연필로 벽을 긋는다. 살인 사건인데 따뜻하다. 코지 미스터리.',
+ tech:['feDisplacementMap 물감 번짐','칠과 선의 어긋남(misregistration)','mask-image 부드러운 초상'],
+ pal:[['종이','#fbf8f1'],['연필','#5c5248'],['로비 청회','#cfd8e6'],['식당 황토','#e9d3b0'],['서재 보라','#d9c4d8'],['붉은 연필','#c0392b']],
+ type:'Gaegu 손글씨 · Gowun Batang 본문',
+ mood:'애거서 크리스티 드라마의 오프닝 같은 온도. 방은 각각 다른 물감으로 넓게 번지고, 벽은 그 위에 조금 어긋난 연필 선이다. 인물은 물감 방울, 목소리 위에는 연필로 쓴 물음표. 청취점은 붉은 연필로 동그라미 친 ×. 무겁지 않아서 오래 되감아 들어도 지치지 않는다.',
+ how:['방 바닥은 물감 얼룩 스프라이트(코드 생성: fbm 변위 + 가장자리 진하게) 한 장씩. 벽은 지금 벽 조각에 연필 질감 스프라이트를 9-slice로 입히고 1~2px 오프셋.','초상은 원본 채도를 살리고 가장자리를 부드럽게 마스킹. 필터 하나.','폰트 Gaegu·Gowun Batang(OFL) 추가. 외부 그림 없음.'],
+ scores:{mood:3,fit:3,cost:3,cc0:5},change:'얼룩 생성기 · 연필 벽 · 오프셋',line:'번진 물감 · 연필 벽 · 따뜻한 코지',
+ filter:`<filter id="pf-water"><feColorMatrix type="saturate" values="1.25"/><feComponentTransfer><feFuncR type="linear" slope="1.05" intercept=".04"/><feFuncG type="linear" slope="1.05" intercept=".04"/><feFuncB type="linear" slope="1.05" intercept=".02"/></feComponentTransfer><feGaussianBlur stdDeviation=".4"/></filter>`,
+ css:`.c-water{background:#fbf8f1;color:#5c5248;font-family:"Gowun Batang"}
+ .c-water .rl{font-family:"Gaegu";font-size:26px;font-weight:700;fill:#5c5248}
+ .c-water .hud-side,.c-water .hud-time,.c-water .bubble{background:rgba(251,248,241,.9);color:#5c5248;border:1.5px solid #5c5248;border-radius:6px 3px 7px 4px}
+ .c-water .hud-side{transform:rotate(.4deg);padding:24px 26px;background-image:repeating-linear-gradient(transparent 0 27px,rgba(92,82,72,.12) 27px 28px);background-position:0 12px}
+ .c-water .hud-side .h{font-family:"Gaegu";font-size:22px;font-weight:700;letter-spacing:0;text-transform:none}
+ .c-water .hud-time{font-family:"Gaegu";font-size:16px;transform:rotate(-.3deg)}
+ .c-water .hud-time .lane span{background:#c9a3c8;border-radius:5px;filter:blur(.5px)}.c-water .hud-time .lane:first-child span{background:#9bb7d0}.c-water .hud-time .head{background:#c0392b}.c-water .hud-time .bar b{color:#c0392b}
+ .c-water .hud-top{font-family:"Gaegu";font-size:20px;color:#5c5248}
+ .c-water .bubble{font-family:"Gaegu";font-size:24px;line-height:1.3;transform:rotate(-1deg)}
+ .c-water .bubble.far{transform:rotate(1.5deg);color:#9a8f83;border-style:dashed}
+ .c-water .bubble .who{font-family:"Gaegu";font-size:15px;letter-spacing:0;color:#c0392b}
+ .c-water .cands img{filter:url(#pf-water);-webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent 100%);mask-image:radial-gradient(closest-side,#000 55%,transparent 100%)}
+ .c-water .cands .q{border-color:#c0392b;color:#c0392b;border-radius:50%}
+ .c-water .hv{color:#c0392b;font-family:"Gaegu";font-size:15px}`,
+ render(c){
+  const defs=`<filter id="w-bleed" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="3" seed="5" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="26" xChannelSelector="R" yChannelSelector="G"/></filter>
+   <filter id="w-bleed2" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="3" seed="12" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="18" xChannelSelector="R" yChannelSelector="G"/></filter>
+   <filter id="w-pencil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="1" seed="2" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="2.2"/></filter>
+   <filter id="w-gran" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="2" seed="8" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 .4 0 0 0 0 .35 0 0 0 0 .3 0 0 0 -1.6 1.15"/></filter>`;
+  const col={room_lobby:'#cfd8e6',room_dining:'#e9d3b0',room_storage:'#d6d3c8',room_hall:'#e8c9c0',room_victim:'#d9c4d8',room_suspect:'#cfdccf'};
+  const dark={room_lobby:'#a9b8cf',room_dining:'#d4b485',room_storage:'#b7b3a5',room_hall:'#d4a89c',room_victim:'#bd9fbc',room_suspect:'#a8c4a8'};
+  const washes=ROOMS.map(r=>{const x=sx(r.x),y=sy(r.y+r.h),w=r.w*PX,h=r.h*PX;return `<rect x="${x+4}" y="${y+4}" width="${w-8}" height="${h-8}" fill="${col[r.id]}" opacity=".9" filter="url(#w-bleed)"/><rect x="${x+10}" y="${y+10}" width="${w-20}" height="${h-20}" fill="${dark[r.id]}" opacity=".45" filter="url(#w-bleed2)" style="mix-blend-mode:multiply"/>`;}).join('');
+  return genericScreen(c,{defs,bg:'#fbf8f1',
+   roomFill:'none',roomsOver:washes+`<rect width="1600" height="900" filter="url(#w-gran)" opacity=".3" style="mix-blend-mode:multiply"/>`,
+   walls:`<g filter="url(#w-pencil)" transform="translate(4,-3)">${wallRects('#5c5248',2.4)}</g><g filter="url(#w-pencil)" opacity=".55" transform="translate(-2,2)">${wallRects('#5c5248',1.2)}</g>`,
+   doors:doorRects('#fbf8f1','transform="translate(4,-3)"')+`<g transform="translate(4,-3)">${doorArcs('#5c5248',1.4)}</g>`,
+   labels:roomLabels(36),
+   hear:`<circle cx="${LX}" cy="${LY}" r="${LR}" fill="rgba(192,57,43,.06)" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="14 8" filter="url(#w-pencil)"/>`,
+   token:(f,X,Y)=>`<circle cx="${X}" cy="${Y}" r="15" fill="${f.id==='v1'?'#c98a9a':f.id==='v2'?'#8fb8a8':'#a8a3b8'}" opacity=".85" filter="url(#w-bleed2)"/><circle cx="${X}" cy="${Y}" r="14" fill="none" stroke="#5c5248" stroke-width="1.4" filter="url(#w-pencil)"/>${f.voice?`<text x="${X+16}" y="${Y-14}" style="font-family:Gaegu;font-size:30px;font-weight:700;fill:#5c5248">?</text>`:''}`,
+   listener:`<g filter="url(#w-pencil)" stroke="#c0392b" stroke-width="2.6" fill="none"><path d="M${LX-11} ${LY-11}L${LX+11} ${LY+11}M${LX+11} ${LY-11}L${LX-11} ${LY+11}"/><circle cx="${LX}" cy="${LY}" r="20"/></g>`,
+   hud:hud(c,{title:'누구의 목소리일까',top:'블랙우드 저택 · 오후 여섯 시 · 두 번째 듣기',heard:'들은 말 · 두 번째',tl:'되감기 · 18:00 – 18:01:30'})});
+ }
+});
+
+/* ================================================================
+   12. 인형의 집 — 아이소메트릭 컷어웨이 (저폴리 B안의 2.5D 축소판)
+   ================================================================ */
+CONCEPTS.push({
+ id:'iso',name:'인형의 집',en:'Isometric Dollhouse',
+ tag:'벽을 허리 높이로 잘라 낸 아이소메트릭 저택. 3D 계획서 A안이 2D 스프라이트만으로 되는지 본 시안.',
+ tech:['월드 좌표 → 아이소 투영','벽 조각을 2 m로 잘라 화가 알고리즘 정렬','컷어웨이(외벽 3 m · 내벽 0.9 m)'],
+ pal:[['햇빛 벽','#efe6d2'],['그늘 벽','#d5c6ab'],['식당 마루','#c89c6a'],['복도 러그','#b25a4e'],['서재 카펫','#7b5a88'],['손님 방','#9fbfae'],['배경','#e9dfcd']],
+ type:'Noto Serif KR 본문 · IBM Plex Mono 시각',
+ mood:'DEVELOPMENT_PLAN_3D.md가 걱정한 "방끼리 가린다" 문제를 컷어웨이로 푼 그림. 바깥 북·서쪽 외벽만 사람 키로 세우고 안쪽 벽은 전부 허리 높이라 여섯 방이 한 화면에 다 보인다. 인물은 서 있는 말이고 그림자가 바닥에 붙어 위치가 분명하다. 청취점은 바닥에 빛나는 원이다.',
+ how:['RoomLayout.BuildAllWallSegments()의 벽 조각을 2 m로 잘라 아이소 사각형 스프라이트로 그린다. 카메라는 그대로 직교, 정렬은 (x+y) 깊이로 SortingOrder.','바닥은 방마다 평행사변형 한 장(코드 생성 색 + 줄무늬). 3D 패키지·URP 불필요.','인물·청취점 스프라이트 3장. 3D로 갈지 결정하기 전의 값싼 시험대.'],
+ scores:{mood:4,fit:3,cost:4,cc0:5},change:'투영 · 정렬 · 벽 스프라이트 생성',line:'2.5D 컷어웨이 · 외벽만 높게 · 서 있는 말',
+ filter:`<filter id="pf-iso"><feColorMatrix type="saturate" values=".9"/><feComponentTransfer><feFuncR type="linear" slope="1.02" intercept=".03"/><feFuncG type="linear" slope="1" intercept=".02"/><feFuncB type="linear" slope=".96" intercept="0"/></feComponentTransfer></filter>`,
+ css:`.c-iso{background:#e9dfcd;color:#2b2419}
+ .c-iso .rl{font-family:"Noto Serif KR";font-size:18px;font-weight:600;fill:#2b2419;paint-order:stroke;stroke:rgba(255,255,255,.7);stroke-width:4px}
+ .c-iso .hud-side,.c-iso .hud-time,.c-iso .bubble{background:#fffaf0;color:#2b2419;border:1px solid #cdbfa5;box-shadow:0 8px 20px rgba(60,40,20,.22);border-radius:4px}
+ .c-iso .hud-side .h,.c-iso .hud-time,.c-iso .bubble .who,.c-iso .hud-top{font-family:"IBM Plex Mono";color:#8a5a2b}
+ .c-iso .hud-time .lane span{background:#8a5a2b;border-radius:3px}.c-iso .hud-time .lane:first-child span{background:#2f8f6f}.c-iso .hud-time .head{background:#c0392b}.c-iso .hud-time .bar b{color:#c0392b}
+ .c-iso .hud-top{font-size:13px;letter-spacing:.1em}
+ .c-iso .bubble{font-size:20px;padding:14px 18px}
+ .c-iso .bubble.far{color:#8b7f6f}
+ .c-iso .cands img{filter:url(#pf-iso);border-radius:3px;border:1px solid #cdbfa5}.c-iso .cands .q{color:#c0392b;border-color:#c0392b}
+ .c-iso .hv{color:#8a5a2b;font-family:"IBM Plex Mono";font-size:12px}`,
+ render(c){
+  const s=19.5,C=Math.cos(Math.PI/6),ox=590,oy=95;
+  const pr=(x,y,z=0)=>{const yy=24-y;return [ox+(x-yy)*C*s, oy+(x+yy)*0.5*s-z*s];};
+  const poly=(pts,fill,extra='')=>`<polygon points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="${fill}" ${extra}/>`;
+  const floorCol={room_lobby:'#d9d3c7',room_dining:'#c89c6a',room_storage:'#a3a39c',room_hall:'#b25a4e',room_victim:'#7b5a88',room_suspect:'#9fbfae'};
+  let floors='';ROOMS.forEach(r=>{floors+=poly([pr(r.x,r.y),pr(r.x+r.w,r.y),pr(r.x+r.w,r.y+r.h),pr(r.x,r.y+r.h)],floorCol[r.id]);
+   if(r.id==='room_lobby'){for(let i=0;i<r.w;i+=2)for(let j=0;j<r.h;j+=2)if(((i+j)/2)%2===0)floors+=poly([pr(r.x+i,r.y+j),pr(r.x+i+2,r.y+j),pr(r.x+i+2,r.y+j+2),pr(r.x+i,r.y+j+2)],'#c4bdb0');}
+   else if(r.id==='room_dining'||r.id==='room_suspect'){for(let j=1;j<r.h;j+=1.5){const a=pr(r.x,r.y+j),b=pr(r.x+r.w,r.y+j);floors+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="rgba(0,0,0,.12)" stroke-width="1"/>`;}}
+   else if(r.id==='room_hall'){floors+=poly([pr(r.x+1,r.y+1),pr(r.x+r.w-1,r.y+1),pr(r.x+r.w-1,r.y+r.h-1),pr(r.x+1,r.y+r.h-1)],'#c9736a');}
+   else if(r.id==='room_victim'){floors+=poly([pr(r.x+1.5,r.y+1.5),pr(r.x+r.w-1.5,r.y+1.5),pr(r.x+r.w-1.5,r.y+r.h-1.5),pr(r.x+1.5,r.y+r.h-1.5)],'#8c6b99','opacity=".8"');}
+  });
+  // 벽 조각: 방 테두리 − 문, 2 m 조각으로 쪼갬. 외벽(북·서 바깥)만 3 m.
+  const segs=new Set();const pieces=[];
+  const onDoor=(a,b,x,y,horiz)=>DOORS.some(d=>horiz?(Math.abs(d.y+d.h/2-y)<.5&&a<d.x+d.w&&b>d.x):(Math.abs(d.x+d.w/2-x)<.5&&a<d.y+d.h&&b>d.y));
+  ROOMS.forEach(r=>{const edges=[[r.x,r.x+r.w,r.y,true,'S'],[r.x,r.x+r.w,r.y+r.h,true,'N'],[r.y,r.y+r.h,r.x,false,'W'],[r.y,r.y+r.h,r.x+r.w,false,'E']];
+   edges.forEach(([a,b,k,horiz,side])=>{for(let t=a;t<b;t+=2){const t2=Math.min(t+2,b);if(onDoor(t,t2,horiz?0:k,horiz?k:0,horiz))continue;const key=horiz?`h${t}-${t2}@${k}`:`v${t}-${t2}@${k}`;if(segs.has(key))continue;segs.add(key);
+     const outerN=horiz&&k===24,outerW=!horiz&&k===0,tall=(outerN||outerW)?3:0.9;
+     const outerBack=horiz?(k===r.y+r.h&&!ROOMS.some(o=>o!==r&&o.y===k&&o.x<b&&o.x+o.w>a)&&k>=14):(k===r.x&&!ROOMS.some(o=>o!==r&&o.x+o.w===k&&o.y<b&&o.y+o.h>a)&&k<=2);
+     const h=(outerN||outerW||outerBack)?3:0.9;
+     pieces.push({horiz,a:t,b:t2,k,h});}});});
+  const drawables=[];
+  pieces.forEach(p=>{const pts=p.horiz?[pr(p.a,p.k),pr(p.b,p.k)]:[pr(p.k,p.a),pr(p.k,p.b)];const top=p.horiz?[pr(p.a,p.k,p.h),pr(p.b,p.k,p.h)]:[pr(p.k,p.a,p.h),pr(p.k,p.b,p.h)];
+   const face=poly([pts[0],pts[1],top[1],top[0]],p.horiz?'#efe6d2':'#d5c6ab','stroke="#b8a888" stroke-width=".6"');
+   const cap=`<line x1="${top[0][0]}" y1="${top[0][1]}" x2="${top[1][0]}" y2="${top[1][1]}" stroke="#fbf5e8" stroke-width="3"/>`;
+   const depth=p.horiz?((p.a+p.b)/2+(24-p.k)):(p.k+(24-(p.a+p.b)/2));
+   drawables.push({d:depth,s:face+cap});});
+  FIGS.forEach(f=>{const [X,Y]=pr(f.x,f.y);const col=f.id==='v1'?'#b23a48':f.id==='v2'?'#2f8f6f':'#6b6b7d';
+   drawables.push({d:f.x+(24-f.y)+.01,s:`<ellipse cx="${X}" cy="${Y}" rx="14" ry="7" fill="rgba(0,0,0,.28)"/><rect x="${X-9}" y="${Y-40}" width="18" height="34" rx="9" fill="${col}"/><circle cx="${X}" cy="${Y-48}" r="9" fill="#e8c9a8" stroke="${col}" stroke-width="2"/>${f.voice?`<circle cx="${X}" cy="${Y-72}" r="7" fill="none" stroke="${col}" stroke-width="2"/><circle cx="${X}" cy="${Y-72}" r="2" fill="${col}"/>`:''}`});});
+  const [LXi,LYi]=pr(LISTEN.x,LISTEN.y);
+  drawables.push({d:LISTEN.x+(24-LISTEN.y)-.5,s:`<ellipse cx="${LXi}" cy="${LYi}" rx="${LR*.65*C}" ry="${LR*.65*.5}" fill="rgba(255,180,84,.18)" stroke="#e59a2f" stroke-width="1.5" stroke-dasharray="6 5"/><ellipse cx="${LXi}" cy="${LYi}" rx="9" ry="4.5" fill="#ffb454"/><line x1="${LXi}" y1="${LYi}" x2="${LXi}" y2="${LYi-30}" stroke="#e59a2f" stroke-width="2"/><circle cx="${LXi}" cy="${LYi-34}" r="5" fill="#ffb454"/>`});
+  drawables.sort((a,b)=>a.d-b.d);
+  const labels=ROOMS.map(r=>{const [X,Y]=pr(r.x+r.w/2,r.y+r.h/2);return `<text class="rl" x="${X}" y="${Y+6}" text-anchor="middle">${r.n}</text>`;}).join('');
+  const [b2x,b2y]=pr(FIGS[1].x,FIGS[1].y),[b1x,b1y]=pr(FIGS[0].x,FIGS[0].y);
+  return `<svg class="plan" viewBox="0 0 1600 900"><defs><linearGradient id="iso-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1e9da"/><stop offset="1" stop-color="#dfd2bb"/></linearGradient></defs><rect width="1600" height="900" fill="url(#iso-bg)"/>
+   <g>${floors}</g>${labels}<g>${drawables.map(d=>d.s).join('')}</g></svg>${bubbles({x2:b2x+30,y2:b2y-170,x1:b1x+30,y1:b1y+10})}${hud(c,{title:'누구의 목소리인가',top:'BLACKWOOD MANOR · CUTAWAY · 18:00 · PASS 2',tl:'PLAYBACK 18:00 – 18:01:30'})}`;
+ }
+});
+
+/* ============ 조립 ============ */
+(function build(){
+ const board=document.getElementById('board'),chips=document.getElementById('chips'),pf=document.getElementById('pf-defs'),tb=document.querySelector('#cmp tbody');
+ const style=document.createElement('style');style.textContent=CONCEPTS.map(c=>c.css).join('\n');document.head.appendChild(style);
+ pf.innerHTML=CONCEPTS.map(c=>c.filter).join('');
+ const bar=(l,v,inv)=>`<div class="bar"><span>${l}</span><div class="track"><i style="width:${v*20}%;${inv?'background:var(--ink-red)':''}"></i></div><span class="n">${v}/5</span></div>`;
+ CONCEPTS.forEach((c,i)=>{
+  chips.insertAdjacentHTML('beforeend',`<a href="#${c.id}"><i style="background:${c.pal[0][1]};box-shadow:inset 0 0 0 3px ${c.pal[Math.min(2,c.pal.length-1)][1]}"></i>${String(i+1).padStart(2,'0')} ${c.name}</a>`);
+  const sec=document.createElement('section');sec.className='concept';sec.id=c.id;
+  sec.innerHTML=`<div class="c-head"><div><h2><small>${String(i+1).padStart(2,'0')} · ${c.en}</small>${c.name}</h2><div class="tag">${c.tag}</div></div><div class="tech">${c.tech.join('<br>')}</div></div>
+   <div class="screen-wrap"><div class="screen c-${c.id}" data-shot="${c.id}">${c.render(c)}</div></div>
+   <div class="c-body"><div><p>${c.mood}</p>
+     <dl class="kv"><dt>팔레트</dt><dd><div class="swatches">${c.pal.map(p=>`<div class="sw"><i style="background:${p[1]}"></i><small><b>${p[0]}</b>${p[1]}</small></div>`).join('')}</div></dd>
+     <dt>서체</dt><dd>${c.type}</dd><dt>바꾸는 것</dt><dd><b>${c.change}</b></dd></dl>
+     <ul class="how">${c.how.map(h=>`<li>${h}</li>`).join('')}</ul></div>
+    <div><div class="faces c-${c.id}" style="background:${c.pal[0][1]};padding:12px;border:1px solid var(--line)"><div class="cands" style="display:flex;gap:8px;flex-wrap:wrap">${PEOPLE.map(p=>`<figure><span class="pw"><img class="c-${c.id}-face" src="${P(p.id)}" alt="${p.n}" loading="lazy" style="width:88px;height:88px;object-fit:cover"></span><figcaption style="color:${c.pal[0][1]==='#fbf8f1'||c.pal[0][1]==='#efe6d3'||c.pal[0][1]==='#efe7d5'||c.pal[0][1]==='#e9dfcd'?'#5a5145':'#b8ae9c'}">${p.n}</figcaption></figure>`).join('')}</div></div>
+     <div class="evcard c-${c.id}" style="background:${c.pal[0][1]};color:${c.pal[Math.min(2,c.pal.length-1)][1]}"><span class="pw cands" style="display:inline-block"><img src="${EV('ev_wineglass')}" alt="와인잔" loading="lazy" style="width:96px;height:96px"></span><div><div class="t" style="color:inherit">립스틱 자국 와인잔</div><div class="s" style="color:inherit;opacity:.7">ev_wineglass · 이 시안의 초상 필터를 단서 그림에도 그대로 곱한 것</div></div></div>
+     <div class="bars">${bar('분위기',c.scores.mood)}${bar('엿듣기 궁합',c.scores.fit)}${bar('제작 비용',c.scores.cost,true)}${bar('CC0 조달',c.scores.cc0)}</div></div></div>`;
+  board.appendChild(sec);
+  if(c.after)c.after(sec.querySelector('.screen'));
+  tb.insertAdjacentHTML('beforeend',`<tr><th>${String(i+1).padStart(2,'0')} ${c.name}</th><td>${c.line}</td><td class="num">${c.scores.mood}</td><td class="num ${c.scores.fit>=5?'pick':''}">${c.scores.fit}</td><td class="num ${c.scores.cost<=1?'pick':''}">${c.scores.cost}</td><td class="num">${c.scores.cc0}</td><td>${c.change}</td></tr>`);
+ });
+ // 초상·단서 필터를 갤러리에도 적용 (화면 안 .cands img 규칙을 재사용)
+ const faceStyle=document.createElement('style');faceStyle.textContent=CONCEPTS.map(c=>`.faces.c-${c.id} .pw{display:inline-block}`).join('');document.head.appendChild(faceStyle);
+ const fit=()=>document.querySelectorAll('.screen-wrap').forEach(w=>{const s=w.clientWidth/1600;w.querySelector('.screen').style.transform=`scale(${s})`;});
+ fit();new ResizeObserver(fit).observe(document.body);
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{CONCEPTS.forEach(c=>{if(c.after)c.after(document.querySelector('.screen.c-'+c.id));});});
+})();
+</script>
+</body>
+</html>

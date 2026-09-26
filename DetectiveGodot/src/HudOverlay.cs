@@ -25,41 +25,29 @@ namespace DetectiveGodot
         private Label _bubbles;
         private Label _keys;
 
-        private static readonly Color Paper = new Color(0.89f, 0.86f, 0.78f);
-        private static readonly Color Amber = new Color(0.91f, 0.69f, 0.42f);
-        private static readonly Color Dim = new Color(0.52f, 0.50f, 0.47f);
 
         public override void _Ready()
         {
             Font font = KoreanFont.Load();
 
-            _status = MakeLabel(font, 20, Paper);
-            _status.Position = new Vector2(24, 18);
+            _status = MakeLabel(font, Palette.SizeStatus, Palette.Paper);
+            _status.Position = new Vector2(28, 22);
             AddChild(_status);
 
-            _bubbles = MakeLabel(font, 22, Amber);
-            _bubbles.Position = new Vector2(24, 60);
+            // 대사는 종이색으로. 강조색으로 쓰면 자막이 아니라 게임 텍스트가 된다.
+            _bubbles = MakeLabel(font, Palette.SizeBody, Palette.Paper);
+            _bubbles.Position = new Vector2(28, 62);
             AddChild(_bubbles);
 
-            _keys = MakeLabel(font, 15, Dim);
-            _keys.Position = new Vector2(24, 660);
-            _keys.Text = "WASD 이동 · Tab 청취 · Space 재생/정지 · ←→ 5초 · R 처음부터 · [ ] 배속 · Esc 종료";
+            // 조작 안내는 플레이어 막대가 들고 있으므로 여기서는 비워 둔다.
+            _keys = MakeLabel(font, Palette.SizeHint, Palette.Faint);
+            _keys.Position = new Vector2(28, 96);
             AddChild(_keys);
         }
 
         private static Label MakeLabel(Font font, int size, Color color)
         {
-            var label = new Label();
-            var settings = new LabelSettings
-            {
-                FontSize = size,
-                FontColor = color,
-                OutlineSize = 4,
-                OutlineColor = new Color(0f, 0f, 0f, 0.85f),
-            };
-            if (font != null) settings.Font = font;
-            label.LabelSettings = settings;
-            return label;
+            return new Label { LabelSettings = Palette.Label(font, size, color) };
         }
 
         public void Refresh()

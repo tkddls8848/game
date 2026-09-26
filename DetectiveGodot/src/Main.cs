@@ -232,16 +232,20 @@ namespace DetectiveGodot
 
         private void BuildHud()
         {
+            AddChild(new Vignette { Name = "Vignette", Layer = 1 });
+
             _hud = new HudOverlay
             {
                 Session = _session,
                 RoomNameProvider = () => _layout.DisplayNameOf(_room),
-                Name = "Hud"
+                Name = "Hud",
+                Layer = 2
             };
             AddChild(_hud);
 
             _bar = new PlayerBar
             {
+                Layer = 3,
                 Session = _session,
                 ListenerRoomProvider = () => _room,
                 Name = "PlayerBar"

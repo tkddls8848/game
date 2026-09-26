@@ -27,12 +27,12 @@ namespace DetectiveGodot
         public ArtManifest Art;
         public bool SonarMode;
 
-        private static readonly Color Ink = new Color(0.08f, 0.08f, 0.10f);
-        private static readonly Color WallColor = new Color(0.16f, 0.14f, 0.13f);
-        private static readonly Color DoorColor = new Color(0.45f, 0.33f, 0.20f);
-        private static readonly Color Amber = new Color(0.91f, 0.69f, 0.42f);
-        private static readonly Color Muffled = new Color(0.42f, 0.42f, 0.45f);
-        private static readonly Color SonarOutline = new Color(0.22f, 0.22f, 0.26f);
+        private static readonly Color Ink = Palette.Ink;
+        private static readonly Color WallColor = Palette.Wall;
+        private static readonly Color DoorColor = Palette.Door;
+        private static readonly Color Amber = Palette.Lamp;
+        private static readonly Color Muffled = Palette.Muffled;
+        private static readonly Color SonarOutline = new Color(0.175f, 0.170f, 0.190f);
 
         private List<WallSegment> _walls;
         private readonly Dictionary<string, RoomArt> _roomArt = new Dictionary<string, RoomArt>();
@@ -148,9 +148,11 @@ namespace DetectiveGodot
                 string name = Layout.DisplayNameOf(room.id);
                 if (string.IsNullOrEmpty(name)) continue;
                 Vector2 at = Main.ToPx(room.CenterX, room.MaxY) + new Vector2(0f, 22f);
-                Vector2 size = _font.GetStringSize(name, HorizontalAlignment.Center, -1f, 17);
+                Vector2 size = _font.GetStringSize(name, HorizontalAlignment.Center, -1f,
+                                                   Palette.SizeRoomName);
                 DrawString(_font, at - new Vector2(size.X * 0.5f, 0f), name,
-                           HorizontalAlignment.Left, -1f, 17, new Color(0.80f, 0.76f, 0.68f, 0.75f));
+                           HorizontalAlignment.Left, -1f, Palette.SizeRoomName,
+                           new Color(Palette.Paper, 0.58f));
             }
         }
 
@@ -162,7 +164,7 @@ namespace DetectiveGodot
                 string hex = room.floorColor.StartsWith("#") ? room.floorColor.Substring(1) : room.floorColor;
                 if (hex.Length == 6 || hex.Length == 8) return Color.FromHtml(room.floorColor);
             }
-            return new Color(0.15f, 0.13f, 0.12f);
+            return Palette.Ink;
         }
 
         // ── 청취(소나) 모드 ────────────────────────────────────

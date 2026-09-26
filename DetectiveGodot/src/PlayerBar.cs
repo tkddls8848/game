@@ -33,13 +33,11 @@ namespace DetectiveGodot
         private const int BarBottom = 74;
         private const int SeekStepMs = 5000;
 
-        private static readonly Color Track = new Color(0.20f, 0.19f, 0.18f);
-        private static readonly Color Filled = new Color(0.91f, 0.69f, 0.42f);
-        private static readonly Color Head = new Color(0.98f, 0.93f, 0.82f);
-        private static readonly Color MarkSpeech = new Color(0.72f, 0.84f, 0.95f, 0.85f);
-        private static readonly Color MarkEvent = new Color(0.95f, 0.62f, 0.45f, 0.8f);
-        private static readonly Color Paper = new Color(0.89f, 0.86f, 0.78f);
-        private static readonly Color Dim = new Color(0.55f, 0.53f, 0.50f);
+        private static readonly Color Track = new Color(0.155f, 0.148f, 0.142f);
+        private static readonly Color Filled = Palette.Lamp;
+        private static readonly Color Head = Palette.Paper;
+        private static readonly Color MarkSpeech = Palette.Slate;
+        private static readonly Color MarkEvent = Palette.Oxblood;
 
         private Bar _bar;
         private Label _clock;
@@ -57,13 +55,13 @@ namespace DetectiveGodot
             _bar = new Bar { Owner3 = this, MouseFilter = Control.MouseFilterEnum.Stop };
             AddChild(_bar);
 
-            _clock = MakeLabel(font, 19, Paper);
+            _clock = MakeLabel(font, Palette.SizeStatus, Palette.Paper);
             AddChild(_clock);
 
-            _speed = MakeLabel(font, 19, Filled);
+            _speed = MakeLabel(font, Palette.SizeStatus, Palette.Lamp);
             AddChild(_speed);
 
-            _hint = MakeLabel(font, 14, Dim);
+            _hint = MakeLabel(font, Palette.SizeHint, Palette.Faint);
             _hint.Text = "Space 재생·정지 · ←→ 5초 · J/L 역재생·정주행 · [ ] 배속 · 바를 끌어 이동 · R 처음 · Tab 청취 · Esc 종료";
             AddChild(_hint);
 
@@ -73,17 +71,7 @@ namespace DetectiveGodot
 
         private static Label MakeLabel(Font font, int size, Color color)
         {
-            var label = new Label();
-            var settings = new LabelSettings
-            {
-                FontSize = size,
-                FontColor = color,
-                OutlineSize = 4,
-                OutlineColor = new Color(0f, 0f, 0f, 0.85f)
-            };
-            if (font != null) settings.Font = font;
-            label.LabelSettings = settings;
-            return label;
+            return new Label { LabelSettings = Palette.Label(font, size, color) };
         }
 
         private void Layout()

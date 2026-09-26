@@ -25,9 +25,11 @@ namespace DetectiveGodot
         public MovementTracks Tracks;
         public ListeningSession Session;
 
-        private static readonly Color Figure = new Color(0.72f, 0.70f, 0.66f);
-        private static readonly Color FigureTransit = new Color(0.55f, 0.54f, 0.52f);
-        private static readonly Color SpeakingRing = new Color(0.91f, 0.69f, 0.42f);
+        // 2D는 배경이 어두워 실루엣을 3D만큼 죽일 수 없다. 조금 올리되 강조색은 쓰지 않는다 —
+        // 사람은 그림자로 남아야 한다.
+        private static readonly Color Figure = new Color(0.385f, 0.372f, 0.355f);
+        private static readonly Color FigureTransit = new Color(0.275f, 0.268f, 0.262f);
+        private static readonly Color SpeakingRing = Palette.Lamp;
 
         private const float Radius = 0.22f * Main.Ppu;
         private const float Spread = 0.42f * Main.Ppu;

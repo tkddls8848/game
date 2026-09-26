@@ -31,9 +31,9 @@ namespace DetectiveGodot
         /// <summary>카메라 기울기. 45°는 방 안이 안 보이고 90°는 평면도와 같다. 그 사이를 고른다.</summary>
         private const float CameraPitchDegrees = 58f;
 
-        private static readonly Color WallTop = new Color(0.30f, 0.26f, 0.23f);
-        private static readonly Color WallSide = new Color(0.17f, 0.15f, 0.14f);
-        private static readonly Color DoorColor = new Color(0.52f, 0.38f, 0.22f);
+        /// <summary>바닥 질감을 눌러 앉히는 계수. 밝은 바닥은 그림자를 지우고 화면을 가볍게 만든다.</summary>
+        private static readonly Color FloorDim = new Color(0.46f, 0.45f, 0.44f);
+
 
         private Camera3D _camera;
 
@@ -81,11 +81,13 @@ namespace DetectiveGodot
                 {
                     material.AlbedoTexture = texture;
                     material.Uv1Scale = TileScale(room, art);
-                    material.AlbedoColor = ParseColor(art.tint, Colors.White);
+                    // art.json의 tint는 2D 화면 기준으로 밝다. 3D에서는 빛이 따로 있으므로
+                    // 그대로 쓰면 바닥이 떠 보인다. 눌러 앉힌다.
+                    material.AlbedoColor = ParseColor(art.tint, Colors.White) * FloorDim;
                 }
                 else
                 {
-                    material.AlbedoColor = ParseColor(room.floorColor, new Color(0.16f, 0.14f, 0.13f));
+                    material.AlbedoColor = ParseColor(room.floorColor, Palette.Ink);
                 }
                 plane.MaterialOverride = material;
                 AddChild(plane);
@@ -126,7 +128,7 @@ namespace DetectiveGodot
 
             var material = new StandardMaterial3D
             {
-                AlbedoColor = WallSide,
+                AlbedoColor = Palette.Wall,
                 Roughness = 0.9f
             };
 
@@ -145,7 +147,7 @@ namespace DetectiveGodot
                 {
                     Mesh = new BoxMesh { Size = new Vector3(segment.Width, 0.06f, segment.Height) },
                     Position = ToWorld3(segment.CenterX, segment.CenterY, WallHeight + 0.03f),
-                    MaterialOverride = new StandardMaterial3D { AlbedoColor = WallTop, Roughness = 0.8f }
+                    MaterialOverride = new StandardMaterial3D { AlbedoColor = Palette.WallCap, Roughness = 0.85f }
                 };
                 walls.AddChild(cap);
             }
@@ -156,7 +158,7 @@ namespace DetectiveGodot
         {
             var doors = new Node3D { Name = "Doors" };
             AddChild(doors);
-            var material = new StandardMaterial3D { AlbedoColor = DoorColor, Roughness = 0.85f };
+            var material = new StandardMaterial3D { AlbedoColor = Palette.Door, Roughness = 0.9f };
 
             foreach (DoorDefinition door in Layout.Doors)
             {
@@ -172,28 +174,64 @@ namespace DetectiveGodot
         // ── 빛 ────────────────────────────────────────────────
 
         /// <summary>
-        /// 어두운 저택. 방향광 하나를 약하게 두고 환경광으로 바닥을 겨우 읽히게 한다 —
-        /// 연출 방향("어두운 저택 평면도")을 3D에서도 지킨다.
+        /// 무게는 빛에서 나온다. 처음 구현이 장난감처럼 보인 가장 큰 원인이 여기였다 —
+        /// 환경광을 0.75로 올려 놓아 <b>그림자가 전부 씻겨 나갔다</b>. 그림자 없는 3D는
+        /// 납작하고, 납작하면 가볍다.
+        ///
+        /// 바꾼 것 넷:
+        ///   * 환경광을 0.75 → 0.16으로 내렸다. 이제 달빛이 실제로 그림자를 만든다.
+        ///   * <b>안개</b>를 넣었다. 어두운 저택에는 공기가 있어야 한다. 거리에 따라 방이
+        ///     묻히면서 깊이가 생기고, 이것 하나가 인상을 가장 크게 바꾼다.
+        ///   * 필름 톤매핑 + 채도 내림. 색이 튀지 않고 사진처럼 앉는다.
+        ///   * 약한 글로우. 등불이 번지되 빛나지는 않게.
         /// </summary>
         private void BuildLighting()
         {
-            var sun = new DirectionalLight3D
+            var moon = new DirectionalLight3D
             {
                 Name = "Moonlight",
-                LightEnergy = 0.55f,
-                LightColor = new Color(0.78f, 0.82f, 1.0f),
-                ShadowEnabled = true
+                LightEnergy = 1.15f,
+                LightColor = new Color(0.72f, 0.78f, 0.98f),
+                ShadowEnabled = true,
+                ShadowBlur = 1.6f,
+                DirectionalShadowMode = DirectionalLight3D.ShadowMode.Orthogonal,
+                DirectionalShadowMaxDistance = 90f
             };
-            sun.RotationDegrees = new Vector3(-62f, -38f, 0f);
-            AddChild(sun);
+            moon.RotationDegrees = new Vector3(-58f, -34f, 0f);
+            AddChild(moon);
 
             var environment = new Godot.Environment
             {
                 BackgroundMode = Godot.Environment.BGMode.Color,
-                BackgroundColor = new Color(0.04f, 0.04f, 0.055f),
+                BackgroundColor = Palette.Void,
+
+                // 그림자를 살리기 위해 환경광을 바닥까지 내린다.
                 AmbientLightSource = Godot.Environment.AmbientSource.Color,
-                AmbientLightColor = new Color(0.32f, 0.30f, 0.34f),
-                AmbientLightEnergy = 0.75f
+                AmbientLightColor = new Color(0.20f, 0.21f, 0.26f),
+                AmbientLightEnergy = 0.16f,
+
+                // 공기. 저택이 거리에 따라 묻힌다.
+                FogEnabled = true,
+                FogLightColor = new Color(0.115f, 0.120f, 0.145f),
+                FogLightEnergy = 1.0f,
+                FogDensity = 0.022f,
+                FogSkyAffect = 0f,
+
+                // 사진처럼 앉히기. 채도를 빼고 대비를 살짝 올린다.
+                TonemapMode = Godot.Environment.ToneMapper.Filmic,
+                TonemapExposure = 1.05f,
+                TonemapWhite = 6f,
+                AdjustmentEnabled = true,
+                AdjustmentSaturation = 0.72f,
+                AdjustmentContrast = 1.10f,
+                AdjustmentBrightness = 1.0f,
+
+                // 등불이 번지는 정도. 빛나 보이면 안 된다.
+                GlowEnabled = true,
+                GlowIntensity = 0.32f,
+                GlowBloom = 0.10f,
+                GlowBlendMode = Godot.Environment.GlowBlendModeEnum.Softlight,
+                GlowHdrThreshold = 1.05f
             };
             AddChild(new WorldEnvironment { Name = "Env", Environment = environment });
         }

@@ -24,20 +24,22 @@ namespace DetectiveGodot
         public ListeningSession Session;
 
         /// <summary>실루엣 키. 벽(0.9)보다 조금 낮게 둬야 위에서 방 안이 보인다.</summary>
-        private const float BodyHeight = 0.62f;
-        private const float BodyRadius = 0.15f;
+        private const float BodyHeight = 0.66f;
+
+        /// <summary>
+        /// 가늘게. 처음에는 0.15로 뚱뚱해서 보드게임 말처럼 보였다 — 사람은 위에서 보면
+        /// 어깨보다 좁고, 그 비례가 무게를 만든다.
+        /// </summary>
+        private const float BodyRadius = 0.105f;
         private const float Spread = 0.45f;
 
         /// <summary>자리를 옮길 때 튀지 않게 하는 따라감 속도(초당 비율).</summary>
         private const float FollowLerp = 9f;
 
-        private static readonly Color Body = new Color(0.60f, 0.58f, 0.55f);
-        private static readonly Color BodyTransit = new Color(0.42f, 0.41f, 0.40f);
-        private static readonly Color Marker = new Color(0.95f, 0.72f, 0.42f);
 
         private readonly List<string> _ids = new List<string>();
         private readonly Dictionary<string, Node3D> _figures = new Dictionary<string, Node3D>();
-        private readonly Dictionary<string, MeshInstance3D> _markers = new Dictionary<string, MeshInstance3D>();
+        private readonly Dictionary<string, OmniLight3D> _markers = new Dictionary<string, OmniLight3D>();
         private readonly Dictionary<string, StandardMaterial3D> _materials = new Dictionary<string, StandardMaterial3D>();
 
         public override void _Ready()
@@ -54,7 +56,14 @@ namespace DetectiveGodot
         {
             var root = new Node3D { Name = "Figure_" + npcId, Visible = false };
 
-            var material = new StandardMaterial3D { AlbedoColor = Body, Roughness = 0.9f };
+            // 거친 무광. 반짝이면 플라스틱이 되고, 플라스틱은 가볍다.
+            var material = new StandardMaterial3D
+            {
+                AlbedoColor = Palette.Figure,
+                Roughness = 1.0f,
+                Metallic = 0f,
+                SpecularMode = BaseMaterial3D.SpecularModeEnum.Disabled
+            };
             _materials[npcId] = material;
 
             // 보드게임 말 같은 실루엣 — 연출 방향("보드게임 말 같은 인물 토큰")을 3D로 옮긴 것.
@@ -64,29 +73,31 @@ namespace DetectiveGodot
                 Position = new Vector3(0f, BodyHeight * 0.5f, 0f),
                 MaterialOverride = material
             });
+            // 어깨. 위에서 볼 때 사람 형태를 알아보게 하는 것은 이 한 덩이다.
             root.AddChild(new MeshInstance3D
             {
-                Mesh = new CylinderMesh { TopRadius = BodyRadius * 1.5f, BottomRadius = BodyRadius * 1.5f, Height = 0.04f },
-                Position = new Vector3(0f, 0.02f, 0f),
+                Mesh = new BoxMesh { Size = new Vector3(BodyRadius * 3.4f, 0.10f, BodyRadius * 1.7f) },
+                Position = new Vector3(0f, BodyHeight * 0.80f, 0f),
                 MaterialOverride = material
             });
 
-            // 소리가 나는 방의 사람 위에만 뜨는 표시.
-            var marker = new MeshInstance3D
+            // 소리가 나는 방의 사람에게만 드는 빛.
+            //
+            // 처음에는 머리 위에 빛나는 호박색 구슬을 띄웠다. 그것 하나가 화면을 게임으로
+            // 만들었다 — 떠 있는 발광 아이콘은 UI이고, UI는 가볍다. 대신 **실제 광원**을
+            // 세워 발밑에 빛이 고이게 한다. 같은 정보를 주면서 장면 안에 머문다.
+            var glow = new OmniLight3D
             {
-                Mesh = new SphereMesh { Radius = 0.09f, Height = 0.18f },
-                Position = new Vector3(0f, BodyHeight + 0.22f, 0f),
-                MaterialOverride = new StandardMaterial3D
-                {
-                    AlbedoColor = Marker,
-                    EmissionEnabled = true,
-                    Emission = Marker,
-                    EmissionEnergyMultiplier = 1.6f
-                },
+                LightColor = Palette.Lamp,
+                LightEnergy = 1.5f,
+                OmniRange = 1.9f,
+                OmniAttenuation = 1.8f,
+                Position = new Vector3(0f, 0.42f, 0f),
+                ShadowEnabled = false,
                 Visible = false
             };
-            root.AddChild(marker);
-            _markers[npcId] = marker;
+            root.AddChild(glow);
+            _markers[npcId] = glow;
 
             AddChild(root);
             return root;
@@ -127,7 +138,7 @@ namespace DetectiveGodot
                 figure.Position = figure.Visible ? figure.Position.Lerp(target, follow) : target;
                 figure.Visible = true;
 
-                _materials[id].AlbedoColor = at.InTransit ? BodyTransit : Body;
+                _materials[id].AlbedoColor = at.InTransit ? Palette.FigureTransit : Palette.Figure;
                 _markers[id].Visible = !at.InTransit && at.HasPlace && noisy.Contains(at.Room);
             }
         }

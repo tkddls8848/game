@@ -41,10 +41,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\ScriptValidator.cs" Link="Shared\Eavesdrop\ScriptValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\SliceSolvability.cs" Link="Shared\Eavesdrop\SliceSolvability.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\SonarText.cs" Link="Shared\Eavesdrop\SonarText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\SpeakerPositions.cs" Link="Shared\Eavesdrop\SpeakerPositions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\UnheardReport.cs" Link="Shared\Eavesdrop\UnheardReport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\UtteranceSchema.cs" Link="Shared\Eavesdrop\UtteranceSchema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\VoiceAssignment.cs" Link="Shared\Eavesdrop\VoiceAssignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\VoiceClipPlan.cs" Link="Shared\Eavesdrop\VoiceClipPlan.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\VoiceMix.cs" Link="Shared\Eavesdrop\VoiceMix.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Investigation\EvidenceCatalog.cs" Link="Shared\Investigation\EvidenceCatalog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Investigation\EvidenceLog.cs" Link="Shared\Investigation\EvidenceLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Investigation\InvestigationState.cs" Link="Shared\Investigation\InvestigationState.cs" />

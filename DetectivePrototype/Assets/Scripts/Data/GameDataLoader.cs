@@ -136,6 +136,35 @@ namespace Detective.Data
             return assets;
         }
 
+        /// <summary>
+        /// 인물 이동 트랙(<c>cases/&lt;id&gt;/tracks.json</c>). 없으면 null —
+        /// 대본만으로도 회차는 성립한다(사람이 안 보이고 이동 소리가 없을 뿐이다).
+        /// </summary>
+        public static Eavesdrop.MovementTrackTable LoadTracks(string caseId)
+        {
+            if (string.IsNullOrEmpty(caseId)) return null;
+            var asset = Resources.Load<TextAsset>(CasesResourceFolder + caseId + "/tracks");
+            if (asset == null) return null;
+
+            Eavesdrop.MovementTrackTable table =
+                Parse<Eavesdrop.MovementTrackTable>(asset.text, caseId + "/tracks.json");
+            return table != null ? table.Normalized() : null;
+        }
+
+        /// <summary>
+        /// 손으로 적은 이벤트(<c>cases/&lt;id&gt;/events.json</c>). 극적인 소리만 여기 적는다 —
+        /// 문소리·발소리는 <c>MovementEvents</c>가 트랙에서 뽑으므로 적지 않는다.
+        /// </summary>
+        public static Eavesdrop.EventTable LoadEvents(string caseId)
+        {
+            if (string.IsNullOrEmpty(caseId)) return null;
+            var asset = Resources.Load<TextAsset>(CasesResourceFolder + caseId + "/events");
+            if (asset == null) return null;
+
+            Eavesdrop.EventTable table = Parse<Eavesdrop.EventTable>(asset.text, caseId + "/events.json");
+            return table != null ? table.Normalized() : null;
+        }
+
         /// <summary>JsonUtility 파싱 + 실패 로그. 실패하면 null.</summary>
         public static T Parse<T>(string json, string label) where T : class
         {

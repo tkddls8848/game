@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Detective.Core;
 using Detective.Data;
+using Detective.NPC;
 using UnityEngine;
 
 namespace Detective.Eavesdrop
@@ -27,6 +29,18 @@ namespace Detective.Eavesdrop
 
         /// <summary>대본을 올리지 못했다면 이유가 여기 남는다(UI가 조용히 비어 있지 않도록).</summary>
         public string LoadError { get; private set; }
+
+        /// <summary>이 회차의 사건 id. 음성 파일 경로를 만들 때 쓴다.</summary>
+        public string CaseId { get; private set; }
+
+        /// <summary>인물 이동 트랙. 없을 수도 있다.</summary>
+        public MovementTracks Tracks { get; private set; }
+
+        /// <summary>누가 지금 어디 있는가 — 거리감 계산의 근거.</summary>
+        public SpeakerPositions Positions { get; private set; }
+
+        /// <summary>앞뒤로 건너뛰는 폭(ms).</summary>
+        public int seekStepMs = 5000;
 
         private void Start()
         {
@@ -59,13 +73,39 @@ namespace Detective.Eavesdrop
                 return;
             }
 
-            Session = new ListeningSession(new ScriptTimeline(script), new AudibilityModel(layout));
+            CaseId = script.caseId ?? string.Empty;
+
+            // 이동 트랙 → 이동이 내는 소리. 트랙을 고치면 소리도 따라 고쳐진다.
+            MovementTrackTable trackTable = GameDataLoader.LoadTracks(CaseId);
+            Tracks = trackTable != null ? MovementTracks.FromTable(trackTable) : null;
+            Positions = new SpeakerPositions(script, Tracks, layout);
+
+            var timeline = new ScriptTimeline(script);
+            Session = new ListeningSession(timeline, new AudibilityModel(layout), BuildEvents(script, layout));
 
             // 씬이 만들어질 때 PlayerRoomTracker가 이미 첫 방을 알렸을 수 있다. 지금 값을 직접 받아 둔다.
             var tracker = FindAnyObjectByType<Player.PlayerRoomTracker>();
             if (tracker != null) Session.MoveTo(tracker.CurrentRoom);
 
             if (autoPlay) Session.Transport.Play();
+        }
+
+        /// <summary>
+        /// 이동에서 뽑은 소리 + 손으로 적은 소리. 문소리·발소리를 손으로 적지 않는 이유는
+        /// 트랙과 반드시 어긋나기 때문이다(MovementEvents가 트랙에서 만든다).
+        /// </summary>
+        private EventTimeline BuildEvents(ScriptDefinition script, RoomLayout layout)
+        {
+            var all = new List<ScriptEvent>();
+            if (Tracks != null)
+                all.AddRange(MovementEvents.Derive(Tracks, layout, script.durationMs));
+
+            EventTable authored = GameDataLoader.LoadEvents(CaseId);
+            if (authored != null) all.AddRange(authored.events);
+
+            if (all.Count == 0) return null;
+            Debug.Log("[EavesdropController] 이동·사건 소리 " + all.Count + "개");
+            return new EventTimeline(all);
         }
 
         private void OnEnable()
@@ -90,17 +130,46 @@ namespace Detective.Eavesdrop
             int frame = Time.frameCount;
             bool listening = ModalState.AcceptsInput(GameMode.Explore, frame);
 
-            if (listening)
-            {
-                if (Input.GetKeyDown(KeyCode.Space)) Session.Transport.TogglePlay();
-                if (Input.GetKeyDown(KeyCode.R)) Session.Restart();
-            }
+            if (listening) HandleTransportKeys();
 
             // 창이 열려 있는 동안에는 회차를 세워 둔다. 놓친 것은 플레이어의 선택이어야 한다.
             if (!listening) return;
 
             int deltaMs = Mathf.RoundToInt(Time.deltaTime * 1000f);
             if (deltaMs > 0) Session.Advance(deltaMs);
+        }
+
+        /// <summary>
+        /// 회차를 영상처럼 다룬다. J 역재생 / L 정주행은 영상 편집기의 관습이다.
+        /// 판정은 전부 공유 PlaybackTransport가 하고 여기서는 키만 옮긴다.
+        /// </summary>
+        private void HandleTransportKeys()
+        {
+            PlaybackTransport transport = Session.Transport;
+
+            if (Input.GetKeyDown(KeyCode.Space)) transport.TogglePlay();
+            if (Input.GetKeyDown(KeyCode.R)) Session.Restart();
+            if (Input.GetKeyDown(KeyCode.J)) transport.Play(PlayDirection.Backward);
+            if (Input.GetKeyDown(KeyCode.L)) transport.Play(PlayDirection.Forward);
+
+            if (Input.GetKeyDown(KeyCode.Comma)) Session.SeekTo(transport.PositionMs - seekStepMs);
+            if (Input.GetKeyDown(KeyCode.Period)) Session.SeekTo(transport.PositionMs + seekStepMs);
+
+            if (Input.GetKeyDown(KeyCode.LeftBracket)) transport.SpeedPercent = StepSpeed(transport.SpeedPercent, -1);
+            if (Input.GetKeyDown(KeyCode.RightBracket)) transport.SpeedPercent = StepSpeed(transport.SpeedPercent, 1);
+        }
+
+        /// <summary>배속 단계를 한 칸 옮긴다. 단계는 공유 로직이 들고 있다.</summary>
+        private static int StepSpeed(int current, int direction)
+        {
+            int[] presets = PlaybackTransport.SpeedPresets;
+            if (direction > 0)
+            {
+                for (int i = 0; i < presets.Length; i++) if (presets[i] > current) return presets[i];
+                return presets[presets.Length - 1];
+            }
+            for (int i = presets.Length - 1; i >= 0; i--) if (presets[i] < current) return presets[i];
+            return presets[0];
         }
     }
 }

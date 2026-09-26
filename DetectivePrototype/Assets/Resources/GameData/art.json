@@ -24,6 +24,24 @@
     { "evidenceId": "ev_phone_log",   "image": "Art/Evidence/ev_phone_log" },
     { "evidenceId": "ev_medical_bag", "image": "Art/Evidence/ev_medical_bag" }
   ],
+  "eventSounds": [
+    { "kind": "door",      "volume": 0.9,
+      "clips": ["Audio/SFX/Additional/RPG/doorOpen_1", "Audio/SFX/Additional/RPG/doorOpen_2",
+                "Audio/SFX/Additional/RPG/doorClose_1", "Audio/SFX/Additional/RPG/doorClose_2"] },
+    { "kind": "footsteps", "volume": 0.62,
+      "clips": ["Audio/SFX/Additional/RPG/footstep00", "Audio/SFX/Additional/RPG/footstep02",
+                "Audio/SFX/Additional/RPG/footstep04", "Audio/SFX/Additional/RPG/footstep06",
+                "Audio/SFX/Additional/RPG/footstep08"] },
+    { "kind": "object",    "volume": 0.8,
+      "clips": ["Audio/SFX/Additional/Dining/cup_on_table_01", "Audio/SFX/Additional/RPG/bookPlace1"] },
+    { "kind": "break",     "volume": 1.0,
+      "clips": ["Audio/SFX/Additional/Dining/drop_cutlery_01"] },
+    { "kind": "struggle",  "volume": 0.95,
+      "clips": ["Audio/SFX/Additional/RPG/cloth1", "Audio/SFX/Additional/RPG/cloth3"] },
+    { "kind": "house",     "volume": 0.7,
+      "clips": ["Audio/SFX/Additional/RPG/creak1", "Audio/SFX/Additional/RPG/creak2",
+                "Audio/SFX/Additional/RPG/creak3"] }
+  ],
   "audio": {
     "bgmExplore":    "Audio/BGM/explore",
     "bgmTimeline":   "Audio/BGM/timeline",
@@ -34,6 +52,7 @@
     "sfxInspect":    "Audio/SFX/inspect",
     "bgmVolume": 0.35,
     "ambientVolume": 0.4,
-    "sfxVolume": 0.7
+    "sfxVolume": 0.7,
+    "eventVolume": 0.55
   }
 }

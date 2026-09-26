@@ -88,11 +88,19 @@ namespace DetectiveEditor
             var root = new GameObject("GameRoot");
             root.AddComponent<GameManager>();
             root.AddComponent<AudioDirector>();
-            root.AddComponent<EavesdropController>(); // 엿듣기 회차. 대본이 없으면 조용히 비어 있는다.
+            var eavesdrop = root.AddComponent<EavesdropController>(); // 대본이 없으면 조용히 비어 있는다.
+            var spatial = root.AddComponent<SpatialVoiceDirector>();
 
             BuildMap(layout, square);
             GameObject player = BuildPlayer(layout, square);
             BuildCamera(player.transform);
+
+            // 거리감. 청취점은 탐정이 선 **점**이다 — 같은 방 안에서도 어디 서 있느냐로 소리가 달라진다.
+            // 실제 배선은 런타임에 한다(SpeakerPositions는 대본을 읽은 뒤에야 생긴다).
+            var binder = root.AddComponent<SpatialAudioBinder>();
+            binder.controller = eavesdrop;
+            binder.spatial = spatial;
+            binder.listener = player.transform;
             BuildProps(database, square);
             BuildNpcs(layout, database.Npcs.All, square);
             BuildUI(player.GetComponent<PlayerInteraction>());

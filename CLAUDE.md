@@ -8,13 +8,18 @@
 
 | 항목 | 값 |
 |---|---|
-| Unity 에디터 | `C:\Program Files\Unity\Hub\Editor\6000.0.81f1\Editor\Unity.exe` |
-| Unity Hub | `C:\Program Files\Unity Hub\Unity Hub.exe` |
-| 프로젝트 루트 | `C:\Users\tkddl\orca\projects\game\DetectivePrototype` |
-| 저장소 루트 | `C:\Users\tkddl\orca\projects\game` |
+| Unity 에디터 | `C:\Users\PSI\Unity\Hub\Editor\6000.0.81f1\Editor\Unity.exe` |
+| Unity Hub | MSIX 설치 — `AppData\Local\Packages\UnityTechnologies.UnityHub_*` |
+| 프로젝트 루트 | `C:\Users\PSI\orca\game\DetectivePrototype` |
+| 저장소 루트 | `C:\Users\PSI\orca\game` |
 | 입력 | 레거시 `Input` 클래스 (Input System 패키지 미사용) |
-| Mono 컴파일러 | `...\6000.0.81f1\Editor\Data\MonoBleedingEdge\bin\mcs.bat` |
+| Mono 컴파일러 | `C:\Users\PSI\Unity\Hub\Editor\6000.0.81f1\Editor\Data\MonoBleedingEdge\bin\mcs.bat` |
 
+> **에디터 위치는 Hub의 `secondaryInstallPath`가 정한다.** 기본값(`C:\Program Files\Unity`)이 아니다.
+> Hub가 MSIX로 설치돼 있어 설정이 패키지 컨테이너 안에 있다:
+> `AppData\Local\Packages\UnityTechnologies.UnityHub_*\LocalCache\Roaming\UnityHub\secondaryInstallPath.json`
+> 경로가 바뀌면 그 파일을 먼저 읽는다.
+>
 > **라이선스 필수.** 라이선스가 없으면 batchmode 실행이 return code 198(`No valid Unity Editor license found`)로 거부된다.
 > 활성화: Unity Hub 로그인(우측 상단 계정 → Sign in) → Personal 라이선스 자동 발급.
 > 라이선스 없이도 **순수 C# 로직은 번들 Mono(`mcs.bat`)로 컴파일·검증 가능**하다 (DEVELOPMENT_PLAN.md §3.2-d).
@@ -37,8 +42,8 @@
 `-logFile -`(stdout)도 이 조합에서는 신뢰할 수 없다. **로그는 파일로 받아서 읽는다.**
 
 ```powershell
-$UNITY = "C:\Program Files\Unity\Hub\Editor\6000.0.81f1\Editor\Unity.exe"
-$PROJ  = "C:\Users\tkddl\orca\projects\game\DetectivePrototype"
+$UNITY = "C:\Users\PSI\Unity\Hub\Editor\6000.0.81f1\Editor\Unity.exe"
+$PROJ  = "C:\Users\PSI\orca\game\DetectivePrototype"
 
 function Invoke-Unity([string[]]$UnityArgs, [string]$Log) {
     $a = $UnityArgs + @('-logFile', $Log)

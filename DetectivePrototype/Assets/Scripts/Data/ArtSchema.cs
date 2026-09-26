@@ -73,6 +73,33 @@ namespace Detective.Data
         public float bgmVolume = 0.35f;
         public float ambientVolume = 0.4f;
         public float sfxVolume = 0.7f;
+
+        /// <summary>말이 아닌 소리의 음량. 발소리·문소리가 대사를 덮으면 안 된다.</summary>
+        public float eventVolume = 0.55f;
+    }
+
+    /// <summary>
+    /// 이벤트 종류 하나에 붙는 소리들. 여러 개를 적으면 울릴 때마다 돌아가며 고른다 —
+    /// 발소리가 매번 같은 파일이면 열 번만 들어도 기계처럼 들린다.
+    /// </summary>
+    [Serializable]
+    public class EventSoundArt
+    {
+        /// <summary><see cref="Detective.Eavesdrop.EventKind"/>의 값.</summary>
+        public string kind;
+
+        /// <summary>Resources 경로들(확장자 없음). 비어 있으면 그 종류는 소리가 없다.</summary>
+        public string[] clips = new string[0];
+
+        /// <summary>이 종류만의 음량 배수. 문소리는 발소리보다 커야 한다.</summary>
+        public float volume = 1f;
+
+        public EventSoundArt Normalized()
+        {
+            if (clips == null) clips = new string[0];
+            if (kind == null) kind = string.Empty;
+            return this;
+        }
     }
 
     [Serializable]
@@ -86,13 +113,27 @@ namespace Detective.Data
         public EvidenceArt[] evidence;
         public AudioArt audio;
 
+        /// <summary>이동·사건이 내는 소리. 종류별로 여러 파일을 적어 돌아가며 쓴다.</summary>
+        public EventSoundArt[] eventSounds = new EventSoundArt[0];
+
         public ArtManifest Normalized()
         {
             if (rooms == null) rooms = new RoomArt[0];
             if (npcs == null) npcs = new NpcArt[0];
             if (evidence == null) evidence = new EvidenceArt[0];
             if (audio == null) audio = new AudioArt();
+            if (eventSounds == null) eventSounds = new EventSoundArt[0];
+            for (int i = 0; i < eventSounds.Length; i++)
+                if (eventSounds[i] != null) eventSounds[i].Normalized();
             return this;
+        }
+
+        /// <summary>이 종류의 소리 묶음. 없으면 null.</summary>
+        public EventSoundArt EventSoundOf(string kind)
+        {
+            for (int i = 0; i < eventSounds.Length; i++)
+                if (eventSounds[i] != null && eventSounds[i].kind == kind) return eventSounds[i];
+            return null;
         }
 
         public RoomArt RoomOf(string roomId)

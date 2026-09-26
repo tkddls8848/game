@@ -24,6 +24,7 @@ namespace DetectiveGodot
     {
         public RoomLayout Layout;
         public ListeningSession Session;
+        public ArtManifest Art;
         public bool SonarMode;
 
         private static readonly Color Ink = new Color(0.08f, 0.08f, 0.10f);
@@ -34,10 +35,43 @@ namespace DetectiveGodot
         private static readonly Color SonarOutline = new Color(0.22f, 0.22f, 0.26f);
 
         private List<WallSegment> _walls;
+        private readonly Dictionary<string, RoomArt> _roomArt = new Dictionary<string, RoomArt>();
+        private readonly Dictionary<string, Texture2D> _floors = new Dictionary<string, Texture2D>();
+        private Font _font;
 
         public override void _Ready()
         {
             _walls = Layout.BuildAllWallSegments();
+            _font = KoreanFont.Load();
+
+            // 바닥 질감은 반복해서 깔아야 하므로 이 노드에 반복을 켠다.
+            TextureRepeat = TextureRepeatEnum.Enabled;
+
+            if (Art == null) return;
+            Art.Normalized();
+            foreach (RoomArt art in Art.rooms)
+            {
+                if (string.IsNullOrEmpty(art.roomId)) continue;
+                _roomArt[art.roomId] = art;
+                if (string.IsNullOrEmpty(art.floorTexture)) continue;
+
+                // art.json은 확장자 없는 Resources 경로를 적는다. 실제 파일을 찾아 붙인다.
+                foreach (string ext in new[] { ".jpg", ".png" })
+                {
+                    string path = AudioDirector.MediaRoot + art.floorTexture + ext;
+                    if (!ResourceLoader.Exists(path)) continue;
+                    _floors[art.roomId] = ResourceLoader.Load<Texture2D>(path);
+                    break;
+                }
+            }
+        }
+
+        public override void _ExitTree()
+        {
+            // 붙들고 있던 질감·폰트를 놓는다. 노드가 사라져도 필드가 남아 있으면 리소스가 산다.
+            _floors.Clear();
+            _roomArt.Clear();
+            _font = null;
         }
 
         public override void _Draw()
@@ -52,7 +86,7 @@ namespace DetectiveGodot
         private void DrawFloorplan()
         {
             foreach (RoomDefinition room in Layout.Rooms)
-                DrawRect(RectOf(room.x, room.y, room.width, room.height), FloorColorOf(room));
+                DrawFloor(room);
 
             // 문은 벽보다 먼저 — 벽 조각이 문 자리를 비워 두므로 겹치지 않는다.
             foreach (DoorDefinition door in Layout.Doors)
@@ -60,6 +94,64 @@ namespace DetectiveGodot
 
             foreach (WallSegment wall in _walls)
                 DrawRect(CenteredRect(wall), WallColor);
+
+            DrawRoomNames();
+        }
+
+        /// <summary>
+        /// 방 바닥. art.json에 질감이 있으면 <c>tileSize</c>(월드 유닛)만큼의 크기로 반복해 깔고
+        /// <c>tint</c>로 톤을 맞춘다. 질감이 없으면 rooms.json의 단색으로 물러선다
+        /// (연출 에셋 규칙: 파일이 없으면 대체물을 쓰고 멈추지 않는다).
+        /// </summary>
+        private void DrawFloor(RoomDefinition room)
+        {
+            Rect2 rect = RectOf(room.x, room.y, room.width, room.height);
+
+            if (!_floors.TryGetValue(room.id, out Texture2D texture) || texture == null)
+            {
+                DrawRect(rect, FloorColorOf(room));
+                return;
+            }
+
+            RoomArt art = _roomArt[room.id];
+            float tileUnits = art.tileSize > 0.01f ? art.tileSize : 4f;
+            // 질감은 자기 픽셀 크기대로 반복된다. 무늬 한 칸이 tileUnits 유닛으로 보이게 하려면
+            // 좌표계를 줄여 놓고 그린 뒤 되돌린다 — 반복 간격을 직접 지정할 방법이 없다.
+            float scale = tileUnits * Main.Ppu / texture.GetWidth();
+            if (scale <= 0f) { DrawRect(rect, FloorColorOf(room)); return; }
+
+            Color tint = TintOf(art);
+            DrawSetTransform(Vector2.Zero, 0f, new Vector2(scale, scale));
+            DrawTextureRect(texture, new Rect2(rect.Position / scale, rect.Size / scale), true, tint);
+            DrawSetTransform(Vector2.Zero, 0f, Vector2.One);
+        }
+
+        private static Color TintOf(RoomArt art)
+        {
+            if (!string.IsNullOrEmpty(art.tint))
+            {
+                string hex = art.tint.StartsWith("#") ? art.tint.Substring(1) : art.tint;
+                if (hex.Length == 6 || hex.Length == 8) return Color.FromHtml(art.tint);
+            }
+            return Colors.White;
+        }
+
+        /// <summary>
+        /// 방 이름. 이름은 퍼즐이 아니므로 그냥 보여 준다 — 어디가 서재인지 모르면
+        /// "서재에서 들린 말"이라는 단서를 쓸 수 없다.
+        /// </summary>
+        private void DrawRoomNames()
+        {
+            if (_font == null) return;
+            foreach (RoomDefinition room in Layout.Rooms)
+            {
+                string name = Layout.DisplayNameOf(room.id);
+                if (string.IsNullOrEmpty(name)) continue;
+                Vector2 at = Main.ToPx(room.CenterX, room.MaxY) + new Vector2(0f, 22f);
+                Vector2 size = _font.GetStringSize(name, HorizontalAlignment.Center, -1f, 17);
+                DrawString(_font, at - new Vector2(size.X * 0.5f, 0f), name,
+                           HorizontalAlignment.Left, -1f, 17, new Color(0.80f, 0.76f, 0.68f, 0.75f));
+            }
         }
 
         private static Color FloorColorOf(RoomDefinition room)
@@ -87,6 +179,9 @@ namespace DetectiveGodot
                 DrawRect(rect, new Color(Ink, isEar ? 0.85f : 0.55f));
                 DrawRect(rect, isEar ? Amber : SonarOutline, false, isEar ? 2.5f : 1.0f);
             }
+
+            // 어디가 어느 방인지는 알려 준다. 모르면 "서재에서 들렸다"는 단서를 쓸 수 없다.
+            DrawRoomNames();
 
             if (Session == null) return;
 

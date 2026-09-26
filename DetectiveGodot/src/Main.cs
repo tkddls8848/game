@@ -44,6 +44,9 @@ namespace DetectiveGodot
         private CharacterBody2D _detective;
         private HudOverlay _hud;
         private Camera2D _camera;
+        private AudioDirector _audio;
+        private NpcTokens _tokens;
+        private ArtManifest _art;
 
         private string _room = string.Empty;
         private bool _sonar;
@@ -80,11 +83,15 @@ namespace DetectiveGodot
             var timeline = new ScriptTimeline(_script);
             _session = new ListeningSession(timeline, new AudibilityModel(_layout));
 
+            _art = GodotDataLoader.LoadArtManifest();
+
             BuildView();
             BuildWalls();
             BuildDetective();
+            BuildTokens();
             BuildCamera();
             BuildHud();
+            BuildAudio();
 
             // 회차는 바로 흐른다. 되돌려 듣는 것은 플레이어의 선택이다(공유 규칙).
             _session.Transport.Play();
@@ -97,7 +104,7 @@ namespace DetectiveGodot
 
         private void BuildView()
         {
-            _view = new MansionView { Layout = _layout, Session = _session, Name = "Mansion" };
+            _view = new MansionView { Layout = _layout, Session = _session, Art = _art, Name = "Mansion" };
             AddChild(_view);
         }
 
@@ -159,6 +166,32 @@ namespace DetectiveGodot
             return points;
         }
 
+        /// <summary>
+        /// 저택 안을 돌아다니는 사람들. tracks.json이 없으면 그냥 없는 채로 돈다 —
+        /// 대본만으로도 게임은 성립한다.
+        /// </summary>
+        private void BuildTokens()
+        {
+            MovementTrackTable table = GodotDataLoader.LoadTracks(GodotDataLoader.EavesdropCaseId);
+            if (table == null) return;
+
+            _tokens = new NpcTokens
+            {
+                Layout = _layout,
+                Tracks = MovementTracks.FromTable(table),
+                Session = _session,
+                Name = "Npcs"
+            };
+            AddChild(_tokens);
+        }
+
+        private void BuildAudio()
+        {
+            _audio = new AudioDirector { Name = "Audio" };
+            AddChild(_audio);
+            _audio.Setup(_art);
+        }
+
         /// <summary>저택 전체가 화면에 들어오도록 확대율을 데이터에서 계산한다.</summary>
         private void BuildCamera()
         {
@@ -204,6 +237,7 @@ namespace DetectiveGodot
             _session.Advance((int)Math.Round(delta * 1000.0));
 
             _view.QueueRedraw();
+            if (_tokens != null) _tokens.QueueRedraw();
             _hud.Refresh();
         }
 
@@ -234,6 +268,13 @@ namespace DetectiveGodot
             if (id == _room) return;
             _room = id;
             _session.MoveTo(id);
+            if (_audio != null) _audio.OnRoomChanged(id);
+        }
+
+        public override void _ExitTree()
+        {
+            // 정적 폰트 캐시는 SceneTree보다 오래 살므로 여기서 끊는다.
+            KoreanFont.Release();
         }
 
         // ── 키 입력 ───────────────────────────────────────────
@@ -249,6 +290,8 @@ namespace DetectiveGodot
                     _sonar = !_sonar;
                     _view.SonarMode = _sonar;
                     _hud.SonarMode = _sonar;
+                    if (_audio != null && _art != null)
+                        _audio.PlayBgm(_sonar ? _art.audio.bgmTimeline : _art.audio.bgmExplore);
                     break;
                 case Key.Space:
                     _session.Transport.TogglePlay();

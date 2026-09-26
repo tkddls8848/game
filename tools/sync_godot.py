@@ -36,6 +36,21 @@ DATA_DST = GODOT / "data"
 FONT_SRC = UNITY / "Assets/Resources/Fonts/NotoSerifKR-Regular.otf"
 FONT_DST = GODOT / "fonts/NotoSerifKR-Regular.otf"
 
+RESOURCES = UNITY / "Assets/Resources"
+MEDIA_DST = GODOT / "media"
+
+# art.json이 가리키는 그림·소리. Godot은 res:// 밖을 읽지 못하므로 사본이 필요하다.
+# 경로를 art.json의 값(`Art/Floors/...`)과 **같은 모양**으로 유지한다 — 그래야 한쪽 코드가
+# 매니페스트를 그대로 읽는다. glob은 얕게 쓴다(SFX/Additional의 50여 개는 아직 쓰지 않는다).
+MEDIA = [
+    ("Art/Floors", "*.jpg"),
+    ("Art/Floors", "*.png"),
+    ("Art/Portraits", "*.png"),
+    ("Audio/BGM", "*.ogg"),
+    ("Audio/Ambient", "*.ogg"),
+    ("Audio/SFX", "*.ogg"),
+]
+
 UNITY_USING = re.compile(r"^\s*using\s+Unity(Engine|Editor)\b", re.MULTILINE)
 # 순수 파일에 남아 있으면 Godot 빌드가 깨지는 것들. 미리 잡아 사람에게 알린다.
 HAZARDS = {
@@ -109,6 +124,27 @@ def sync_tree(src: Path, dst: Path, pattern: str, check: bool) -> tuple[int, lis
     return count, stale
 
 
+def sync_media(check: bool) -> tuple[int, list[str]]:
+    """art.json이 가리키는 그림·소리를 media/ 로 맞춘다. 폴더 구조는 그대로 둔다."""
+    stale: list[str] = []
+    count = 0
+    for folder, pattern in MEDIA:
+        src_dir = RESOURCES / folder
+        if not src_dir.is_dir():
+            stale.append(f"{folder} (원본 폴더 없음)")
+            continue
+        for s in sorted(src_dir.glob(pattern)):
+            d = MEDIA_DST / folder / s.name
+            count += 1
+            if d.exists() and filecmp.cmp(s, d, shallow=False):
+                continue
+            stale.append(str(d.relative_to(GODOT)))
+            if not check:
+                d.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(s, d)
+    return count, stale
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Unity 순수 로직 → Godot 공유")
     ap.add_argument("--check", action="store_true", help="쓰지 않고 최신인지만 확인한다")
@@ -147,11 +183,14 @@ def main(argv=None) -> int:
         FONT_DST.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(FONT_SRC, FONT_DST)
 
+    n_media, media_stale = sync_media(args.check)
+
     print(f"\nSharedLogic.props  {'갱신' if props_stale else '최신'}")
     print(f"data/ (JSON {n_json}개)   {'갱신 ' + str(len(json_stale)) + '건' if json_stale else '최신'}")
+    print(f"media/ (그림·소리 {n_media}개)  {'갱신 ' + str(len(media_stale)) + '건' if media_stale else '최신'}")
     print(f"fonts/NotoSerifKR   {'갱신' if font_stale else '최신'}")
 
-    if args.check and (props_stale or json_stale or font_stale):
+    if args.check and (props_stale or json_stale or media_stale or font_stale):
         print("\n--check 실패: `python tools/sync_godot.py`를 돌려야 한다.", file=sys.stderr)
         return 1
     return 0

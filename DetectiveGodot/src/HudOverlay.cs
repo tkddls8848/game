@@ -142,5 +142,15 @@ namespace DetectiveGodot
                          + "`python tools/sync_godot.py`를 돌렸는가?");
             return null;
         }
+
+        /// <summary>
+        /// 캐시를 놓는다. 정적 필드가 Font 리소스를 붙들면 SceneTree가 사라진 뒤에도 남아
+        /// 종료 시 "resources still in use" 경고가 난다. 트리를 떠날 때 Main이 불러 준다.
+        /// </summary>
+        public static void Release()
+        {
+            _cached = null;
+            _tried = false;
+        }
     }
 }

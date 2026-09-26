@@ -1,4 +1,6 @@
-// 시안 화면 12장을 1600×900 PNG로 찍는다.  node shoot.js   (playwright + chromium 필요)
+// 남아 있는 시안 화면을 1600×900 PNG로 찍는다.  node shoot.js   (playwright + chromium 필요)
+// 파일명의 번호는 index.html의 ORDER(원래 순서)를 쓴다. 탈락으로 번호를 다시 매기면
+// 이미 있는 png/NN-*.png와 어긋난다.
 // 폰트는 Google Fonts에서 받는다. 프록시 환경이면 HTTPS_PROXY를 읽고, 받은 파일은 fontcache/에 캐시한다.
 const { chromium } = require('playwright');
 const path = require('path'), fs = require('fs'), crypto = require('crypto'), { execFileSync } = require('child_process');
@@ -27,9 +29,11 @@ function fetchCached(url, ua) {
   await p.evaluate(() => Promise.all([...document.images].map(i => i.complete || new Promise(r => { i.onload = i.onerror = r; }))));
   await p.waitForTimeout(1500);
   const wraps = await p.$$('.screen-wrap'), ids = await p.$$eval('.screen', els => els.map(e => e.dataset.shot));
+  // 번호는 화면에 이미 렌더된 것을 읽는다(페이지 전역 함수에 의존하지 않는다).
+  const nums = await p.$$eval('.concept h2 small', els => els.map(e => e.textContent.trim().split(' ')[0]));
   for (let i = 0; i < wraps.length; i++) {
     await wraps[i].scrollIntoViewIfNeeded(); await p.waitForTimeout(300);
-    await wraps[i].screenshot({ path: path.join(ROOT, 'png', String(i + 1).padStart(2, '0') + '-' + ids[i] + '.png') });
+    await wraps[i].screenshot({ path: path.join(ROOT, 'png', nums[i] + '-' + ids[i] + '.png') });
   }
   await b.close();
 })();

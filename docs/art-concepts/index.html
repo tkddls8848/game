@@ -146,12 +146,15 @@ footer{margin-top:60px;font-size:12px;color:var(--text-3);font-family:var(--mono
 <p class="sub">점수는 이 프로토타입 기준의 주관 평가다. 제작 비용은 지금 코드(ProceduralTextures·SceneBuilder·uGUI 종이 패널)에서 얼마나 바꿔야 하는지로 잡았다.</p>
 <div class="tablewrap"><table id="cmp"><thead><tr><th>시안</th><th>한 줄</th><th>분위기</th><th>엿듣기 궁합</th><th>제작 비용</th><th>CC0 조달</th><th>바꾸는 것</th></tr></thead><tbody></tbody></table></div>
 
-<h2 class="sec">다음에 손댈 셋</h2>
-<p class="sub">지금 연출(사건 파일)을 버리지 않고도 시험할 수 있는 순서다.</p>
+<h2 class="sec">무엇이 됐나</h2>
+<p class="sub">이 시안들을 고른 뒤 실제로 구현된 것과, 왜 그렇게 갔는지. 2026-09-26 현재.</p>
 <div class="reco">
-  <div><b>① 소나 — 엿듣기 전용 화면</b>인물이 익명이고 소리만 단서인 게임에 가장 정직한 그림이다. 링·가청 반경·글자 빠짐은 전부 코드로 그려서 외부 에셋이 0이다. 사건 파일 종이 패널 위에 관찰 모드(T)로만 얹어 봐도 된다.</div>
-  <div><b>② 코르크 보드 — 식별 보드의 형태</b>수사 노트를 "인물 식별 보드"로 바꾸는 Phase에 그대로 쓸 수 있는 UI 언어다. 붉은 실·핀·폴라로이드는 전부 uGUI 이미지 몇 장으로 되고, 초상화는 지금 것을 그대로 쓴다.</div>
-  <div><b>③ 청사진 — 관찰 모드의 대안 스킨</b>평면도를 도면으로 읽게 하면 "치수·시각·위치"가 정보로 보인다. 선 색 두 개와 격자 패턴만 있으면 되므로 SceneBuilder에서 바닥 질감을 끄고 선만 남기는 옵션 하나로 시험할 수 있다.</div>
+  <div><b>① 소나 — 구현됨</b>관찰 모드(T)에서 Tab으로 들어가는 청취 화면이 이 시안이다. 저택이 어둠에 가라앉고 소리만 파문으로 보인다. 파문 위상이 재생 위치(ms)에 묶여 있어 정지하면 같이 멈춘다. Unity <code>SonarView</code>와 Godot <code>MansionView.DrawSonar</code>가 같은 판정 결과를 각자 그린다.</div>
+  <div><b>② 사건 파일 — 기준선으로 유지, 수치로 굳힘</b>팔레트를 <code>Palette.cs</code> 한 곳에 못박았다. 처음 구현이 가벼워 보인 원인이 여기서 드러났다 — 강조색 채도가 높았고(#E8B06A를 두루 썼다), 글자에 4px 검은 외곽선이 있었고, 환경광이 그림자를 씻어 냈다. 바랜 뼈색·재색·마른 핏빛으로 내리고 외곽선을 지웠다.</div>
+  <div><b>③ 인형의 집 — 2.5D로 구현됨</b>같은 <code>rooms.json</code>으로 벽을 박스로 세우고 직교 카메라 58°로 내려다본다. 컷어웨이 대신 벽 높이를 0.9로 낮춰 여섯 방이 한 화면에 보이게 했다. 안개·필름 톤매핑·비네팅으로 무게를 줬다.</div>
+  <div><b>④ 픽셀 아트 — 방향에서 제외</b>화면이 가벼워 보이게 만드는 가장 큰 요인이었다. 이 게임은 "내러티브 미스터리 · 분위기 호러"로 포지셔닝했으므로(<code>docs/POSITIONING.md</code>) 도트의 문법과 맞지 않는다. 시안은 기록으로 남긴다.</div>
+  <div><b>⑤ 코르크 보드 · 필름 누아르 · 동판화 — 보류</b>목소리에 이름을 붙이는 식별 보드 UI에 코르크 보드의 언어를 쓸 수 있다. 누아르·동판화는 단서 그림 필터로 부분 차용이 가능하다. 아직 손대지 않았다.</div>
+</div>
 </div>
 
 <footer>
@@ -825,16 +828,27 @@ CONCEPTS.push({
  }
 });
 
+/* ============ 탈락 컨셉 ============
+   사람이 고른 결과다. 소스는 기록으로 남겨 두고 화면에서만 뺀다 —
+   지운 코드는 다시 볼 수 없지만, 왜 탈락했는지는 나중에도 물어볼 수 있어야 한다.
+
+   번호는 **원래 순서**를 쓴다. png/NN-*.png 파일명이 그 번호이므로 다시 매기면
+   남아 있는 스크린샷과 어긋난다. */
+const ORDER = ['dossier', 'blueprint', 'noir', 'engrave', 'paper', 'deco', 'ink', 'pixel', 'cork', 'sonar', 'water', 'iso'];
+const REJECTED = new Set(['blueprint', 'paper', 'deco', 'ink', 'water']);
+const NUMBER = id => String(ORDER.indexOf(id) + 1).padStart(2, '0');
+
 /* ============ 조립 ============ */
 (function build(){
+ for (let i = CONCEPTS.length - 1; i >= 0; i--) if (REJECTED.has(CONCEPTS[i].id)) CONCEPTS.splice(i, 1);
  const board=document.getElementById('board'),chips=document.getElementById('chips'),pf=document.getElementById('pf-defs'),tb=document.querySelector('#cmp tbody');
  const style=document.createElement('style');style.textContent=CONCEPTS.map(c=>c.css).join('\n');document.head.appendChild(style);
  pf.innerHTML=CONCEPTS.map(c=>c.filter).join('');
  const bar=(l,v,inv)=>`<div class="bar"><span>${l}</span><div class="track"><i style="width:${v*20}%;${inv?'background:var(--ink-red)':''}"></i></div><span class="n">${v}/5</span></div>`;
  CONCEPTS.forEach((c,i)=>{
-  chips.insertAdjacentHTML('beforeend',`<a href="#${c.id}"><i style="background:${c.pal[0][1]};box-shadow:inset 0 0 0 3px ${c.pal[Math.min(2,c.pal.length-1)][1]}"></i>${String(i+1).padStart(2,'0')} ${c.name}</a>`);
+  chips.insertAdjacentHTML('beforeend',`<a href="#${c.id}"><i style="background:${c.pal[0][1]};box-shadow:inset 0 0 0 3px ${c.pal[Math.min(2,c.pal.length-1)][1]}"></i>${NUMBER(c.id)} ${c.name}</a>`);
   const sec=document.createElement('section');sec.className='concept';sec.id=c.id;
-  sec.innerHTML=`<div class="c-head"><div><h2><small>${String(i+1).padStart(2,'0')} · ${c.en}</small>${c.name}</h2><div class="tag">${c.tag}</div></div><div class="tech">${c.tech.join('<br>')}</div></div>
+  sec.innerHTML=`<div class="c-head"><div><h2><small>${NUMBER(c.id)} · ${c.en}</small>${c.name}</h2><div class="tag">${c.tag}</div></div><div class="tech">${c.tech.join('<br>')}</div></div>
    <div class="screen-wrap"><div class="screen c-${c.id}" data-shot="${c.id}">${c.render(c)}</div></div>
    <div class="c-body"><div><p>${c.mood}</p>
      <dl class="kv"><dt>팔레트</dt><dd><div class="swatches">${c.pal.map(p=>`<div class="sw"><i style="background:${p[1]}"></i><small><b>${p[0]}</b>${p[1]}</small></div>`).join('')}</div></dd>

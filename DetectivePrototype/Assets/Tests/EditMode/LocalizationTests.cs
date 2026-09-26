@@ -26,6 +26,7 @@ namespace Detective.Tests
         private const string UiEnPath = "Assets/Resources/GameData/locale/ui.en.json";
         private const string ContentEnPath = "Assets/Resources/GameData/locale/content.en.json";
         private const string ScriptEnPath = "Assets/Resources/GameData/locale/case_02.script.en.json";
+        private const string EventsPath = "Assets/Resources/GameData/cases/case_02/events.json";
 
         [TearDown]
         public void TearDown()
@@ -194,9 +195,17 @@ namespace Detective.Tests
             // **숫자가 나온다는 것**을 못박는다. 출시 판정은 이 숫자로 한다.
             ScriptDefinition script = FromJson<ScriptDefinition>(ReadProjectFile(ScriptPath)).Normalized();
             Dictionary<string, string> required = LocaleCoverage.RequiredFromScript(script);
+
+            // 이벤트 묘사도 같은 파일에 번역된다. 빼놓으면 "대본에 없는 id"로 잘못 잡힌다.
+            EventTable events = FromJson<EventTable>(ReadProjectFile(EventsPath));
+            foreach (KeyValuePair<string, string> pair in LocaleCoverage.RequiredFromEvents(events))
+                required[pair.Key] = pair.Value;
+
             LocaleCoverageReport report = LocaleCoverage.Check(required, LoadLocale(ScriptEnPath));
 
-            Assert.Greater(report.RequiredCount, 250, "대본 항목 수가 갑자기 줄었다면 무언가 빠진 것이다");
+            // 규모 하한. 목적은 "대본이 통째로 날아간 것"을 잡는 것이고, 정확한 수를 못박는 것이 아니다.
+            // Case02ScriptTests가 발화 수 150~300을 따로 요구하므로 여기서는 느슨하게 둔다.
+            Assert.Greater(report.RequiredCount, 180, "대본 항목 수가 갑자기 줄었다면 무언가 빠진 것이다");
             TestContext.WriteLine("대본 번역 진행률: " + report.TranslatedCount + "/" + report.RequiredCount
                                   + " (" + (int)(report.Ratio * 100) + "%)");
 

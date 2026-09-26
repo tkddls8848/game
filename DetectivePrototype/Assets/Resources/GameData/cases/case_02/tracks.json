@@ -3,46 +3,161 @@
     {
       "npcId": "npc_a",
       "segments": [
-        { "startMs": 0,      "endMs": 300000, "room": "room_dining" },
-        { "startMs": 333000, "endMs": 372000, "room": "room_hall" },
-        { "startMs": 382000, "endMs": 600000, "room": "room_dining" }
+        {
+          "startMs": 0,
+          "endMs": 92000,
+          "room": "room_dining"
+        },
+        {
+          "startMs": 128000,
+          "endMs": 212000,
+          "room": "room_lobby"
+        },
+        {
+          "startMs": 216000,
+          "endMs": 278000,
+          "room": "room_hall"
+        },
+        {
+          "startMs": 290000,
+          "endMs": 378000,
+          "room": "room_suspect"
+        },
+        {
+          "startMs": 398000,
+          "endMs": 476000,
+          "room": "room_storage"
+        },
+        {
+          "startMs": 494000,
+          "endMs": 596000,
+          "room": "room_dining"
+        }
       ]
     },
     {
       "npcId": "npc_b",
       "segments": [
-        { "startMs": 0,      "endMs": 182000, "room": "room_dining" },
-        { "startMs": 206000, "endMs": 330000, "room": "room_storage" },
-        { "startMs": 345200, "endMs": 460000, "room": "room_storage" },
-        { "startMs": 470000, "endMs": 600000, "room": "room_dining" }
+        {
+          "startMs": 0,
+          "endMs": 92000,
+          "room": "room_dining"
+        },
+        {
+          "startMs": 132000,
+          "endMs": 210000,
+          "room": "room_storage"
+        },
+        {
+          "startMs": 218000,
+          "endMs": 360000,
+          "room": "room_dining"
+        },
+        {
+          "startMs": 396000,
+          "endMs": 478000,
+          "room": "room_dining"
+        },
+        {
+          "startMs": 494000,
+          "endMs": 596000,
+          "room": "room_dining"
+        }
       ]
     },
     {
       "npcId": "npc_c",
       "segments": [
-        { "startMs": 0,      "endMs": 266000, "room": "room_lobby" },
-        { "startMs": 272000, "endMs": 306000, "room": "room_hall" },
-        { "startMs": 343600, "endMs": 455000, "room": "room_storage" },
-        { "startMs": 472000, "endMs": 560000, "room": "room_suspect" },
-        { "startMs": 564000, "endMs": 600000, "room": "room_hall" }
+        {
+          "startMs": 6000,
+          "endMs": 88000,
+          "room": "room_suspect"
+        },
+        {
+          "startMs": 128000,
+          "endMs": 212000,
+          "room": "room_lobby"
+        },
+        {
+          "startMs": 216000,
+          "endMs": 278000,
+          "room": "room_hall"
+        },
+        {
+          "startMs": 290000,
+          "endMs": 378000,
+          "room": "room_suspect"
+        },
+        {
+          "startMs": 398000,
+          "endMs": 476000,
+          "room": "room_storage"
+        },
+        {
+          "startMs": 494000,
+          "endMs": 596000,
+          "room": "room_dining"
+        }
       ]
     },
     {
       "npcId": "npc_d",
       "segments": [
-        { "startMs": 0,      "endMs": 114000, "room": "room_lobby" },
-        { "startMs": 141000, "endMs": 338700, "room": "room_victim" },
-        { "startMs": 339700, "endMs": 343000, "room": "room_storage" },
-        { "startMs": 371000, "endMs": 600000, "room": "room_suspect" }
+        {
+          "startMs": 0,
+          "endMs": 99000,
+          "room": "room_victim"
+        },
+        {
+          "startMs": 132000,
+          "endMs": 210000,
+          "room": "room_storage"
+        },
+        {
+          "startMs": 232000,
+          "endMs": 300000,
+          "room": "room_victim"
+        },
+        {
+          "startMs": 316000,
+          "endMs": 382000,
+          "room": "room_storage"
+        },
+        {
+          "startMs": 396000,
+          "endMs": 478000,
+          "room": "room_dining"
+        },
+        {
+          "startMs": 494000,
+          "endMs": 596000,
+          "room": "room_dining"
+        }
       ]
     },
     {
       "npcId": "npc_victim",
       "segments": [
-        { "startMs": 0,      "endMs": 231000, "room": "room_victim" },
-        { "startMs": 236000, "endMs": 271000, "room": "room_hall" },
-        { "startMs": 310000, "endMs": 447000, "room": "room_dining" },
-        { "startMs": 453000, "endMs": 600000, "room": "room_victim" }
+        {
+          "startMs": 0,
+          "endMs": 200000,
+          "room": "room_victim"
+        },
+        {
+          "startMs": 218000,
+          "endMs": 360000,
+          "room": "room_dining"
+        },
+        {
+          "startMs": 396000,
+          "endMs": 478000,
+          "room": "room_dining"
+        },
+        {
+          "startMs": 494000,
+          "endMs": 596000,
+          "room": "room_dining"
+        }
       ]
     }
   ]

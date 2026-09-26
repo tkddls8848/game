@@ -1,0 +1,148 @@
+{
+  "events": [
+    {
+      "id": "ev_drawer_open",
+      "startMs": 239500,
+      "durationMs": 1100,
+      "room": "room_victim",
+      "npcId": "npc_d",
+      "kind": "object",
+      "text": "책상 서랍이 열린다",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_pills_rattle",
+      "startMs": 241500,
+      "durationMs": 1600,
+      "room": "room_victim",
+      "npcId": "npc_d",
+      "kind": "object",
+      "text": "유리병 안에서 알약이 굴러간다",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_drawer_close",
+      "startMs": 245700,
+      "durationMs": 1100,
+      "room": "room_victim",
+      "npcId": "npc_d",
+      "kind": "object",
+      "text": "서랍이 조심스럽게 닫힌다",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_coal_shift",
+      "startMs": 336000,
+      "durationMs": 2400,
+      "room": "room_storage",
+      "npcId": "npc_d",
+      "kind": "object",
+      "text": "석탄이 무너져 내린다",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_ash_scatter",
+      "startMs": 346000,
+      "durationMs": 1800,
+      "room": "room_storage",
+      "npcId": "npc_d",
+      "kind": "object",
+      "text": "재를 손으로 덮는 소리",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_ledger_1",
+      "startMs": 104000,
+      "durationMs": 1500,
+      "room": "room_victim",
+      "npcId": "npc_victim",
+      "kind": "object",
+      "text": "장부를 넘기는 소리",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_ledger_2",
+      "startMs": 142000,
+      "durationMs": 1500,
+      "room": "room_victim",
+      "npcId": "npc_victim",
+      "kind": "object",
+      "text": "장부를 덮는 소리",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_letter",
+      "startMs": 30000,
+      "durationMs": 1400,
+      "room": "room_suspect",
+      "npcId": "npc_c",
+      "kind": "object",
+      "text": "종이를 접는 소리",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_chair",
+      "startMs": 52000,
+      "durationMs": 1200,
+      "room": "room_suspect",
+      "npcId": "npc_c",
+      "kind": "object",
+      "text": "의자가 밀린다",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_clock_quarter",
+      "startMs": 300000,
+      "durationMs": 3000,
+      "room": "room_hall",
+      "npcId": "",
+      "kind": "house",
+      "text": "괘종시계가 한 번 울린다",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_clock_half",
+      "startMs": 592000,
+      "durationMs": 4000,
+      "room": "room_hall",
+      "npcId": "",
+      "kind": "house",
+      "text": "저녁 종이 울린다",
+      "muffledText": "",
+      "sound": "",
+      "loud": false
+    },
+    {
+      "id": "ev_glass_knock",
+      "startMs": 452000,
+      "durationMs": 1500,
+      "room": "room_storage",
+      "npcId": "npc_c",
+      "kind": "break",
+      "text": "유리병이 석탄에 부딪힌다",
+      "muffledText": "",
+      "sound": "",
+      "loud": true
+    }
+  ]
+}

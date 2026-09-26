@@ -125,6 +125,25 @@ namespace Detective.Core
             return required;
         }
 
+        /// <summary>
+        /// 이벤트에서 번역이 필요한 항목 — 같은 방에서 들었을 때 보이는 묘사.
+        /// 벽 너머 묘사는 <c>EventKind.MuffledDescription</c>이 만들고 UI 표에서 번역되므로 여기 없다.
+        /// </summary>
+        public static Dictionary<string, string> RequiredFromEvents(Eavesdrop.EventTable table)
+        {
+            var required = new Dictionary<string, string>();
+            if (table == null) return required;
+            table.Normalized();
+            for (int i = 0; i < table.events.Length; i++)
+            {
+                Eavesdrop.ScriptEvent e = table.events[i];
+                if (e == null) continue;
+                Add(required, e.id, e.text);
+                if (e.muffledText.Length > 0) Add(required, e.id + ".muffled", e.muffledText);
+            }
+            return required;
+        }
+
         /// <summary>사건 문구에서 번역이 필요한 항목. 제목·도입·해결·실패·선택지 라벨.</summary>
         public static Dictionary<string, string> RequiredFromCase(Data.CaseDefinition definition)
         {

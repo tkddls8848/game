@@ -177,12 +177,33 @@ namespace Detective.Tests
         public void WalkingPast_MovesTheSound()
         {
             // 복도를 지나가는 사람의 소리는 실제로 스쳐 지나가야 한다.
+            //
+            // 이동 구간을 **데이터에서 찾는다.** 전에는 시각을 박아 뒀는데, 시나리오를 다시 짜자
+            // 그 시각이 이동 구간이 아니게 되어 테스트가 엉뚱하게 실패했다. 트랙이 바뀌어도
+            // 성립해야 하는 성질은 "이동 중에는 위치가 변한다"이지 특정 시각이 아니다.
             MovementTracks tracks = LoadTracks();
-            var positions = new SpeakerPositions(ScriptWithSpeaker("v1", "npc_b"), tracks, _layout);
 
-            // npc_b는 182초에 식당을 떠나 206초에 창고에 든다 — 그 사이가 이동 중이다.
-            Assert.IsTrue(positions.TryGetPoint("npc_b", string.Empty, 188000, out float x1, out float y1));
-            Assert.IsTrue(positions.TryGetPoint("npc_b", string.Empty, 200000, out float x2, out float y2));
+            string npcId = null;
+            int fromMs = 0, toMs = 0;
+            foreach (MovementTrack track in tracks.All)
+            {
+                TrackSegment[] segments = track.segments;
+                for (int i = 1; i < segments.Length && npcId == null; i++)
+                {
+                    int gap = segments[i].startMs - segments[i - 1].endMs;
+                    if (gap < 4000) continue;                       // 보간이 보일 만큼 긴 이동만
+                    if (segments[i].room == segments[i - 1].room) continue;
+                    npcId = track.npcId;
+                    fromMs = segments[i - 1].endMs + gap / 4;
+                    toMs = segments[i - 1].endMs + gap * 3 / 4;
+                }
+                if (npcId != null) break;
+            }
+            Assert.IsNotNull(npcId, "이동 구간이 하나도 없다 — 사람들이 움직이지 않는 시나리오다");
+
+            var positions = new SpeakerPositions(ScriptWithSpeaker("v1", npcId), tracks, _layout);
+            Assert.IsTrue(positions.TryGetPoint(npcId, string.Empty, fromMs, out float x1, out float y1));
+            Assert.IsTrue(positions.TryGetPoint(npcId, string.Empty, toMs, out float x2, out float y2));
 
             float moved = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
             Assert.Greater(moved, 0.01f, "이동 중에는 위치가 실제로 변해야 한다");

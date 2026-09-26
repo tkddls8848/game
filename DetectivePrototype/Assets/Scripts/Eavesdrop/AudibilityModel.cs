@@ -154,6 +154,53 @@ namespace Detective.Eavesdrop
             return result;
         }
 
+        /// <summary>
+        /// timeMs 순간 listenerRoom에 전달되는 이벤트들. 말과 같은 <see cref="Judge"/>를 쓰지만
+        /// 한 가지가 다르다 — <b>큰 소리는 벽을 넘어도 또렷하다</b>.
+        ///
+        /// 말은 벽을 넘으면 반드시 뭉개진다(무슨 말인지 알 수 없다). 그런데 유리가 깨지는 소리는
+        /// 옆 방에서도 유리가 깨졌다는 것을 안다. 그 차이를 여기서 준다. 등급 자체는 Muffled로
+        /// 남기지 않고 Full로 올린다 — 플레이어가 아는 정보의 양이 실제로 같기 때문이다.
+        /// </summary>
+        public List<PerceivedEvent> PerceiveEvents(EventTimeline timeline, int timeMs, string listenerRoom)
+        {
+            var result = new List<PerceivedEvent>();
+            if (timeline == null) return result;
+
+            List<ScriptEvent> active = timeline.ActiveAt(timeMs);
+            for (int i = 0; i < active.Count; i++)
+            {
+                ScriptEvent e = active[i];
+                Audibility level = Judge(listenerRoom, e.room);
+                if (level == Audibility.None) continue;
+
+                bool loud = e.loud || EventKind.IsLoudByDefault(e.kind);
+                if (level == Audibility.Muffled && loud) level = Audibility.Full;
+
+                string text;
+                if (level == Audibility.Full)
+                {
+                    text = e.text.Length > 0 ? e.text : EventKind.MuffledDescription(e.kind);
+                }
+                else
+                {
+                    text = e.muffledText.Length > 0 ? e.muffledText : EventKind.MuffledDescription(e.kind);
+                }
+
+                result.Add(new PerceivedEvent
+                {
+                    Level = level,
+                    EventId = e.id,
+                    Room = e.room,
+                    // 누가 냈는지는 알려 주지 않는다 — 그것이 알아내야 하는 것이다.
+                    NpcId = string.Empty,
+                    Kind = e.kind,
+                    Text = text
+                });
+            }
+            return result;
+        }
+
         private static string PairKey(string a, string b)
         {
             return a + "|" + b;

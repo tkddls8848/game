@@ -19,16 +19,27 @@ namespace Detective.Eavesdrop
         private readonly AudibilityModel _audibility;
         private readonly PlaybackTransport _transport;
 
+        /// <summary>말이 아닌 소리들. 없을 수도 있다(이벤트 없는 회차).</summary>
+        private readonly EventTimeline _events;
+
         /// <summary>발화 id → 지금까지 가장 잘 들은 등급.</summary>
         private readonly Dictionary<string, Audibility> _heard = new Dictionary<string, Audibility>();
 
         private readonly List<PerceivedUtterance> _current = new List<PerceivedUtterance>();
+        private readonly List<PerceivedEvent> _currentEvents = new List<PerceivedEvent>();
         private string _listenerRoom = string.Empty;
 
         public ListeningSession(ScriptTimeline timeline, AudibilityModel audibility)
+            : this(timeline, audibility, null)
+        {
+        }
+
+        /// <summary>이벤트(문소리·발소리·깨지는 소리)까지 함께 듣는 회차.</summary>
+        public ListeningSession(ScriptTimeline timeline, AudibilityModel audibility, EventTimeline events)
         {
             _timeline = timeline;
             _audibility = audibility;
+            _events = events;
             _transport = new PlaybackTransport(timeline != null ? timeline.DurationMs : 0);
             Refresh();
         }
@@ -43,6 +54,12 @@ namespace Detective.Eavesdrop
         /// <summary>이 순간 이 귀에 닿는 발화들. Muffled면 내용이 비어 있다.</summary>
         public IList<PerceivedUtterance> Current { get { return _current.AsReadOnly(); } }
 
+        /// <summary>이 순간 이 귀에 닿는 말이 아닌 소리들. 들은 수에는 끼지 않는다(정황이다).</summary>
+        public IList<PerceivedEvent> CurrentEvents { get { return _currentEvents.AsReadOnly(); } }
+
+        /// <summary>이벤트 표. 영상 진행 바에 눈금을 찍을 때 쓴다. 없으면 null.</summary>
+        public EventTimeline Events { get { return _events; } }
+
         /// <summary>청취점을 옮긴다. 옮긴 즉시 들리는 것이 달라진다.</summary>
         public void MoveTo(string roomId)
         {
@@ -52,11 +69,17 @@ namespace Detective.Eavesdrop
             Refresh();
         }
 
-        /// <summary>재생을 진행시키고 들은 것을 기록한다. 돌려주는 값은 실제로 흐른 대본 시간(ms).</summary>
+        /// <summary>
+        /// 재생을 진행시키고 들은 것을 기록한다. 돌려주는 값은 흐른 대본 시간(ms, 뒤로 흐르면 음수).
+        ///
+        /// <b>뒤로 감는 동안은 들은 것으로 치지 않는다.</b> 거꾸로 흐르는 말은 알아들을 수 없고,
+        /// 이미 있는 규칙(건너뛴 구간은 듣지 않은 것)과도 같은 이유다 — 지나치지 않은 것을
+        /// 들었다고 쳐 주면 되돌려 들을 이유가 사라진다.
+        /// </summary>
         public int Advance(int realDeltaMs)
         {
             int moved = _transport.Advance(realDeltaMs);
-            Refresh();
+            Refresh(moved >= 0 && _transport.Direction == PlayDirection.Forward);
             return moved;
         }
 
@@ -80,14 +103,32 @@ namespace Detective.Eavesdrop
         /// <summary>위치나 방이 바뀐 뒤 지금 들리는 것을 다시 계산하고 기록에 반영한다.</summary>
         public void Refresh()
         {
+            Refresh(true);
+        }
+
+        /// <summary>
+        /// <paramref name="record"/>가 false면 지금 들리는 것만 갱신하고 <b>기록에는 남기지 않는다</b>.
+        /// 뒤로 감는 중에 쓴다 — 화면에는 무엇이 울리고 있는지 보여 주되 들은 것으로는 치지 않는다.
+        /// </summary>
+        public void Refresh(bool record)
+        {
             _current.Clear();
+            _currentEvents.Clear();
             if (_timeline == null || _audibility == null) return;
+
+            if (_events != null)
+            {
+                List<PerceivedEvent> heardEvents =
+                    _audibility.PerceiveEvents(_events, _transport.PositionMs, _listenerRoom);
+                for (int i = 0; i < heardEvents.Count; i++) _currentEvents.Add(heardEvents[i]);
+            }
 
             List<PerceivedUtterance> perceived = _audibility.Perceive(_timeline, _transport.PositionMs, _listenerRoom);
             for (int i = 0; i < perceived.Count; i++)
             {
                 PerceivedUtterance p = perceived[i];
                 _current.Add(p);
+                if (!record) continue;
 
                 Audibility best;
                 if (!_heard.TryGetValue(p.UtteranceId, out best) || p.Level > best)

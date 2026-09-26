@@ -31,9 +31,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Dialogue\DialogueCatalog.cs" Link="Shared\Dialogue\DialogueCatalog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Dialogue\SightingGenerator.cs" Link="Shared\Dialogue\SightingGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\AudibilityModel.cs" Link="Shared\Eavesdrop\AudibilityModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\EventTimeline.cs" Link="Shared\Eavesdrop\EventTimeline.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\ListeningSession.cs" Link="Shared\Eavesdrop\ListeningSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\MovementEvents.cs" Link="Shared\Eavesdrop\MovementEvents.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\MovementTrack.cs" Link="Shared\Eavesdrop\MovementTrack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\PlaybackTransport.cs" Link="Shared\Eavesdrop\PlaybackTransport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\ScriptEventSchema.cs" Link="Shared\Eavesdrop\ScriptEventSchema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\ScriptTimeline.cs" Link="Shared\Eavesdrop\ScriptTimeline.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\ScriptValidator.cs" Link="Shared\Eavesdrop\ScriptValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\SliceSolvability.cs" Link="Shared\Eavesdrop\SliceSolvability.cs" />

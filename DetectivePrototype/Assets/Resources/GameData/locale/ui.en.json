@@ -1,0 +1,77 @@
+{
+  "locale": "en",
+  "entries": [
+    {
+      "id": "event.door",
+      "text": "a door opens and closes somewhere"
+    },
+    {
+      "id": "event.footsteps",
+      "text": "footsteps passing"
+    },
+    {
+      "id": "event.object",
+      "text": "something set down"
+    },
+    {
+      "id": "event.break",
+      "text": "something breaking"
+    },
+    {
+      "id": "event.struggle",
+      "text": "something striking something"
+    },
+    {
+      "id": "event.house",
+      "text": "the house settling"
+    },
+    {
+      "id": "event.other",
+      "text": "a sound"
+    },
+    {
+      "id": "voice.unknown",
+      "text": "Voice"
+    },
+    {
+      "id": "voice.numbered",
+      "text": "Voice {0}"
+    },
+    {
+      "id": "hud.mode.explore",
+      "text": "WALKING"
+    },
+    {
+      "id": "hud.mode.listen",
+      "text": "LISTENING"
+    },
+    {
+      "id": "hud.ear",
+      "text": "ear"
+    },
+    {
+      "id": "hud.threshold",
+      "text": "doorway"
+    },
+    {
+      "id": "hud.heard",
+      "text": "heard {0}/{1}"
+    },
+    {
+      "id": "hud.missed",
+      "text": "missed {0}"
+    },
+    {
+      "id": "hud.silent",
+      "text": "…quiet"
+    },
+    {
+      "id": "hud.throughwall",
+      "text": "through the wall"
+    },
+    {
+      "id": "player.hint",
+      "text": "Space play/pause · , . 5s · J rewind L forward · [ ] speed · drag the bar · R restart · Tab listen · Esc quit"
+    }
+  ]
+}

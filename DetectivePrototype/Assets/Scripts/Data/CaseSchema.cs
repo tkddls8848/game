@@ -71,6 +71,17 @@ namespace Detective.Data
             return this;
         }
 
+        /// <summary>제목·도입·해결·실패 글. 번역 키는 "&lt;caseId&gt;.title" 꼴이다.</summary>
+        public string LocalizedTitle { get { return Loc("title", title); } }
+        public string LocalizedIntro { get { return Loc("intro", intro); } }
+        public string LocalizedSolvedText { get { return Loc("solved", solvedText); } }
+        public string LocalizedFailedText { get { return Loc("failed", failedText); } }
+
+        private string Loc(string suffix, string korean)
+        {
+            return Detective.Core.Localization.Content((id ?? "case") + "." + suffix, korean);
+        }
+
         public static string LabelOf(ChoiceDefinition[] choices, string id)
         {
             if (choices == null) return id;

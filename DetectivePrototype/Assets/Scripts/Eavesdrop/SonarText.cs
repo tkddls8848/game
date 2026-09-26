@@ -46,9 +46,12 @@ namespace Detective.Eavesdrop
         /// <summary>목소리는 아직 이름이 아니다(U-3에서 배정). "v2" → "목소리 2". 숫자가 아니면 ID 그대로.</summary>
         public static string VoiceName(string voiceId)
         {
-            if (string.IsNullOrEmpty(voiceId)) return "목소리";
+            if (string.IsNullOrEmpty(voiceId))
+                return Detective.Core.Localization.Text("voice.unknown", "목소리");
             int n;
-            return int.TryParse(voiceId.TrimStart('v', 'V'), out n) ? "목소리 " + n : voiceId;
+            if (!int.TryParse(voiceId.TrimStart('v', 'V'), out n)) return voiceId;
+            // 영어는 "Voice 2"처럼 순서가 반대다. 번호를 끼울 자리를 표에서 받는다.
+            return Detective.Core.Localization.Text("voice.numbered", "목소리 {0}").Replace("{0}", n.ToString());
         }
 
         /// <summary>대본에 나오는 목소리 ID를 등장 순서대로(중복 없이). 타임라인 막대의 줄 순서.</summary>

@@ -1,0 +1,61 @@
+{
+  "locale": "en",
+  "entries": [
+    {
+      "id": "u_id_v1",
+      "text": "He won't be asking for it tonight. You can tell him Miss Clara said so."
+    },
+    {
+      "id": "u_id_v2",
+      "text": "It's Marco, isn't it? I used to be given bread here when I was small."
+    },
+    {
+      "id": "u_id_v3",
+      "text": "What does the letter say, Julian?"
+    },
+    {
+      "id": "u_id_v4",
+      "text": "Doctor Moreau. Before you open that bag, there is something you need to hear."
+    },
+    {
+      "id": "u_id_v5",
+      "text": "Roll up your sleeve, Mr Edmund Hale."
+    },
+    {
+      "id": "u_pills",
+      "text": "Without that bottle you won't last ten minutes once an attack starts. So never take it out of the drawer."
+    },
+    {
+      "id": "u_blackmail",
+      "text": "I sent someone to your old hospital. I've read the winter of 1907. And the line you altered."
+    },
+    {
+      "id": "u_gossip_past",
+      "text": "The face in that newspaper was Doctor Moreau. Two patients dead, and the record altered, it said. The name of that hospital was stamped on a brown bottle too."
+    },
+    {
+      "id": "u_clock",
+      "text": "The wall clock says fourteen minutes past eight. Sixteen minutes until the dinner bell."
+    },
+    {
+      "id": "u_swap",
+      "text": "Right-hand drawer. Brown bottle. Twenty-four tablets. I brought ones exactly the same colour, so no one will know the difference."
+    },
+    {
+      "id": "u_sugar",
+      "text": "Twelve sugar pills. They do dissolve under the tongue. They simply do nothing to the heart."
+    },
+    {
+      "id": "u_drawer",
+      "text": "The right-hand drawer of the study desk. The real bottle that was in it I carried out, and the bottle in that drawer now is mine."
+    },
+    {
+      "id": "u_coal",
+      "text": "Wait. There's a brown glass bottle shoved under the coal bin. Ash heaped over it, but the label didn't burn. St Allen Sanatorium, it says."
+    },
+    {
+      "id": "u_saw",
+      "text": "Sir — a moment ago I saw Doctor Moreau come out of the cellar door, in the corridor. There was coal dust on her skirt."
+    }
+  ]
+}

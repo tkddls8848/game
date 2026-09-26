@@ -22,6 +22,9 @@ namespace Detective.Core
         /// <summary>사건 데이터 전체. Awake 이후에 유효하다.</summary>
         public CaseDatabase Database { get; private set; }
 
+        [Tooltip("화면에 쓸 언어. \"ko\"(원문) 또는 \"en\". 번역이 없는 항목은 한국어로 남는다.")]
+        public string locale = Localization.Korean;
+
         /// <summary>rooms.json에서 만들어진 맵 레이아웃. Awake 이후에 유효하다.</summary>
         public RoomLayout Layout { get { return Database != null ? Database.Layout : null; } }
 
@@ -53,6 +56,9 @@ namespace Detective.Core
                 return;
             }
             Instance = this;
+
+            // 언어를 데이터보다 먼저 정한다. 방 이름·사건 문구가 읽히는 순간 표가 있어야 한다.
+            GameDataLoader.ApplyLocale(locale, caseId);
             ModalState.Reset();
 
             RoomTable table = GameDataLoader.LoadRoomTable();

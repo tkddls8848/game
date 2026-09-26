@@ -101,10 +101,14 @@ namespace Detective.Core
             return true;
         }
 
+        /// <summary>
+        /// 방 이름. 번역을 탄다 — 키는 방 id다(별도 키를 만들면 rooms.json이 바뀔 때 어긋난다).
+        /// </summary>
         public string DisplayNameOf(string roomId)
         {
             RoomDefinition room;
-            return TryGetRoom(roomId, out room) ? room.displayName : roomId;
+            if (!TryGetRoom(roomId, out room)) return roomId;
+            return Localization.Content(room.id, room.displayName);
         }
 
         /// <summary>플레이어 시작 좌표(시작 방의 중심).</summary>

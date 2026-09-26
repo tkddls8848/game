@@ -1,0 +1,161 @@
+{
+  "locale": "en",
+  "entries": [
+    {
+      "id": "room_lobby",
+      "text": "Entrance Hall"
+    },
+    {
+      "id": "room_dining",
+      "text": "Dining Room"
+    },
+    {
+      "id": "room_storage",
+      "text": "Cellar"
+    },
+    {
+      "id": "room_hall",
+      "text": "Corridor"
+    },
+    {
+      "id": "room_victim",
+      "text": "Study"
+    },
+    {
+      "id": "room_suspect",
+      "text": "Guest Room"
+    },
+    {
+      "id": "case_02.title",
+      "text": "Fourteen Minutes Past Eight"
+    },
+    {
+      "id": "case_02.intro",
+      "text": "The snow has taken the road. What is left of Blackwood Manor is ten minutes.\nEight-ten to eight-twenty. Somewhere inside it the master of this house dies. You cannot stop that — it has already happened. You can only listen to it.\n\nOne wall is enough to turn speech into murmur. Your ear goes in one room at a time, so a single pass will never be enough. Rewind. Stand somewhere else. Hear the same ten minutes again.\n\nThere are five voices and you do not know a single name. Footsteps, and doors closing, are the only map you are given.\n\nWhen the ten minutes end the bell rings, and Edmund Hale takes a pill from his drawer and puts it under his tongue. It is not his medicine."
+    },
+    {
+      "id": "case_02.solved",
+      "text": "In the winter of 1907, at a hospital she has not named since, Helen Moreau let a patient die and altered one line of the record. Edmund Hale found that line, and used it to ask her for a signature.\nAt fourteen minutes past eight by the wall clock, Helen opened the right-hand drawer of the study desk. She carried out the brown bottle with its twenty-four nitroglycerin tablets and left twelve sugar pills of the same colour and size in its place. Nobody tastes what they put under their tongue.\nThe real bottle was in the cellar, wedged under the coal bin beneath a handful of ash. The ash did not burn the label — St Allen Sanatorium.\n\nCase closed."
+    },
+    {
+      "id": "case_02.failed",
+      "text": "Your reasoning did not reach the truth.\nAt half past eight the bell rang. The study door stood open, and twelve pills that do nothing at all were still lying in the right-hand drawer."
+    },
+    {
+      "id": "motive_blackmail",
+      "text": "Blackmail (caught falsifying an old medical record)"
+    },
+    {
+      "id": "motive_inheritance",
+      "text": "Inheritance"
+    },
+    {
+      "id": "motive_debt",
+      "text": "Gambling debt"
+    },
+    {
+      "id": "motive_ledger",
+      "text": "Hiding the ledger (the erased sixth line)"
+    },
+    {
+      "id": "method_swap",
+      "text": "Swapping the medicine (nitroglycerin for sugar pills)"
+    },
+    {
+      "id": "method_poison",
+      "text": "Poison"
+    },
+    {
+      "id": "method_neglect",
+      "text": "Withholding the medicine"
+    },
+    {
+      "id": "method_overdose",
+      "text": "Overdose"
+    },
+    {
+      "id": "fact_voice1_is_clara",
+      "text": "Voice v1 is Clara Boss, the private secretary of the house"
+    },
+    {
+      "id": "fact_voice2_is_marco",
+      "text": "Voice v2 is Marco Bellini, the cook"
+    },
+    {
+      "id": "fact_voice3_is_julian",
+      "text": "Voice v3 is Julian Hale, the victim's nephew"
+    },
+    {
+      "id": "fact_voice4_is_helen",
+      "text": "Voice v4 is Helen Moreau, the attending physician"
+    },
+    {
+      "id": "fact_voice5_is_edmund",
+      "text": "Voice v5 is Edmund Hale, the master of the house"
+    },
+    {
+      "id": "fact_edmund_heart_pills",
+      "text": "Without the nitroglycerin tablets in the brown bottle in his study drawer, Edmund cannot survive an attack"
+    },
+    {
+      "id": "fact_blackmail",
+      "text": "Edmund had found Helen's falsified 1907 record and was holding it over her"
+    },
+    {
+      "id": "fact_helen_past",
+      "text": "Helen let a patient die at a former hospital and altered the record"
+    },
+    {
+      "id": "fact_clock_814",
+      "text": "This point in the run is fourteen minutes past eight by the wall clock"
+    },
+    {
+      "id": "fact_swap_moment",
+      "text": "At that moment the brown bottle in the study's right-hand drawer was being swapped"
+    },
+    {
+      "id": "fact_sugar_pills",
+      "text": "The substituted pills are sugar and do nothing for the heart"
+    },
+    {
+      "id": "fact_drawer_place",
+      "text": "The swap happened in the right-hand drawer of the study desk"
+    },
+    {
+      "id": "fact_bottle_in_coal",
+      "text": "A brown bottle labelled St Allen Sanatorium is hidden in the cellar coal bin"
+    },
+    {
+      "id": "fact_helen_left_storage",
+      "text": "Someone saw Helen coming out of the cellar"
+    },
+    {
+      "id": "concl_voices_named",
+      "text": "The five voices: v1 Clara Boss, v2 Marco Bellini, v3 Julian Hale, v4 Helen Moreau, v5 Edmund Hale"
+    },
+    {
+      "id": "concl_culprit",
+      "text": "The killer is voice v4 — Helen Moreau, the attending physician"
+    },
+    {
+      "id": "concl_motive",
+      "text": "The motive was blackmail — Edmund held her altered record and demanded a signature"
+    },
+    {
+      "id": "concl_time",
+      "text": "The time of the act was fourteen minutes past eight by the wall clock"
+    },
+    {
+      "id": "concl_place",
+      "text": "The place was the study — the right-hand drawer of the desk"
+    },
+    {
+      "id": "concl_method",
+      "text": "The method was substitution — sugar pills in place of nitroglycerin, so the attack could not be stopped"
+    },
+    {
+      "id": "concl_evidence",
+      "text": "The decisive evidence is the brown bottle labelled St Allen Sanatorium, hidden in the cellar coal bin"
+    }
+  ]
+}

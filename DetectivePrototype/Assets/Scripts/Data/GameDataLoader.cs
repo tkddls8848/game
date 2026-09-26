@@ -165,6 +165,43 @@ namespace Detective.Data
             return table != null ? table.Normalized() : null;
         }
 
+        /// <summary>언어 파일이 놓이는 Resources 폴더.</summary>
+        public const string LocaleResourceFolder = "GameData/locale/";
+
+        /// <summary>
+        /// 이 언어의 문자열 표를 전부 얹는다. UI → 콘텐츠 → 대본 순으로 겹쳐 쌓는다.
+        ///
+        /// 한국어(원문 언어)면 아무것도 읽지 않는다 — 원문이 코드와 데이터에 이미 있고,
+        /// 원문 언어에서는 표를 보지 않는다(Localization.Text 참고).
+        /// 파일이 없어도 조용히 넘어간다: 번역이 없는 항목은 한국어로 남고 화면은 비지 않는다.
+        /// </summary>
+        public static int ApplyLocale(string locale, string caseId)
+        {
+            Localization.SetLocale(locale);
+            if (Localization.IsSourceLocale) return 0;
+
+            int loaded = 0;
+            loaded += LoadLocaleFile("ui." + locale);
+            loaded += LoadLocaleFile("content." + locale);
+            if (!string.IsNullOrEmpty(caseId)) loaded += LoadLocaleFile(caseId + ".script." + locale);
+
+            Debug.Log("[GameDataLoader] 언어 '" + locale + "' 문자열 " + Localization.LoadedCount + "개 로드.");
+            return loaded;
+        }
+
+        /// <summary>파일 하나. 없으면 0을 돌려주고 경고하지 않는다(번역 진행 중이 정상 상태다).</summary>
+        private static int LoadLocaleFile(string name)
+        {
+            var asset = Resources.Load<TextAsset>(LocaleResourceFolder + name);
+            if (asset == null) return 0;
+
+            LocaleFile file = Parse<LocaleFile>(asset.text, name + ".json");
+            if (file == null) return 0;
+
+            Localization.Load(file);
+            return file.Normalized().entries.Length;
+        }
+
         /// <summary>JsonUtility 파싱 + 실패 로그. 실패하면 null.</summary>
         public static T Parse<T>(string json, string label) where T : class
         {

@@ -14,6 +14,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\IInteractable.cs" Link="Shared\Core\IInteractable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\Interval.cs" Link="Shared\Core\Interval.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\KoreanText.cs" Link="Shared\Core\KoreanText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\LocaleCoverage.cs" Link="Shared\Core\LocaleCoverage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\Localization.cs" Link="Shared\Core\Localization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\ModalState.cs" Link="Shared\Core\ModalState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\Point2.cs" Link="Shared\Core\Point2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\ProjectInfo.cs" Link="Shared\Core\ProjectInfo.cs" />

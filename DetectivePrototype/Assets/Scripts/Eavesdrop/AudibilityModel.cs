@@ -148,7 +148,8 @@ namespace Detective.Eavesdrop
                     UtteranceId = u.id,
                     Room = u.room,
                     VoiceId = full ? u.voiceId : string.Empty,
-                    Text = full ? u.text : string.Empty
+                    // 번역 키는 발화 id다. 번역이 없으면 한국어 원문이 나간다.
+                    Text = full ? Detective.Core.Localization.Content(u.id, u.text) : string.Empty
                 });
             }
             return result;
@@ -180,7 +181,9 @@ namespace Detective.Eavesdrop
                 string text;
                 if (level == Audibility.Full)
                 {
-                    text = e.text.Length > 0 ? e.text : EventKind.MuffledDescription(e.kind);
+                    text = e.text.Length > 0
+                        ? Detective.Core.Localization.Content(e.id, e.text)
+                        : EventKind.MuffledDescription(e.kind);
                 }
                 else
                 {

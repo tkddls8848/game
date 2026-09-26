@@ -102,19 +102,27 @@ namespace Detective.Eavesdrop
 
         public const string Other = "other";
 
-        /// <summary>벽 너머로 들었을 때의 기본 묘사. 무슨 소리인지는 알고 내용은 모른다.</summary>
+        /// <summary>
+        /// 벽 너머로 들었을 때의 기본 묘사. 무슨 소리인지는 알고 내용은 모른다.
+        /// 플레이어가 읽는 글자이므로 번역을 탄다 — 한국어 원문이 기본값이다.
+        /// </summary>
         public static string MuffledDescription(string kind)
         {
             switch (kind)
             {
-                case Door: return "어디선가 문이 여닫힌다";
-                case Footsteps: return "발소리가 지나간다";
-                case Object: return "무언가 놓이는 소리";
-                case Break: return "무언가 깨지는 소리";
-                case Struggle: return "무언가 부딪히는 소리";
-                case House: return "저택이 내는 소리";
-                default: return "무슨 소리가 난다";
+                case Door: return Loc("event.door", "어디선가 문이 여닫힌다");
+                case Footsteps: return Loc("event.footsteps", "발소리가 지나간다");
+                case Object: return Loc("event.object", "무언가 놓이는 소리");
+                case Break: return Loc("event.break", "무언가 깨지는 소리");
+                case Struggle: return Loc("event.struggle", "무언가 부딪히는 소리");
+                case House: return Loc("event.house", "저택이 내는 소리");
+                default: return Loc("event.other", "무슨 소리가 난다");
             }
+        }
+
+        private static string Loc(string key, string korean)
+        {
+            return Detective.Core.Localization.Text(key, korean);
         }
 
         /// <summary>이 종류는 벽을 넘어도 또렷한가. 데이터에서 <c>loud</c>로 덮어쓸 수 있다.</summary>

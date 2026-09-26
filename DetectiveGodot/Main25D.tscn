@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+; 2.5D 판. 2D 판과 같은 데이터·같은 로직을 쓰고 화면만 3D로 세운다.
+; F1으로 두 화면을 오갈 수 있다.
+
+[ext_resource type="Script" path="res://src/Main25D.cs" id="1_main25d"]
+
+[node name="Main25D" type="Node3D"]
+script = ExtResource("1_main25d")

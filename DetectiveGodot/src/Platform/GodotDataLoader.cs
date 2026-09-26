@@ -106,6 +106,18 @@ namespace DetectiveGodot.Platform
             return script != null ? script.Normalized() : null;
         }
 
+        /// <summary>
+        /// 손으로 적은 이벤트(극적인 소리 — 깨짐·몸싸움). 없으면 null.
+        /// 이동에서 뽑히는 문소리·발소리는 여기 적지 않는다 — <c>MovementEvents</c>가 만든다.
+        /// </summary>
+        public static EventTable LoadEvents(string caseId)
+        {
+            string rel = "cases/" + caseId + "/events.json";
+            if (!FileAccess.FileExists(Root + "/" + rel)) return null;
+            EventTable table = Parse<EventTable>(ReadText(rel), rel);
+            return table != null ? table.Normalized() : null;
+        }
+
         /// <summary>인물 이동 트랙. 없으면 null — 대본만으로도 게임은 성립한다.</summary>
         public static MovementTrackTable LoadTracks(string caseId)
         {

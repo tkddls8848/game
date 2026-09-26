@@ -47,6 +47,8 @@ namespace DetectiveGodot
         private AudioDirector _audio;
         private NpcTokens _tokens;
         private ArtManifest _art;
+        private PlayerBar _bar;
+        private MovementTracks _tracks;
 
         private string _room = string.Empty;
         private bool _sonar;
@@ -80,8 +82,11 @@ namespace DetectiveGodot
                 return;
             }
 
+            MovementTrackTable trackTable = GodotDataLoader.LoadTracks(GodotDataLoader.EavesdropCaseId);
+            _tracks = trackTable != null ? MovementTracks.FromTable(trackTable) : null;
+
             var timeline = new ScriptTimeline(_script);
-            _session = new ListeningSession(timeline, new AudibilityModel(_layout));
+            _session = new ListeningSession(timeline, new AudibilityModel(_layout), BuildEvents());
 
             _art = GodotDataLoader.LoadArtManifest();
 
@@ -172,17 +177,29 @@ namespace DetectiveGodot
         /// </summary>
         private void BuildTokens()
         {
-            MovementTrackTable table = GodotDataLoader.LoadTracks(GodotDataLoader.EavesdropCaseId);
-            if (table == null) return;
+            if (_tracks == null) return;
 
             _tokens = new NpcTokens
             {
                 Layout = _layout,
-                Tracks = MovementTracks.FromTable(table),
+                Tracks = _tracks,
                 Session = _session,
                 Name = "Npcs"
             };
             AddChild(_tokens);
+        }
+
+        /// <summary>이동에서 뽑은 소리 + 손으로 적은 소리. 2.5D 판과 같은 구성이다.</summary>
+        private EventTimeline BuildEvents()
+        {
+            var all = new List<ScriptEvent>();
+            if (_tracks != null)
+                all.AddRange(MovementEvents.Derive(_tracks, _layout, _script.durationMs));
+
+            EventTable authored = GodotDataLoader.LoadEvents(GodotDataLoader.EavesdropCaseId);
+            if (authored != null) all.AddRange(authored.events);
+
+            return all.Count > 0 ? new EventTimeline(all) : null;
         }
 
         private void BuildAudio()
@@ -222,6 +239,14 @@ namespace DetectiveGodot
                 Name = "Hud"
             };
             AddChild(_hud);
+
+            _bar = new PlayerBar
+            {
+                Session = _session,
+                ListenerRoomProvider = () => _room,
+                Name = "PlayerBar"
+            };
+            AddChild(_bar);
         }
 
         // ── 매 프레임 ─────────────────────────────────────────
@@ -239,6 +264,7 @@ namespace DetectiveGodot
             _view.QueueRedraw();
             if (_tokens != null) _tokens.QueueRedraw();
             _hud.Refresh();
+            if (_bar != null) _bar.Refresh();
         }
 
         private void MoveDetective()
@@ -284,6 +310,12 @@ namespace DetectiveGodot
             if (_session == null) return;
             if (!(@event is InputEventKey key) || !key.Pressed || key.Echo) return;
 
+            if (_bar != null && _bar.HandleKey(key.Keycode))
+            {
+                GetViewport().SetInputAsHandled();
+                return;
+            }
+
             switch (key.Keycode)
             {
                 case Key.Tab:
@@ -293,23 +325,9 @@ namespace DetectiveGodot
                     if (_audio != null && _art != null)
                         _audio.PlayBgm(_sonar ? _art.audio.bgmTimeline : _art.audio.bgmExplore);
                     break;
-                case Key.Space:
-                    _session.Transport.TogglePlay();
-                    break;
-                case Key.Left:
-                    if (_sonar) _session.Transport.SeekBy(-SeekStepMs);
-                    break;
-                case Key.Right:
-                    if (_sonar) _session.Transport.SeekBy(SeekStepMs);
-                    break;
-                case Key.R:
-                    _session.Restart();
-                    break;
-                case Key.Bracketleft:
-                    _session.Transport.SpeedPercent -= 25;
-                    break;
-                case Key.Bracketright:
-                    _session.Transport.SpeedPercent += 25;
+                case Key.F1:
+                    // 2.5D 판으로. 같은 데이터·같은 로직이라 화면만 바뀐다.
+                    GetTree().ChangeSceneToFile("res://Main25D.tscn");
                     break;
                 case Key.Escape:
                     GetTree().Quit();

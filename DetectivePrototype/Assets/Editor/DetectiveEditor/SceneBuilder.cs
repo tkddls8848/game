@@ -33,9 +33,12 @@ namespace DetectiveEditor
         // "사건 파일" 연출: 잉크로 그린 벽, 어두운 바닥 질감, 놋쇠 말(플레이어), 종이 표식(단서).
         private static readonly Color WallColor = new Color(0.09f, 0.075f, 0.06f);
         private static readonly Color DoorColor = new Color(0.28f, 0.21f, 0.13f);
-        private static readonly Color DefaultFloorColor = new Color(0.45f, 0.40f, 0.34f);
-        private static readonly Color PlayerColor = new Color(0.82f, 0.66f, 0.34f);
-        private static readonly Color EvidenceColor = new Color(0.88f, 0.80f, 0.62f);
+        // 바닥을 눌러 앉힌다. 밝은 바닥은 그림자를 지우고 화면을 가볍게 만든다
+        // (Godot 2.5D에서 같은 이유로 46%로 내렸다).
+        private static readonly Color DefaultFloorColor = new Color(0.26f, 0.235f, 0.205f);
+        // 탐정 토큰. 호박색을 죽였다 — 강조색은 "지금 여기"를 가리키는 데만 쓴다.
+        private static readonly Color PlayerColor = new Color(0.62f, 0.535f, 0.40f);
+        private static readonly Color EvidenceColor = new Color(0.66f, 0.60f, 0.48f);
         private static readonly Color PropColor = new Color(0.24f, 0.19f, 0.14f);
         private static readonly Color CameraBackground = new Color(0.02f, 0.018f, 0.015f);
 
@@ -244,7 +247,7 @@ namespace DetectiveEditor
             label.text = "탐정";
             label.localOffset = new Vector3(0f, 1.05f, 0f);
             label.characterSize = 0.05f;
-            label.color = new Color(0.85f, 0.70f, 0.40f);
+            label.color = new Color(0.64f, 0.575f, 0.45f);
 
             return player;
         }
@@ -262,6 +265,10 @@ namespace DetectiveEditor
             camera.backgroundColor = CameraBackground;
 
             cameraObject.AddComponent<AudioListener>();
+
+            // 후처리. 내장 파이프라인이라 이미지 이펙트로 직접 건다(채도·대비·비네팅·입자).
+            // 셰이더가 없으면 원본을 그대로 통과시키므로 화면이 죽지 않는다.
+            cameraObject.AddComponent<CameraGrade>();
 
             var follow = cameraObject.AddComponent<CameraFollow>();
             follow.target = target;

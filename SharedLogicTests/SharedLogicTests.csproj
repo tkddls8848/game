@@ -24,8 +24,11 @@
       출력을 DetectivePrototype 아래에 둔다. 테스트가 실제 JSON을 찾을 때
       TestContext.TestDirectory에서 위로 올라가며 `Assets/Resources/...`를 뒤지므로,
       조상 중에 DetectivePrototype이 있어야 실제 데이터로 검사가 돈다.
+
+      폴더 이름이 TestBuild인 이유: Windows에서 `build`와 `Build`가 같은 폴더여서
+      게임 빌드 산출물(Build/)과 테스트 바이너리가 한자리에 섞였다.
     -->
-    <BaseOutputPath>$(MSBuildThisFileDirectory)..\DetectivePrototype\build\SharedLogicTests\</BaseOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\DetectivePrototype\TestBuild\SharedLogicTests\</BaseOutputPath>
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 

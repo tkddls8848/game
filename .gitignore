@@ -74,7 +74,8 @@ TestResults.xml
 # 엔진 없이 돌리는 테스트 묶음의 빌드 산출물
 /SharedLogicTests/bin/
 /SharedLogicTests/obj/
-/DetectivePrototype/build/
+/DetectivePrototype/TestBuild/
+/DetectivePrototype/Build/
 
 # ── 손으로 쓴 프로젝트 파일은 예외 ─────────────────────────
 # 위쪽 `*.csproj`/`*.sln` 규칙은 Unity가 **생성하는** 것을 막으려는 것이다.

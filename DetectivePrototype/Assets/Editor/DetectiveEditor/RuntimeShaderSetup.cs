@@ -32,6 +32,7 @@ namespace DetectiveEditor
             "UI/Default Font", // 레거시 Text 폰트
             "Sprites/Default", // SpriteRenderer. 지금은 씬이 참조해 살아남지만 씬이 바뀌면 같이 사라진다
             "Sprites/Mask",
+            "Hidden/Detective/Grade", // 카메라 후처리. 벗겨지면 화면이 밋밋해진다
         };
 
         private const string SettingsPath = "ProjectSettings/GraphicsSettings.asset";

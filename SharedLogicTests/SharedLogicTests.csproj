@@ -46,7 +46,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
-  <!-- Unity 프로젝트의 순수 C# 로직. Godot 게임이 쓰는 것과 같은 목록·같은 파일. -->
-  <Import Project="$(MSBuildThisFileDirectory)..\DetectiveGodot\SharedLogic.props" />
+  <!--
+    Unity 프로젝트의 순수 C# 로직. 복사가 아니라 원본 .cs를 직접 가리킨다 —
+    두 벌이 되면 갈라지고, 갈라지면 테스트가 검증하는 것이 실제 게임 코드가 아니게 된다.
+    목록은 `python tools/sync_shared_logic.py`가 만든다. 손으로 고치지 말 것.
+  -->
+  <Import Project="$(MSBuildThisFileDirectory)SharedLogic.props" />
 
 </Project>

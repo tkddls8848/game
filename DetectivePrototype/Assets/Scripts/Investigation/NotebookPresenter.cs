@@ -45,7 +45,7 @@ namespace Detective.Investigation
         {
             var result = new List<NotebookEntry>();
             NpcDefinition victim = Database.Npcs.Victim;
-            if (victim != null) result.Add(new NotebookEntry(victim.id, victim.displayName + " (피해자)"));
+            if (victim != null) result.Add(new NotebookEntry(victim.id, victim.displayName + Localization.Text("note.victim", " (피해자)")));
 
             List<NpcDefinition> suspects = Database.Npcs.Suspects;
             for (int i = 0; i < suspects.Count; i++) result.Add(new NotebookEntry(suspects[i].id, suspects[i].displayName));
@@ -74,11 +74,11 @@ namespace Detective.Investigation
             if (npc.isVictim) return;
             if (!_state.HasTalkedTo(npc.id))
             {
-                sb.Append("\n").Append(Muted("아직 이야기를 나누지 않았다.")).Append("\n");
+                sb.Append("\n").Append(Muted(Localization.Text("note.notalked", "아직 이야기를 나누지 않았다."))).Append("\n");
                 return;
             }
 
-            sb.Append("\n").Append(Accent("들은 이야기")).Append("\n");
+            sb.Append("\n").Append(Accent(Localization.Text("note.heard", "들은 이야기"))).Append("\n");
             List<ConversationLine> lines = ConversationBuilder.AllLines(Database, npc.id);
             for (int i = 0; i < lines.Count; i++)
             {
@@ -102,7 +102,7 @@ namespace Detective.Investigation
 
                     if (!header)
                     {
-                        sb.Append("\n").Append(Accent("다른 사람의 목격")).Append("\n");
+                        sb.Append("\n").Append(Accent(Localization.Text("note.sightings", "다른 사람의 목격"))).Append("\n");
                         header = true;
                     }
                     sb.Append("· ").Append(GameTime.ToLabel(line.Sighting.Ms)).Append(" ")
@@ -124,7 +124,7 @@ namespace Detective.Investigation
 
                 if (!header)
                 {
-                    sb.Append("\n").Append(Accent("관련 단서")).Append("\n");
+                    sb.Append("\n").Append(Accent(Localization.Text("note.evidence", "관련 단서"))).Append("\n");
                     header = true;
                 }
                 sb.Append("· ").Append(evidence.name).Append("\n");
@@ -152,16 +152,16 @@ namespace Detective.Investigation
 
             var sb = new StringBuilder();
             sb.Append("<size=34><b>").Append(evidence.name).Append("</b></size>\n");
-            sb.Append(Muted("발견 위치: " + Database.Layout.DisplayNameOf(evidence.foundRoom))).Append("\n\n");
+            sb.Append(Muted(Localization.Text("note.foundat", "발견 위치: ") + Database.Layout.DisplayNameOf(evidence.foundRoom))).Append("\n\n");
             sb.Append(evidence.description).Append("\n");
 
             if (!string.IsNullOrEmpty(evidence.relatedNpc) || GameTime.IsValid(evidence.RelatedMs))
             {
-                sb.Append("\n").Append(Accent("메모")).Append("\n");
+                sb.Append("\n").Append(Accent(Localization.Text("note.memo", "메모"))).Append("\n");
                 if (!string.IsNullOrEmpty(evidence.relatedNpc))
-                    sb.Append("· 관련 인물: ").Append(Database.Npcs.DisplayNameOf(evidence.relatedNpc)).Append("\n");
+                    sb.Append(Localization.Text("note.relatedwho", "· 관련 인물: ")).Append(Database.Npcs.DisplayNameOf(evidence.relatedNpc)).Append("\n");
                 if (GameTime.IsValid(evidence.RelatedMs))
-                    sb.Append("· 관련 시각: ").Append(GameTime.ToLabel(evidence.RelatedMs)).Append("\n");
+                    sb.Append(Localization.Text("note.relatedwhen", "· 관련 시각: ")).Append(GameTime.ToLabel(evidence.RelatedMs)).Append("\n");
             }
             return sb.ToString();
         }
@@ -193,7 +193,18 @@ namespace Detective.Investigation
             return sb.ToString();
         }
 
-        public const string TimelineLegend = "(본인) 본인 증언   (이름) 그 사람이 목격   (물증) 단서로 확인   ? 모름";
+        /// <summary>
+        /// 타임라인 표의 범례. <c>const</c>나 <c>static readonly</c>로 두면 언어를 바꿔도
+        /// 첫 값이 굳어 버리므로 속성으로 둔다.
+        /// </summary>
+        public static string TimelineLegend
+        {
+            get
+            {
+                return Localization.Text("note.legend",
+                    "(본인) 본인 증언   (이름) 그 사람이 목격   (물증) 단서로 확인   ? 모름");
+            }
+        }
 
         // ----- 공통 ------------------------------------------------------------
 

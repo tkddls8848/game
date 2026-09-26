@@ -254,11 +254,11 @@ namespace Detective.UI
         private void RefreshLabels()
         {
             bool truth = GameManager.Instance != null && GameManager.Instance.ShowTruthForDebug;
-            _titleLabel.text = "타임라인 관찰  " + UIFactory.Colorize(GameTime.TickLabel(CurrentTick), UIFactory.AccentColor)
-                + (_autoplay ? "  ▶ 재생 중" : string.Empty)
+            _titleLabel.text = Localization.Text("timeline.title", "타임라인 관찰  ") + UIFactory.Colorize(GameTime.TickLabel(CurrentTick), UIFactory.AccentColor)
+                + (_autoplay ? Localization.Text("timeline.playing", "  ▶ 재생 중") : string.Empty)
                 + (truth
                     ? "\n<size=24><color=#FF7070>[개발용] 실제 스케줄 표시 중 (F9)</color></size>"
-                    : "\n<size=24>수집한 증언·목격·물증으로 복원한 동선만 보인다</size>");
+                    : "\n<size=24>" + Localization.Text("timeline.note", "수집한 증언·목격·물증으로 복원한 동선만 보인다") + "</size>");
 
             for (int t = 0; t < GameTime.TickCount; t++)
             {
@@ -267,7 +267,7 @@ namespace Detective.UI
                 _tickLabels[t].color = active ? UIFactory.Cream : UIFactory.Ink;
             }
 
-            _helpLabel.text = "[← →] 시각 이동   [1~7] 바로 가기   [Space] 자동 재생   [Tab] 청취(소나)   [T / Esc] 닫기";
+            _helpLabel.text = Localization.Text("timeline.keys", "[← →] 시각 이동   [1~7] 바로 가기   [Space] 자동 재생   [Tab] 청취(소나)   [T / Esc] 닫기");
         }
     }
 }

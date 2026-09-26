@@ -125,13 +125,13 @@ namespace Detective.UI
             ConversationLine line = _lines[_index];
             if (GameManager.Instance.State.MarkHeard(_npcId, line.Key)) _newLines++;
 
-            string tag = line.IsSighting ? "  " + UIFactory.Colorize("<size=24>[목격]</size>", UIFactory.MutedColor)
-                : line.IsConditional ? "  " + UIFactory.Colorize("<size=24>[단서에 대한 반응]</size>", UIFactory.MutedColor)
+            string tag = line.IsSighting ? "  " + UIFactory.Colorize("<size=24>" + Localization.Text("dialogue.sighting", "[목격]") + "</size>", UIFactory.MutedColor)
+                : line.IsConditional ? "  " + UIFactory.Colorize("<size=24>" + Localization.Text("dialogue.onevidence", "[단서에 대한 반응]") + "</size>", UIFactory.MutedColor)
                 : string.Empty;
 
             _speakerLabel.text = _npcName + tag;
             _bodyLabel.text = line.Text;
-            _footerLabel.text = (_index + 1) + " / " + _lines.Count + "     [E / Space] 다음   [Esc] 닫기";
+            _footerLabel.text = (_index + 1) + " / " + _lines.Count + Localization.Text("dialogue.keys", "     [E / Space] 다음   [Esc] 닫기");
         }
 
         private void Close()

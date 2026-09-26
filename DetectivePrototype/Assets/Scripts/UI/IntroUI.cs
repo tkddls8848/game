@@ -2,6 +2,7 @@ using Detective.Core;
 using Detective.Data;
 using UnityEngine;
 using UnityEngine.UI;
+using Detective.Art;
 
 namespace Detective.UI
 {
@@ -32,16 +33,24 @@ namespace Detective.UI
             }
 
             CaseDefinition definition = manager.Database.Case;
-            _body.text = UIFactory.Colorize("<size=24>사 건 기 록  제 1 호</size>", UIFactory.CreamMuted) + "\n"
-                + "<size=64><b>" + definition.title + "</b></size>\n"
+            // 제목·도입은 번역을 타는 접근자로 읽는다. 원본 필드를 직접 읽으면 영어 모드에서
+            // 한국어가 나오고, 화면이 깨지지 않으므로 아무도 눈치채지 못한다.
+            _body.text = UIFactory.Colorize("<size=24>" + Loc("intro.filehead", "사 건 기 록  제 1 호") + "</size>", UIFactory.CreamMuted) + "\n"
+                + "<size=64><b>" + definition.LocalizedTitle + "</b></size>\n"
                 + UIFactory.Colorize("<size=22>━━━━━━━━━━━━━━━━━━━━━━━━━━━━</size>", UIFactory.CreamMuted) + "\n\n"
-                + definition.intro + "\n\n"
-                + UIFactory.Colorize("<size=24>[WASD] 이동   [E] 조사·대화   [T] 타임라인 관찰   [N] 수사 노트   [F] 고발</size>", UIFactory.CreamMuted)
-                + "\n\n" + UIFactory.Colorize("[Enter] 수사 시작", new Color(0.85f, 0.70f, 0.40f));
+                + definition.LocalizedIntro + "\n\n"
+                + UIFactory.Colorize("<size=24>" + Loc("intro.keys",
+                    "[WASD] 이동   [E] 조사·대화   [T] 타임라인 관찰   [N] 수사 노트   [F] 고발") + "</size>", UIFactory.CreamMuted)
+                + "\n\n" + UIFactory.Colorize(Loc("intro.start", "[Enter] 수사 시작"), Palette.Lamp);
 
             // 컴포넌트 Awake 순서에 기대지 않고 확실히 맨 위에 그린다.
             _root.SetAsLastSibling();
             ModalState.Force(GameMode.Intro, Time.frameCount);
+        }
+
+        private static string Loc(string key, string korean)
+        {
+            return Localization.Text(key, korean);
         }
 
         private void Update()

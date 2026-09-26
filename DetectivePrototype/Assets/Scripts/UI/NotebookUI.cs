@@ -147,7 +147,7 @@ namespace Detective.UI
                 tabs.Append(i == _tab ? UIFactory.Colorize("<b>" + name + "</b>", UIFactory.AccentColor) : name);
                 tabs.Append("      ");
             }
-            _tabsLabel.text = "<size=40><b>수사 노트</b></size>      " + tabs;
+            _tabsLabel.text = "<size=40><b>" + Localization.Text("notebook.title", "수사 노트") + "</b></size>      " + tabs;
 
             bool timeline = _tab == TabTimeline;
             _listPanel.gameObject.SetActive(!timeline);
@@ -157,18 +157,18 @@ namespace Detective.UI
             if (timeline)
             {
                 RefreshTimeline();
-                _helpLabel.text = "[1~3 / ← →] 탭   [N / Esc] 닫기   ·   [T] 타임라인 관찰 모드에서 동선을 움직여 볼 수 있다";
+                _helpLabel.text = Localization.Text("notebook.keys.timeline", "[1~3 / ← →] 탭   [N / Esc] 닫기   ·   [T] 타임라인 관찰 모드에서 동선을 움직여 볼 수 있다");
                 return;
             }
 
             List<NotebookEntry> entries = _tab == TabPeople ? _presenter.PeopleEntries() : _presenter.EvidenceEntries();
             if (entries.Count == 0)
             {
-                _listLabel.text = UIFactory.Colorize("아직 없음", UIFactory.MutedColor);
+                _listLabel.text = UIFactory.Colorize(Localization.Text("notebook.empty", "아직 없음"), UIFactory.MutedColor);
                 SetDetail(string.Empty, _tab == TabEvidence
-                    ? UIFactory.Colorize("저택을 돌아다니며 [E]로 물건을 조사하면 단서가 여기에 기록된다.", UIFactory.MutedColor)
+                    ? UIFactory.Colorize(Localization.Text("notebook.hint.empty", "저택을 돌아다니며 [E]로 물건을 조사하면 단서가 여기에 기록된다."), UIFactory.MutedColor)
                     : string.Empty);
-                _helpLabel.text = "[1~3 / ← →] 탭   [N / Esc] 닫기";
+                _helpLabel.text = Localization.Text("notebook.keys", "[1~3 / ← →] 탭   [N / Esc] 닫기");
                 return;
             }
 
@@ -187,7 +187,7 @@ namespace Detective.UI
             string id = entries[selected].Id;
             Sprite picture = _tab == TabEvidence ? ArtLibrary.Instance.EvidenceImage(id) : null;
             SetDetail(_tab + ":" + id, _tab == TabPeople ? _presenter.PersonDetail(id) : _presenter.EvidenceDetail(id), picture);
-            _helpLabel.text = "[↑ ↓] 선택   [1~3 / ← →] 탭   [PgUp / PgDn · Q / E] 내용 스크롤   [N / Esc] 닫기";
+            _helpLabel.text = Localization.Text("notebook.keys.scroll", "[↑ ↓] 선택   [1~3 / ← →] 탭   [PgUp / PgDn · Q / E] 내용 스크롤   [N / Esc] 닫기");
         }
 
         private void RefreshTimeline()
@@ -236,7 +236,7 @@ namespace Detective.UI
                     label.verticalOverflow = VerticalWrapMode.Overflow;
                     label.lineSpacing = 1f;
 
-                    if (r == 0 && c == 0) label.text = UIFactory.Colorize("인물 / 시각", UIFactory.MutedColor);
+                    if (r == 0 && c == 0) label.text = UIFactory.Colorize(Localization.Text("notebook.header.who", "인물 / 시각"), UIFactory.MutedColor);
                     else if (r == 0) label.text = "<b>" + GameTime.TickLabel(c - 1) + "</b>";
                     else if (c == 0) label.text = "<b>" + _timelineRows[r - 1].Title + "</b>";
                     else _timelineCells[r - 1, c - 1] = label;

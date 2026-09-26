@@ -13,7 +13,24 @@ namespace Detective.Case
     /// </summary>
     public sealed class AccusationForm
     {
-        public static readonly string[] FieldLabels = { "범인", "동기", "범행 시각", "범행 장소", "범행 수법", "결정적 증거" };
+        /// <summary>
+        /// 고발 항목 이름. 정적 배열로 두면 언어를 바꿔도 첫 값이 굳으므로 속성으로 만든다.
+        /// </summary>
+        public static string[] FieldLabels
+        {
+            get
+            {
+                return new[]
+                {
+                    Localization.Text("accuse.field.culprit", "범인"),
+                    Localization.Text("accuse.field.motive", "동기"),
+                    Localization.Text("accuse.field.time", "범행 시각"),
+                    Localization.Text("accuse.field.room", "범행 장소"),
+                    Localization.Text("accuse.field.method", "범행 수법"),
+                    Localization.Text("accuse.field.evidence", "결정적 증거")
+                };
+            }
+        }
 
         private readonly List<ChoiceDefinition>[] _options = new List<ChoiceDefinition>[CaseGradeResult.FieldCount];
         private readonly int[] _selected = new int[CaseGradeResult.FieldCount];
@@ -49,7 +66,7 @@ namespace Detective.Case
             var evidence = new List<ChoiceDefinition>();
             IList<string> collected = state.Evidence.InOrder;
             for (int i = 0; i < collected.Count; i++) evidence.Add(Choice(collected[i], database.Evidence.NameOf(collected[i])));
-            if (evidence.Count == 0) evidence.Add(Choice(string.Empty, "(확보한 단서 없음)"));
+            if (evidence.Count == 0) evidence.Add(Choice(string.Empty, Localization.Text("accuse.noevidence", "(확보한 단서 없음)")));
             _options[(int)AccusationField.Evidence] = evidence;
         }
 

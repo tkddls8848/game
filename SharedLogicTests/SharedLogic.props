@@ -1,5 +1,5 @@
-<!-- 생성 파일. 손으로 고치지 말고 `python tools/sync_godot.py`를 다시 돌린다. -->
-<!-- Unity 프로젝트의 순수 C# 로직을 Godot이 같이 컴파일한다 (복사가 아니라 참조). -->
+<!-- 생성 파일. 손으로 고치지 말고 `python tools/sync_shared_logic.py`를 다시 돌린다. -->
+<!-- Unity 프로젝트의 순수 C# 로직을 테스트가 그대로 컴파일한다 (복사가 아니라 참조). -->
 <Project>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Case\AccusationForm.cs" Link="Shared\Case\AccusationForm.cs" />

@@ -101,8 +101,8 @@ namespace Detective.UI
         private void RefreshForm()
         {
             var sb = new System.Text.StringBuilder();
-            sb.Append("<size=44><b>고발</b></size>\n");
-            sb.Append(UIFactory.Colorize("<size=26>여섯 항목을 모두 맞혀야 사건이 해결된다. 고발은 한 번뿐이다.</size>", UIFactory.MutedColor)).Append("\n\n");
+            sb.Append("<size=44><b>" + Loc("accuse.title", "고발") + "</b></size>\n");
+            sb.Append(UIFactory.Colorize("<size=26>" + Loc("accuse.rule", "여섯 항목을 모두 맞혀야 사건이 해결된다. 고발은 한 번뿐이다.") + "</size>", UIFactory.MutedColor)).Append("\n\n");
 
             for (int i = 0; i < CaseGradeResult.FieldCount; i++)
             {
@@ -115,11 +115,11 @@ namespace Detective.UI
 
             if (_stage == Stage.Confirming)
             {
-                sb.Append(UIFactory.Colorize("<b>이대로 고발하시겠습니까?</b>   [Enter] 확정   [Esc] 다시 고르기", new Color(1f, 0.55f, 0.5f)));
+                sb.Append(UIFactory.Colorize(Loc("accuse.confirm", "<b>이대로 고발하시겠습니까?</b>   [Enter] 확정   [Esc] 다시 고르기"), new Color(1f, 0.55f, 0.5f)));
             }
             else
             {
-                sb.Append(UIFactory.Colorize("<size=26>[↑ ↓] 항목   [← →] 선택   [Enter] 고발   [F / Esc] 수사로 돌아가기</size>", UIFactory.MutedColor));
+                sb.Append(UIFactory.Colorize("<size=26>" + Loc("accuse.keys", "[↑ ↓] 항목   [← →] 선택   [Enter] 고발   [F / Esc] 수사로 돌아가기") + "</size>", UIFactory.MutedColor));
             }
             _formLabel.text = sb.ToString();
         }
@@ -139,9 +139,15 @@ namespace Detective.UI
             string title = result.Solved
                 ? UIFactory.Colorize("<size=84><b>CASE SOLVED</b></size>", new Color(0.85f, 0.70f, 0.40f))
                 : UIFactory.Colorize("<size=84><b>CASE FAILED</b></size>", new Color(0.75f, 0.28f, 0.25f));
-            _resultLabel.text = title + "\n" + UIFactory.Colorize("<size=26>사건 기록 제1호 · 종결</size>", UIFactory.CreamMuted)
-                + "\n\n" + (result.Solved ? definition.solvedText : definition.failedText)
-                + "\n\n" + UIFactory.Colorize("[R] 처음부터 다시", UIFactory.CreamMuted);
+            _resultLabel.text = title + "\n"
+                + UIFactory.Colorize("<size=26>" + Loc("result.filefoot", "사건 기록 제1호 · 종결") + "</size>", UIFactory.CreamMuted)
+                + "\n\n" + (result.Solved ? definition.LocalizedSolvedText : definition.LocalizedFailedText)
+                + "\n\n" + UIFactory.Colorize(Loc("result.restart", "[R] 처음부터 다시"), UIFactory.CreamMuted);
+        }
+
+        private static string Loc(string key, string korean)
+        {
+            return Localization.Text(key, korean);
         }
 
         private void Close(int frame)

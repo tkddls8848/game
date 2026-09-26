@@ -222,7 +222,7 @@ namespace Detective.UI
             if (!IsActive) return;
             if (_session == null)
             {
-                _title.text = UIFactory.Colorize(string.IsNullOrEmpty(_loadError) ? "회차가 없다." : _loadError, Amber);
+                _title.text = UIFactory.Colorize(string.IsNullOrEmpty(_loadError) ? Localization.Text("sonar.norun", "회차가 없다.") : _loadError, Amber);
                 return;
             }
 
@@ -291,12 +291,19 @@ namespace Detective.UI
             for (; b < _bubbles.Length; b++) _bubbles[b].Rect.gameObject.SetActive(false);
 
             // 제목·기록·타임라인
-            string state = t.State == TransportState.Playing ? "▶" : t.State == TransportState.Ended ? "회차 끝 · [R] 처음부터" : "❚❚";
-            string where = string.IsNullOrEmpty(earRoom) ? "벽 속" : RoomName(earRoom);
-            _title.text = "청취 · 기록 재생   " + UIFactory.Colorize(SonarText.Clock(now), Amber) + " / " + SonarText.Clock(t.DurationMs)
+            string state = t.State == TransportState.Playing ? "▶" : t.State == TransportState.Ended ? Localization.Text("sonar.end", "회차 끝 · [R] 처음부터") : "❚❚";
+            string where = string.IsNullOrEmpty(earRoom) ? Localization.Text("sonar.inwall", "벽 속") : RoomName(earRoom);
+            // 이어 붙이는 대신 자리표시자로 둔다 — 영어는 어순이 달라서
+            // "귀: " + 방 + " 회차 " 식으로 조각을 이으면 번역이 어색해진다.
+            string status = Localization.Text("sonar.status",
+                    "귀: {0}   회차 {1}   같은 방 = 글자 · 벽 너머 = 웅얼거림 · 그 밖 = 무음")
+                .Replace("{0}", UIFactory.Colorize(where, Amber))
+                .Replace("{1}", (_passes + 1).ToString());
+
+            _title.text = Localization.Text("sonar.title", "청취 · 기록 재생   ")
+                + UIFactory.Colorize(SonarText.Clock(now), Amber) + " / " + SonarText.Clock(t.DurationMs)
                 + "   " + SonarText.Speed(t.SpeedPercent) + "   " + state
-                + "\n<size=22>귀: " + UIFactory.Colorize(where, Amber) + "   회차 " + (_passes + 1)
-                + "   같은 방 = 글자 · 벽 너머 = 웅얼거림 · 그 밖 = 무음</size>";
+                + "\n<size=22>" + status + "</size>";
 
             RefreshLog();
 
@@ -372,11 +379,11 @@ namespace Detective.UI
             else
             {
                 Utterance u;
-                text = _session.Timeline.TryGet(p.UtteranceId, out u) ? SonarText.Garble(u.text) : SonarText.Garble("누군가 말하고 있다");
+                text = _session.Timeline.TryGet(p.UtteranceId, out u) ? SonarText.Garble(u.text) : SonarText.Garble(Localization.Text("sonar.someone", "누군가 말하고 있다"));
             }
             string who = full
-                ? SonarText.VoiceName(p.VoiceId) + " · " + RoomName(p.Room) + " · 같은 방"
-                : "웅얼거림 · " + RoomName(p.Room) + " · 벽 너머";
+                ? SonarText.VoiceName(p.VoiceId) + " · " + RoomName(p.Room) + Localization.Text("sonar.sameroom", " · 같은 방")
+                : "웅얼거림 · " + RoomName(p.Room) + Localization.Text("sonar.throughwall", " · 벽 너머");
 
             bubble.Bar.color = full ? Cyan : Muted;
             bubble.Who.color = full ? Cyan : Muted;
@@ -407,7 +414,7 @@ namespace Detective.UI
                 sb.Append("\n<color=#7F9297>").Append(SonarText.Clock(u.startMs)).Append("</color>  ")
                   .Append(UIFactory.Colorize(SonarText.VoiceName(u.voiceId), Amber)).Append("  ").Append(body);
             }
-            if (heard.Count == 0) sb.Append("\n<color=#7F9297>아직 온전히 들은 말이 없다. 말하는 방으로 귀를 옮겨라.</color>");
+            if (heard.Count == 0) sb.Append("\n<color=#7F9297>" + Localization.Text("sonar.nothingheard", "아직 온전히 들은 말이 없다. 말하는 방으로 귀를 옮겨라.") + "</color>");
             _log.text = sb.ToString();
         }
 
@@ -502,7 +509,7 @@ namespace Detective.UI
             RectTransform helpRect = UIFactory.CreateRect("SonarHelp", _root,
                 new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(40f, 16f), new Vector2(-40f, 60f));
             Text help = UIFactory.AddText(helpRect, 24, TextAnchor.MiddleLeft, Muted);
-            help.text = "[WASD] 귀 옮기기   [Space] 재생·정지   [← →] 5초   [R] 처음부터   [ [ ] ] 배속   [Tab] 타임라인으로   [T / Esc] 닫기";
+            help.text = Localization.Text("sonar.keys", "[WASD] 귀 옮기기   [Space] 재생·정지   [← →] 5초   [R] 처음부터   [ [ ] ] 배속   [Tab] 타임라인으로   [T / Esc] 닫기");
 
             _bubbles = new Bubble[BubbleCount];
             for (int i = 0; i < BubbleCount; i++) _bubbles[i] = BuildBubble(i);

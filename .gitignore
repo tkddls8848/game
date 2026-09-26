@@ -57,21 +57,10 @@ TestResults.xml
 # 왔는지와 SHA-256은 docs/additional-assets.json 에 적혀 있으므로 출처는 추적된다.
 /AssetDownloads/
 
-# ── Godot 이식본 ────────────────────────────────────────────
-# 규칙: 한 소스만 git에 둔다. Godot 쪽의 생성물은 넣지 않는다.
-#
-# data/ 와 fonts/ 는 Unity 프로젝트(Assets/Resources)의 사본이다. Godot은 res:// 밖을
-# 읽지 못해 어쩔 수 없이 복사하지만, 두 벌을 커밋하면 갈라진다. 원본은 Unity 쪽 하나이고
-# `python tools/sync_godot.py`가 언제든 다시 만든다.
-# SharedLogic.props 는 빌드 입력이라 **커밋한다** — 없으면 파이썬 없이 빌드할 수 없다.
-/DetectiveGodot/data/
-/DetectiveGodot/fonts/
-/DetectiveGodot/.godot/
-/DetectiveGodot/bin/
-/DetectiveGodot/obj/
-/DetectiveGodot/.mono/
-
-# 엔진 없이 돌리는 테스트 묶음의 빌드 산출물
+# ── 엔진 없이 돌리는 테스트 ─────────────────────────────────
+# SharedLogicTests는 Unity를 참조하지 않고 순수 C# 로직만 컴파일한다.
+# 폴더 이름이 TestBuild인 이유: Windows에서 build와 Build가 같은 폴더여서
+# 게임 빌드 산출물(Build/)과 섞였다.
 /SharedLogicTests/bin/
 /SharedLogicTests/obj/
 /DetectivePrototype/TestBuild/
@@ -80,6 +69,5 @@ TestResults.xml
 # ── 손으로 쓴 프로젝트 파일은 예외 ─────────────────────────
 # 위쪽 `*.csproj`/`*.sln` 규칙은 Unity가 **생성하는** 것을 막으려는 것이다.
 # 아래 둘은 생성물이 아니라 우리가 쓴 빌드 정의라서 반드시 커밋해야 한다
-# (없으면 새로 클론한 곳에서 Godot 판을 빌드할 수 없다).
-!/DetectiveGodot/DetectiveGodot.csproj
+# (없으면 새로 클론한 곳에서 테스트를 빌드할 수 없다).
 !/SharedLogicTests/SharedLogicTests.csproj

@@ -48,6 +48,25 @@ namespace Detective.Core
 
         private readonly ScheduleTruthSource _truth = new ScheduleTruthSource();
 
+        /// <summary>
+        /// 실행 인자 <c>-locale en</c>이 씬에 저장된 값을 덮는다.
+        ///
+        /// 설정 화면이 아직 없어서 언어를 바꾸려면 씬을 고쳐야 했다. 인자로 받으면
+        /// 같은 빌드로 두 언어를 확인할 수 있고, 나중에 설정 화면이 붙어도 이 경로는 남는다
+        /// (자동화 검증에서는 화면을 누를 수 없다).
+        /// </summary>
+        private string ResolveLocale()
+        {
+            string[] args = System.Environment.GetCommandLineArgs();
+            for (int i = 0; i < args.Length - 1; i++)
+            {
+                if (args[i] != "-locale" && args[i] != "--locale") continue;
+                string value = args[i + 1];
+                if (!string.IsNullOrEmpty(value) && !value.StartsWith("-")) return value;
+            }
+            return locale;
+        }
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -58,7 +77,7 @@ namespace Detective.Core
             Instance = this;
 
             // 언어를 데이터보다 먼저 정한다. 방 이름·사건 문구가 읽히는 순간 표가 있어야 한다.
-            GameDataLoader.ApplyLocale(locale, caseId);
+            GameDataLoader.ApplyLocale(ResolveLocale(), caseId);
             ModalState.Reset();
 
             RoomTable table = GameDataLoader.LoadRoomTable();

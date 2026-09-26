@@ -108,7 +108,7 @@ namespace Detective.UI
         private string MuffledText(PerceivedUtterance p)
         {
             // 누가 말하는지도, 무슨 말인지도 주지 않는다. 방향만 준다.
-            return "<b>웅얼거림</b>\n" + RoomName(p.Room) + " 쪽에서 누군가 말하고 있다";
+            return "<b>" + Localization.Text("eaves.murmur", "웅얼거림") + "</b>\n" + RoomName(p.Room) + Localization.Text("eaves.direction", " 쪽에서 누군가 말하고 있다");
         }
 
         /// <summary>목소리는 아직 이름이 아니다(U-3에서 플레이어가 배정한다). 번호로만 부른다.</summary>
@@ -127,19 +127,19 @@ namespace Detective.UI
             RoomDefinition room;
             if (layout != null && layout.TryGetRoom(roomId, out room) && !string.IsNullOrEmpty(room.displayName))
                 return room.displayName;
-            return string.IsNullOrEmpty(roomId) ? "어딘가" : roomId;
+            return string.IsNullOrEmpty(roomId) ? Localization.Text("eaves.somewhere", "어딘가") : roomId;
         }
 
         private static string BuildStatus(ListeningSession session)
         {
-            string here = string.IsNullOrEmpty(session.ListenerRoom) ? "문턱" : RoomName(session.ListenerRoom);
+            string here = string.IsNullOrEmpty(session.ListenerRoom) ? Localization.Text("eaves.threshold", "문턱") : RoomName(session.ListenerRoom);
             string clock = Clock(session.PositionMs) + " / " + Clock(session.Timeline.DurationMs);
             string state = session.Transport.IsPlaying ? string.Empty
-                : "  " + UIFactory.Colorize("멈춤", UIFactory.AccentColor);
+                : "  " + UIFactory.Colorize(Localization.Text("eaves.paused", "멈춤"), UIFactory.AccentColor);
 
             return "회차 " + clock + state
                 + "\n지금 " + here + "   들은 발화 " + session.FullyHeardCount + "개"
-                + "\n<size=20>[Space] 멈춤·이어 듣기   [R] 처음부터</size>";
+                + "\n<size=20>" + Localization.Text("eaves.keys", "[Space] 멈춤·이어 듣기   [R] 처음부터") + "</size>";
         }
 
         private static string Clock(int ms)

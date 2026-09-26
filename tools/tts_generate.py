@@ -54,6 +54,24 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_SCRIPT = REPO_ROOT / "DetectivePrototype/Assets/Resources/GameData/cases/case_02/script.json"
 DEFAULT_OUT_DIR = REPO_ROOT / "DetectivePrototype/Assets/Resources/Audio/Voice/case_02"
 
+# 시청(audition)용 출력. Assets 밖이다 — Unity가 임포트하면 안 되는 버리는 파일들이다.
+AUDITION_OUT_DIR = REPO_ROOT / "tts_audition"
+
+# 배역별 시청 대사. 대본에서 고른 실제 발화 id이고, 본문은 실행 시 script.json에서 읽는다
+# (여기 텍스트를 복사해 두면 대본이 바뀔 때 어긋난다).
+#   v1 클라라 — 담담한 설명 밑에 뭔가 깔린 줄
+#   v2 마르코 — 의문문 + 불평. 억양이 드러난다
+#   v3 줄리안 — 말줄임표로 시작하는 비꼼. 휴지 처리를 본다
+#   v4 헬렌   — 평서 + 의문이 한 줄에. 침착한 톤
+#   v5 에드먼드 — 숫자·말줄임표·자문자답. 노년 톤과 휴지를 한꺼번에 본다
+AUDITION_IDS = {
+    "v1": "u004",
+    "v2": "u003",
+    "v3": "u054",
+    "v4": "u043",
+    "v5": "u067",
+}
+
 # Resources.Load에 쓰는 경로의 접두사 (Assets/Resources/ 아래 기준, 확장자 없음)
 RESOURCES_PREFIX = "Audio/Voice/case_02"
 
@@ -116,7 +134,7 @@ class Provider:
     """공급자 하나. 네트워크를 만지는 것은 self.synth 뿐이다."""
 
     def __init__(self, name, env, ext, price_per_million, max_chars,
-                 default_voices, synth, billed_chars, note=""):
+                 default_voices, synth, billed_chars, candidates=(), note=""):
         self.name = name
         self.env = env                      # 필요한 환경변수 이름들
         self.ext = ext                      # 출력 확장자
@@ -125,6 +143,7 @@ class Provider:
         self.default_voices = default_voices  # voiceId -> 공급자 음성 이름
         self.synth = synth                  # (creds, text, voice, style) -> bytes  ← 유일한 호출 지점
         self.billed_chars = billed_chars    # (text, voice, style) -> int
+        self.candidates = list(candidates)  # 시청해 볼 만한 ko 음성 전체 (--list-voices)
         self.note = note
 
 
@@ -192,6 +211,17 @@ AZURE = Provider(
     },
     synth=_azure_synth,
     billed_chars=_azure_billed,
+    candidates=[
+        # 감정 스타일이 있는 HD 음성 (추리물 연기 톤에 유일하게 쓸 만하다)
+        "ko-KR-Haena:MAI-Voice-2", "ko-KR-Junho:MAI-Voice-2",
+        "ko-KR-SunHi:DragonHDLatestNeural", "ko-KR-Hyunsu:DragonHDLatestNeural",
+        # 표준 neural — 여
+        "ko-KR-SunHiNeural", "ko-KR-JiMinNeural", "ko-KR-SeoHyeonNeural",
+        "ko-KR-SoonBokNeural", "ko-KR-YuJinNeural",
+        # 표준 neural — 남
+        "ko-KR-InJoonNeural", "ko-KR-BongJinNeural",
+        "ko-KR-GookMinNeural", "ko-KR-HyunsuNeural",
+    ],
     note="유료 S0 리소스를 쓸 것. 무료 F0로 뽑은 음성의 상업 이용은 근거가 약하다(docs/TTS_OPTIONS.md §1).",
 )
 
@@ -234,6 +264,20 @@ GOOGLE = Provider(
     },
     synth=_google_synth,
     billed_chars=lambda text, voice, style: len(text),
+    candidates=(
+        ["ko-KR-Chirp3-HD-" + n for n in (
+            # 여
+            "Achernar", "Aoede", "Autonoe", "Callirrhoe", "Despina", "Erinome",
+            "Gacrux", "Kore", "Laomedeia", "Leda", "Pulcherrima", "Sulafat",
+            "Vindemiatrix", "Zephyr",
+            # 남
+            "Achird", "Algenib", "Algieba", "Alnilam", "Charon", "Enceladus",
+            "Fenrir", "Iapetus", "Orus", "Puck", "Rasalgethi", "Sadachbia",
+            "Sadaltager", "Schedar", "Umbriel", "Zubenelgenubi",
+        )]
+        + ["ko-KR-Neural2-A", "ko-KR-Neural2-B", "ko-KR-Neural2-C"]
+        + ["ko-KR-Wavenet-A", "ko-KR-Wavenet-B", "ko-KR-Wavenet-C", "ko-KR-Wavenet-D"]
+    ),
     note="Chirp 3: HD에는 감정 지정이 없다. 무료 한도 월 100만 자 — 재생성이 사실상 공짜다.",
 )
 
@@ -345,10 +389,65 @@ def build_jobs(data, provider, voice_map, style_map, out_dir, args) -> list[Job]
     return jobs
 
 
+def _safe(name: str) -> str:
+    """음성 이름을 파일명에 쓸 수 있게 만든다 (ko-KR-Haena:MAI-Voice-2 → ko-KR-Haena_MAI-Voice-2)."""
+    return re.sub(r"[^0-9A-Za-z._-]", "_", name)
+
+
+def build_audition_jobs(data, provider, voice_map, style_map, out_dir, args) -> list[Job]:
+    """
+    배역별 시청용 대사 한 줄씩만 만든다.
+
+    기본  : 배역 5개 × 각자의 대사 1줄 (현재 voice map 기준)
+    비교용: --audition-voices 로 음성들을 지정하면 같은 대사 한 줄을 그 음성 전부로 만든다
+    """
+    by_id = {u["id"]: u for u in data["utterances"]}
+    jobs = []
+
+    if args.audition_voices:
+        # 한 대사를 여러 음성으로 — 배역에 누구를 앉힐지 고를 때 쓴다
+        line_id = args.audition_line or AUDITION_IDS.get(args.voice or "v5", "u067")
+        u = by_id.get(line_id)
+        if not u:
+            raise SystemExit(f"--audition-line: 대본에 없는 발화 id다: {line_id}")
+        names = [n.strip() for n in args.audition_voices.split(",") if n.strip()]
+        if names == ["all"]:
+            names = provider.candidates
+            if not names:
+                raise SystemExit(f"{provider.name}에는 등록된 후보 음성 목록이 없다. 이름을 직접 넘겨라.")
+        for pv in names:
+            style = dict(style_map.get(u["voiceId"], {}))
+            out = out_dir / f"{line_id}__{_safe(pv)}{provider.ext}"
+            jobs.append(Job(f"{line_id}@{pv}", u["voiceId"], pv, u["text"], style, out,
+                            len(u["text"]), provider.billed_chars(u["text"], pv, style)))
+        return jobs
+
+    # 배역별 한 줄씩
+    for vid in sorted(voice_map):
+        if args.voice and vid != args.voice:
+            continue
+        line_id = AUDITION_IDS.get(vid)
+        if not line_id:
+            print(f"[건너뜀] {vid}: AUDITION_IDS에 시청 대사가 정해져 있지 않다.")
+            continue
+        u = by_id.get(line_id)
+        if not u:
+            raise SystemExit(f"{vid}: 대본에 없는 발화 id다: {line_id}")
+        pv = voice_map[vid]
+        style = dict(style_map.get(vid, {}))
+        style.update(style_map.get(line_id, {}))
+        out = out_dir / f"{vid}__{_safe(pv)}{provider.ext}"
+        jobs.append(Job(f"{line_id}({vid})", vid, pv, u["text"], style, out,
+                        len(u["text"]), provider.billed_chars(u["text"], pv, style)))
+    return jobs
+
+
 def report(jobs, provider, out_dir, existing, args) -> dict:
+    # 한 대사를 여러 음성으로 굽는 중이면 배역이 아니라 음성이 비교 축이다
+    per_provider_voice = bool(getattr(args, "audition_voices", None))
     by_voice = collections.defaultdict(lambda: {"calls": 0, "chars": 0, "billed": 0, "voice": ""})
     for j in jobs:
-        b = by_voice[j.voice_id]
+        b = by_voice[j.provider_voice if per_provider_voice else j.voice_id]
         b["calls"] += 1
         b["chars"] += j.chars
         b["billed"] += j.billed
@@ -359,9 +458,13 @@ def report(jobs, provider, out_dir, existing, args) -> dict:
     cost = total_billed * provider.price_per_million / 1_000_000.0
     too_long = [j.uid for j in jobs if j.billed > provider.max_chars]
 
-    print(f"\n=== TTS 생성 계획 — provider={provider.name} ===")
+    audition = getattr(args, "audition", False)
+    print(f"\n=== TTS {'시청(audition)' if audition else '생성'} 계획 — provider={provider.name} ===")
     print(f"출력 디렉터리 : {out_dir}")
-    print(f"Resources 경로: {RESOURCES_PREFIX}/<id>   (확장자 없음 · Utterance.clip에 넣을 값)")
+    if audition:
+        print("               (Assets 밖이다. 다 듣고 나면 통째로 지워도 된다)")
+    else:
+        print(f"Resources 경로: {RESOURCES_PREFIX}/<id>   (확장자 없음 · Utterance.clip에 넣을 값)")
     print(f"확장자        : {provider.ext}")
     print(f"호출 수       : {len(jobs)}"
           + (f"  (이미 있어 건너뜀 {existing})" if existing else ""))
@@ -371,11 +474,18 @@ def report(jobs, provider, out_dir, existing, args) -> dict:
     else:
         print(f"예상 소모     : {total_billed:,} 크레딧 (1문자 = 1크레딧)")
 
-    print("\n목소리별 분포")
-    print(f"  {'id':<5} {'발화':>5} {'문자':>7} {'과금추정':>9}  공급자 음성")
-    for vid in sorted(by_voice):
-        b = by_voice[vid]
-        print(f"  {vid:<5} {b['calls']:>5} {b['chars']:>7,} {b['billed']:>9,}  {b['voice']}")
+    if per_provider_voice:
+        print("\n음성별 분포")
+        print(f"  {'발화':>5} {'문자':>7} {'과금추정':>9}  공급자 음성")
+        for key in sorted(by_voice):
+            b = by_voice[key]
+            print(f"  {b['calls']:>5} {b['chars']:>7,} {b['billed']:>9,}  {key}")
+    else:
+        print("\n목소리별 분포")
+        print(f"  {'id':<5} {'발화':>5} {'문자':>7} {'과금추정':>9}  공급자 음성")
+        for vid in sorted(by_voice):
+            b = by_voice[vid]
+            print(f"  {vid:<5} {b['calls']:>5} {b['chars']:>7,} {b['billed']:>9,}  {b['voice']}")
 
     if too_long:
         print(f"\n[경고] 1회 호출 한도({provider.max_chars}자)를 넘는 발화: {', '.join(too_long)}")
@@ -442,17 +552,41 @@ def main(argv=None) -> int:
                     help="id → Resources clip 경로 대응표를 이 JSON으로 쓴다 (script.json은 건드리지 않는다)")
     ap.add_argument("--report", type=Path, help="계획/결과 요약을 이 JSON으로 쓴다")
     ap.add_argument("--verbose", action="store_true", help="발화별로 전부 출력")
+    ap.add_argument("--audition", action="store_true",
+                    help="전량 생성 대신 배역별 시청 대사 한 줄씩만 만든다 (기본 출력: <repo>/tts_audition)")
+    ap.add_argument("--audition-voices",
+                    help="같은 대사를 여러 음성으로 만든다. 쉼표로 구분한 음성 이름, 또는 'all'")
+    ap.add_argument("--audition-line", help="시청에 쓸 발화 id (기본: AUDITION_IDS)")
+    ap.add_argument("--list-voices", action="store_true",
+                    help="이 공급자의 한국어 후보 음성을 출력하고 끝낸다")
     args = ap.parse_args(argv)
 
     provider = PROVIDERS[args.provider]
+
+    if args.list_voices:
+        _force_utf8_console()
+        print(f"{provider.name} 한국어 후보 음성 {len(provider.candidates)}종")
+        for n in provider.candidates:
+            print("  " + n)
+        print(f"\n한 대사로 전부 들어 보기:\n"
+              f"  python tools/tts_generate.py --provider {provider.name} "
+              f"--audition --audition-voices all")
+        return 0
+
     data = load_script(args.script)
 
     voice_map = dict(provider.default_voices)
     voice_map.update(load_json_map(args.voice_map, "--voice-map"))
     style_map = load_json_map(args.style_map, "--style-map")
 
-    out_dir = args.out_dir
-    jobs = build_jobs(data, provider, voice_map, style_map, out_dir, args)
+    if args.audition or args.audition_voices:
+        args.audition = True
+        # 시청 파일은 Assets 밖에 떨군다 — Unity가 임포트하면 안 된다
+        out_dir = args.out_dir if args.out_dir != DEFAULT_OUT_DIR else AUDITION_OUT_DIR
+        jobs = build_audition_jobs(data, provider, voice_map, style_map, out_dir, args)
+    else:
+        out_dir = args.out_dir
+        jobs = build_jobs(data, provider, voice_map, style_map, out_dir, args)
 
     existing = 0
     if not args.force:
@@ -506,7 +640,11 @@ def main(argv=None) -> int:
     print(f"\n완료 {ok} / 실패 {len(failed)}")
     if failed:
         print("실패한 발화: " + ", ".join(failed), file=sys.stderr)
-    print("Unity에서 Resources 폴더를 다시 임포트하고, 새로 생긴 .meta를 커밋해 GUID를 고정할 것.")
+    if args.audition:
+        print(f"들어 볼 것: {out_dir}")
+        print("마음에 드는 음성을 정했으면 --voice-map JSON에 적어서 전량 생성으로 넘어간다.")
+    else:
+        print("Unity에서 Resources 폴더를 다시 임포트하고, 새로 생긴 .meta를 커밋해 GUID를 고정할 것.")
 
     summary["written"] = ok
     summary["failed"] = failed

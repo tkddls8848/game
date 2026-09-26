@@ -22,7 +22,7 @@ namespace Detective.UI
 
         [Tooltip("화면 왼쪽 위 조작 안내.")]
         [TextArea(2, 4)]
-        public string controlsHint = "[WASD] 이동   [E] 조사·대화\n[T] 타임라인   [N] 수사 노트   [F] 고발";
+        public string controlsHint = Localization.Text("hud.keys", "[WASD] 이동   [E] 조사·대화\n[T] 타임라인   [N] 수사 노트   [F] 고발");
 
         private float _messageTimer;
         private Text _statusLabel;
@@ -77,7 +77,7 @@ namespace Detective.UI
             if (_statusPanel.gameObject.activeSelf != visible) _statusPanel.gameObject.SetActive(visible);
             if (!visible) return;
 
-            _statusLabel.text = UIFactory.Colorize("블랙우드 저택 · 현재 " + GameTime.ToLabel(GameTime.PresentMs), UIFactory.AccentColor)
+            _statusLabel.text = UIFactory.Colorize(Localization.Text("hud.place", "블랙우드 저택 · 현재 ") + GameTime.ToLabel(GameTime.PresentMs), UIFactory.AccentColor)
                 + "\n" + controlsHint;
         }
 

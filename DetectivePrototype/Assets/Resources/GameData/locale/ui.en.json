@@ -2,6 +2,90 @@
   "locale": "en",
   "entries": [
     {
+      "id": "accuse.confirm",
+      "text": "<b>Accuse on these terms?</b>   [Enter] confirm   [Esc] choose again"
+    },
+    {
+      "id": "accuse.field.culprit",
+      "text": "Killer"
+    },
+    {
+      "id": "accuse.field.evidence",
+      "text": "Decisive evidence"
+    },
+    {
+      "id": "accuse.field.method",
+      "text": "Method"
+    },
+    {
+      "id": "accuse.field.motive",
+      "text": "Motive"
+    },
+    {
+      "id": "accuse.field.room",
+      "text": "Place"
+    },
+    {
+      "id": "accuse.field.time",
+      "text": "Time"
+    },
+    {
+      "id": "accuse.keys",
+      "text": "[↑ ↓] field   [← →] choose   [Enter] accuse   [F / Esc] back to the investigation"
+    },
+    {
+      "id": "accuse.noevidence",
+      "text": "(no evidence secured)"
+    },
+    {
+      "id": "accuse.rule",
+      "text": "All six must be right for the case to close. You accuse once."
+    },
+    {
+      "id": "accuse.title",
+      "text": "ACCUSATION"
+    },
+    {
+      "id": "dialogue.keys",
+      "text": "     [E / Space] next   [Esc] close"
+    },
+    {
+      "id": "dialogue.onevidence",
+      "text": "[ON THE EVIDENCE]"
+    },
+    {
+      "id": "dialogue.sighting",
+      "text": "[SEEN]"
+    },
+    {
+      "id": "eaves.direction",
+      "text": " — someone is speaking over there"
+    },
+    {
+      "id": "eaves.keys",
+      "text": "[Space] pause / resume   [R] restart"
+    },
+    {
+      "id": "eaves.murmur",
+      "text": "MURMUR"
+    },
+    {
+      "id": "eaves.paused",
+      "text": "paused"
+    },
+    {
+      "id": "eaves.somewhere",
+      "text": "somewhere"
+    },
+    {
+      "id": "eaves.threshold",
+      "text": "the doorway"
+    },
+    {
+      "id": "event.break",
+      "text": "something breaking"
+    },
+    {
       "id": "event.door",
       "text": "a door opens and closes somewhere"
     },
@@ -10,32 +94,36 @@
       "text": "footsteps passing"
     },
     {
-      "id": "event.object",
-      "text": "something set down"
-    },
-    {
-      "id": "event.break",
-      "text": "something breaking"
-    },
-    {
-      "id": "event.struggle",
-      "text": "something striking something"
-    },
-    {
       "id": "event.house",
       "text": "the house settling"
+    },
+    {
+      "id": "event.object",
+      "text": "something set down"
     },
     {
       "id": "event.other",
       "text": "a sound"
     },
     {
-      "id": "voice.unknown",
-      "text": "Voice"
+      "id": "event.struggle",
+      "text": "something striking something"
     },
     {
-      "id": "voice.numbered",
-      "text": "Voice {0}"
+      "id": "hud.ear",
+      "text": "ear"
+    },
+    {
+      "id": "hud.heard",
+      "text": "heard {0}/{1}"
+    },
+    {
+      "id": "hud.keys",
+      "text": "[WASD] move   [E] examine / talk\n[T] timeline   [N] notebook   [F] accuse"
+    },
+    {
+      "id": "hud.missed",
+      "text": "missed {0}"
     },
     {
       "id": "hud.mode.explore",
@@ -46,32 +134,176 @@
       "text": "LISTENING"
     },
     {
-      "id": "hud.ear",
-      "text": "ear"
-    },
-    {
-      "id": "hud.threshold",
-      "text": "doorway"
-    },
-    {
-      "id": "hud.heard",
-      "text": "heard {0}/{1}"
-    },
-    {
-      "id": "hud.missed",
-      "text": "missed {0}"
+      "id": "hud.place",
+      "text": "Blackwood Manor · now "
     },
     {
       "id": "hud.silent",
       "text": "…quiet"
     },
     {
+      "id": "hud.threshold",
+      "text": "doorway"
+    },
+    {
       "id": "hud.throughwall",
       "text": "through the wall"
     },
     {
+      "id": "intro.filehead",
+      "text": "C A S E   F I L E   N o. 1"
+    },
+    {
+      "id": "intro.keys",
+      "text": "[WASD] move   [E] examine / talk   [T] timeline   [N] notebook   [F] accuse"
+    },
+    {
+      "id": "intro.start",
+      "text": "[Enter] begin the investigation"
+    },
+    {
+      "id": "note.evidence",
+      "text": "Related evidence"
+    },
+    {
+      "id": "note.foundat",
+      "text": "Found in: "
+    },
+    {
+      "id": "note.heard",
+      "text": "What they told you"
+    },
+    {
+      "id": "note.legend",
+      "text": "(self) their own word   (name) seen by that person   (physical) confirmed by evidence   ? unknown"
+    },
+    {
+      "id": "note.memo",
+      "text": "Note"
+    },
+    {
+      "id": "note.notalked",
+      "text": "You have not spoken with them yet."
+    },
+    {
+      "id": "note.relatedwhen",
+      "text": "· Time: "
+    },
+    {
+      "id": "note.relatedwho",
+      "text": "· Person: "
+    },
+    {
+      "id": "note.sightings",
+      "text": "Seen by others"
+    },
+    {
+      "id": "note.victim",
+      "text": " (the victim)"
+    },
+    {
+      "id": "notebook.empty",
+      "text": "nothing yet"
+    },
+    {
+      "id": "notebook.header.who",
+      "text": "Person / Time"
+    },
+    {
+      "id": "notebook.hint.empty",
+      "text": "Walk the manor and press [E] on things; what you find is written here."
+    },
+    {
+      "id": "notebook.keys",
+      "text": "[1-3 / ← →] tab   [N / Esc] close"
+    },
+    {
+      "id": "notebook.keys.scroll",
+      "text": "[↑ ↓] select   [1-3 / ← →] tab   [PgUp / PgDn · Q / E] scroll   [N / Esc] close"
+    },
+    {
+      "id": "notebook.keys.timeline",
+      "text": "[1-3 / ← →] tab   [N / Esc] close   ·   [T] the timeline lets you move the routes"
+    },
+    {
+      "id": "notebook.title",
+      "text": "Notebook"
+    },
+    {
       "id": "player.hint",
       "text": "Space play/pause · , . 5s · J rewind L forward · [ ] speed · drag the bar · R restart · Tab listen · Esc quit"
+    },
+    {
+      "id": "result.filefoot",
+      "text": "Case File No. 1 · Closed"
+    },
+    {
+      "id": "result.restart",
+      "text": "[R] start over"
+    },
+    {
+      "id": "sonar.end",
+      "text": "end of the run · [R] start over"
+    },
+    {
+      "id": "sonar.inwall",
+      "text": "in the wall"
+    },
+    {
+      "id": "sonar.keys",
+      "text": "[WASD] move the ear   [Space] play / pause   [← →] 5s   [R] restart   [ [ ] ] speed   [Tab] timeline   [T / Esc] close"
+    },
+    {
+      "id": "sonar.norun",
+      "text": "There is no run."
+    },
+    {
+      "id": "sonar.nothingheard",
+      "text": "You have not yet heard a single line in full. Move your ear to the room that is speaking."
+    },
+    {
+      "id": "sonar.sameroom",
+      "text": " · same room"
+    },
+    {
+      "id": "sonar.someone",
+      "text": "someone is speaking"
+    },
+    {
+      "id": "sonar.status",
+      "text": "ear: {0}   pass {1}   same room = words · through a wall = murmur · beyond = silence"
+    },
+    {
+      "id": "sonar.throughwall",
+      "text": " · through a wall"
+    },
+    {
+      "id": "sonar.title",
+      "text": "LISTENING · PLAYBACK   "
+    },
+    {
+      "id": "timeline.keys",
+      "text": "[← →] move in time   [1-7] jump   [Space] autoplay   [Tab] listen   [T / Esc] close"
+    },
+    {
+      "id": "timeline.note",
+      "text": "Only the routes you have reconstructed from testimony, sightings and evidence are shown"
+    },
+    {
+      "id": "timeline.playing",
+      "text": "  ▶ playing"
+    },
+    {
+      "id": "timeline.title",
+      "text": "Timeline  "
+    },
+    {
+      "id": "voice.numbered",
+      "text": "Voice {0}"
+    },
+    {
+      "id": "voice.unknown",
+      "text": "Voice"
     }
   ]
 }

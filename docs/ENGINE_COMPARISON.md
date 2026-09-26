@@ -1,5 +1,19 @@
 # 엔진 비교 — Unity 6 vs Godot 4.7 (실측)
 
+> **결론: Unity. 결정은 끝났고 Godot 이식본은 저장소에서 제거했다** (2026-09-26).
+>
+> 이 문서는 **그 결정의 근거 기록**이다. 아래 수치는 실제로 두 엔진에서 돌려 본 값이고,
+> 그래서 나중에 "왜 Unity였나"를 다시 물을 때 답할 수 있다. 다만 `DetectiveGodot/`,
+> `tools/sync_godot.py`, Godot 쪽 화면 코드(904줄)는 더 이상 존재하지 않는다 —
+> 아래에 나오는 Godot 실행 명령은 지금 저장소에서 돌아가지 않는다.
+>
+> 이식에서 **남은 것**은 셋이다. 이것들이 이 작업의 실제 산출물이다:
+> * 순수 로직 7,268줄이 엔진 밖에서 컴파일·통과한다는 증거 → `SharedLogicTests`(311 테스트, 0.3초)
+> * 2.5D·안개·톤매핑·비네팅이 무게를 만든다는 확인 → Unity `CameraGrade` 후처리
+> * 팔레트를 눈대중이 아니라 값으로 옮긴 표 → `Assets/Scripts/Art/Palette.cs`
+>
+> 3D로 갈지의 질문(§6)은 **여전히 열려 있다.** 그 답이 Unity를 고른 이유의 절반이다.
+
 같은 게임을 두 엔진으로 만들어 놓고 고르기 위한 문서. **추정이 아니라 실제로 돌려 본 수치**만 적는다.
 Godot 이식본은 `DetectiveGodot/`에 있고 실행된다.
 
@@ -21,7 +35,9 @@ Godot 이식본은 `DetectiveGodot/`에 있고 실행된다.
 
 Godot 쪽에서 새로 쓴 것은 **904줄**이다. 그것으로 지도·이동·벽 충돌·엿듣기·소나 화면·HUD·데이터 검사가 돈다.
 
-**추천: Godot.** 단, 결정을 뒤집는 질문 하나가 남아 있다 — [§6](#6-결정을-뒤집는-질문-3d)를 보라.
+**당시 추천은 Godot이었다** — 2D를 유지한다는 전제에서. 실제 결정은 **Unity**였고,
+이유는 [§6](#6-결정을-뒤집는-질문-3d)의 질문(3D로 갈 것인가)이 아직 열려 있기 때문이다.
+3D 상업 에셋 생태계 차이가 다른 모든 이점을 덮는다.
 
 ---
 
@@ -204,11 +220,18 @@ Godot은 MIT다. 로그인도 라이선스 파일도 없다.
 
 ---
 
-## 7. 다시 만드는 방법
+## 7. 당시의 재현 방법 (지금은 돌지 않는다)
+
+아래 명령 중 Godot 쪽은 제거돼 더 이상 돌지 않는다. 기록으로 남긴다.
+지금 쓰는 것은 첫 두 줄에 해당하는 `tools/sync_shared_logic.py`와 `dotnet test`다.
 
 ```bash
-# 공유 로직 목록 + 데이터·폰트 사본 갱신 (Unity 쪽이 바뀌면 다시 돌린다)
-python tools/sync_godot.py            # --check 로 최신 여부만 확인 (CI용)
+# (지금) 순수 로직 목록 갱신 + 엔진 없이 테스트
+python tools/sync_shared_logic.py     # --check 로 최신 여부만 확인 (CI용)
+dotnet test SharedLogicTests/SharedLogicTests.csproj
+
+# (당시) Godot 쪽 — 제거됨
+# python tools/sync_godot.py
 
 # 엔진 없이 로직 테스트
 dotnet test SharedLogicTests/SharedLogicTests.csproj

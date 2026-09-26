@@ -1,0 +1,54 @@
+<!-- 생성 파일. 손으로 고치지 말고 `python tools/sync_godot.py`를 다시 돌린다. -->
+<!-- Unity 프로젝트의 순수 C# 로직을 Godot이 같이 컴파일한다 (복사가 아니라 참조). -->
+<Project>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Case\AccusationForm.cs" Link="Shared\Case\AccusationForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Case\CaseGrader.cs" Link="Shared\Case\CaseGrader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Case\CaseSolvabilityChecker.cs" Link="Shared\Case\CaseSolvabilityChecker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\ArtManifestValidator.cs" Link="Shared\Core\ArtManifestValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\CaseDatabase.cs" Link="Shared\Core\CaseDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\GameDataValidator.cs" Link="Shared\Core\GameDataValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\GameEvents.cs" Link="Shared\Core\GameEvents.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\GameTime.cs" Link="Shared\Core\GameTime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\IHighlightable.cs" Link="Shared\Core\IHighlightable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\IInteractable.cs" Link="Shared\Core\IInteractable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\Interval.cs" Link="Shared\Core\Interval.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\KoreanText.cs" Link="Shared\Core\KoreanText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\ModalState.cs" Link="Shared\Core\ModalState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\Point2.cs" Link="Shared\Core\Point2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\ProjectInfo.cs" Link="Shared\Core\ProjectInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\RoomLayout.cs" Link="Shared\Core\RoomLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\RoomLayoutValidator.cs" Link="Shared\Core\RoomLayoutValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\SaveGame.cs" Link="Shared\Core\SaveGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Core\WallSegment.cs" Link="Shared\Core\WallSegment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Data\ArtSchema.cs" Link="Shared\Data\ArtSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Data\CaseSchema.cs" Link="Shared\Data\CaseSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Data\DialogueSchema.cs" Link="Shared\Data\DialogueSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Data\EvidenceSchema.cs" Link="Shared\Data\EvidenceSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Data\NpcSchema.cs" Link="Shared\Data\NpcSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Data\RoomSchema.cs" Link="Shared\Data\RoomSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Dialogue\ConversationBuilder.cs" Link="Shared\Dialogue\ConversationBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Dialogue\DialogueCatalog.cs" Link="Shared\Dialogue\DialogueCatalog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Dialogue\SightingGenerator.cs" Link="Shared\Dialogue\SightingGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\AudibilityModel.cs" Link="Shared\Eavesdrop\AudibilityModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\ListeningSession.cs" Link="Shared\Eavesdrop\ListeningSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\MovementTrack.cs" Link="Shared\Eavesdrop\MovementTrack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\PlaybackTransport.cs" Link="Shared\Eavesdrop\PlaybackTransport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\ScriptTimeline.cs" Link="Shared\Eavesdrop\ScriptTimeline.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\ScriptValidator.cs" Link="Shared\Eavesdrop\ScriptValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\SliceSolvability.cs" Link="Shared\Eavesdrop\SliceSolvability.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\SonarText.cs" Link="Shared\Eavesdrop\SonarText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\UnheardReport.cs" Link="Shared\Eavesdrop\UnheardReport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\UtteranceSchema.cs" Link="Shared\Eavesdrop\UtteranceSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\VoiceAssignment.cs" Link="Shared\Eavesdrop\VoiceAssignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Eavesdrop\VoiceClipPlan.cs" Link="Shared\Eavesdrop\VoiceClipPlan.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Investigation\EvidenceCatalog.cs" Link="Shared\Investigation\EvidenceCatalog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Investigation\EvidenceLog.cs" Link="Shared\Investigation\EvidenceLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Investigation\InvestigationState.cs" Link="Shared\Investigation\InvestigationState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Investigation\NotebookPresenter.cs" Link="Shared\Investigation\NotebookPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\Investigation\TimelineBoard.cs" Link="Shared\Investigation\TimelineBoard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\NPC\NpcPlacement.cs" Link="Shared\NPC\NpcPlacement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\NPC\NpcRoster.cs" Link="Shared\NPC\NpcRoster.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Scripts\NPC\NpcSchedule.cs" Link="Shared\NPC\NpcSchedule.cs" />
+  </ItemGroup>
+</Project>

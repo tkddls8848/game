@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    엔진 없이 돌리는 테스트 묶음.
+
+    이 프로젝트는 Unity도 Godot도 참조하지 않는다. Unity의 EditMode 테스트 파일과
+    §18-1을 지킨 순수 로직을 **그대로** 컴파일해 `dotnet test`로 돌린다.
+    통과하면 그 로직이 엔진에 묶여 있지 않다는 증거가 된다 — 엔진 선택 논의의 근거다.
+
+    GameDataTests.cs만 뺀다. 그 파일은 Unity의 Resources 로더 자체를 시험하므로
+    엔진 밖에서는 의미가 없다(Godot 쪽 대응물은 GodotDataLoader가 맡는다).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- 공유 로직은 Unity 6(C# 9) 기준이다. 새 경고로 빌드를 막지 않는다. -->
+    <NoWarn>$(NoWarn);CS0649;CS0169</NoWarn>
+
+    <!--
+      출력을 DetectivePrototype 아래에 둔다. 테스트가 실제 JSON을 찾을 때
+      TestContext.TestDirectory에서 위로 올라가며 `Assets/Resources/...`를 뒤지므로,
+      조상 중에 DetectivePrototype이 있어야 실제 데이터로 검사가 돈다.
+    -->
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\DetectivePrototype\build\SharedLogicTests\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Tests\EditMode\*.cs"
+             Exclude="$(MSBuildThisFileDirectory)..\DetectivePrototype\Assets\Tests\EditMode\GameDataTests.cs"
+             Link="Tests\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+    <!-- 테스트 3개가 #if UNITY_5_3_OR_NEWER의 else 분기에서 이것을 쓴다. -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <!-- Unity 프로젝트의 순수 C# 로직. Godot 게임이 쓰는 것과 같은 목록·같은 파일. -->
+  <Import Project="$(MSBuildThisFileDirectory)..\DetectiveGodot\SharedLogic.props" />
+
+</Project>
